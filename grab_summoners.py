@@ -1,5 +1,6 @@
 import json;
 import urllib2
+from summoner import Summoner
 
 API_KEY = "&api_key=eeff2e9b-5f33-4de0-af17-16b98a4c4b3e" 
 CHALLANGER_API = "https://na.api.pvp.net/api/lol/na/v2.5/league/challenger?type=RANKED_SOLO_5x5"
@@ -16,12 +17,19 @@ def get_challanger_data():
 	return data
 
 
-def parse_data(data):
+def extract_summoners(data):
 	summoners = data["entries"]
 	for s in summoners:
+		name = s["playerOrTeamName"]
+		league_id = s["playerOrTeamId"]
+		division = s["division"]
+		tier = "CHALLENGER"
+		s_model = Summoner.get_summoner(name, league_id, division, tier)
+		s_model.save()
+
 		
 def main():
 	data = get_challanger_data()
-	parse_data(data)
+	extract_summoners(data)
 
 main()

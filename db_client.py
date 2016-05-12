@@ -24,23 +24,28 @@ class DbClient:
 		self.client.close()
 
 	## add new summoner to db and return its id
-	def create_summoner(name, league_id, tier, division):
+	def create_summoner(self, name, league_id, tier, division):
 		record = self.db.summoners.insert_one({
 			"name" : name,
 			"league_id" : league_id,
 			"tier" : tier,
 			"division" : division
-			)
+			})
 		return record
 	
 	## update existing summoner with new values passed in
 	def update_summoner(self, id, name, tier, division):
-		self.db.summoner.update_one(
+		self.db.summoners.update_one(
 				{"_id" : id},{
 					"$set": {
 						"name" : name,
 						"tier" : tier,
 						"division" : division}
 				})
+
+	## find summoner and return it based on league_id
+	def find_summoner(self, league_id):
+		cursor = self.db.summoners.find({"league_id" : league_id})
+		return cursor
 
 

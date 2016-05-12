@@ -1,14 +1,14 @@
 ## Summoner: id, name, league_id tier, division 
 
-import db_client
+from db_client import DbClient
 
 class Summoner:
-	def __init__(name, league_id, tier, division, id = None):
+	def __init__(self, name, league_id, tier, division, id = None):
 		self.id = id
 		self.name = name
 		self.league_id = league_id
 		self.tier = tier
-		self.division = divison
+		self.division = division
 
 	@classmethod
 	def from_cursor(cls, c):
@@ -22,12 +22,12 @@ class Summoner:
 	
 	## if summoner already exists in db return it, otherwise return new summoner object
 	@classmethod
-	def get_summoner(name, league_id, tier, division):
+	def get_summoner(cls, name, league_id, tier, division):
 		with DbClient() as db_client:
 			cursor = db_client.find_summoner(league_id)
 			##if doesn't exist in db
 			if cursor.count() == 0:
-				return cls(name, league_id, tier, divison)
+				return cls(name, league_id, tier, division)
 			else:
 				##create model from summoner data in db
 				summoner = cls.from_cursor(cursor)
@@ -35,7 +35,7 @@ class Summoner:
 				summoner.name = name
 				summoner.league_id = league_id
 				summoner.tier = tier
-				summoner.diviison = division
+				summoner.division = division
 				return summoner
 
 	def save(self):
