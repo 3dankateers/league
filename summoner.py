@@ -12,7 +12,7 @@ class Summoner:
 
 	@classmethod
 	def from_cursor(cls, c):
-		assert (c.count() == 1), "Error constructing Summoner model from cursor. Cursor is empty or contains multiple objects"
+		assert (c.count() >= 1), "Error constructing Summoner model from cursor. Cursor is empty."
 		id = c[0]["_id"]
 		name = c[0]["name"]
 		league_id = c[0]["league_id"] 
@@ -26,17 +26,17 @@ class Summoner:
 		with DbClient() as db_client:
 			cursor = db_client.find_summoner(league_id)
 			##if doesn't exist in db
-			if cursor.count() == 0:
-				return cls(name, league_id, tier, division)
-			else:
-				##create model from summoner data in db
-				summoner = cls.from_cursor(cursor)
-				##update model attributes in case they changed
-				summoner.name = name
-				summoner.league_id = league_id
-				summoner.tier = tier
-				summoner.division = division
-				return summoner
+		if cursor.count() == 0:
+			return cls(name, league_id, tier, division)
+		else:
+			##create model from summoner data in db
+			summoner = cls.from_cursor(cursor)
+			##update model attributes in case they changed
+			summoner.name = name
+			summoner.league_id = league_id
+			summoner.tier = tier
+			summoner.division = division
+			return summoner
 
 	def save(self):
 		with DbClient() as db_client:

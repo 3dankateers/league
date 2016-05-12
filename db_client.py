@@ -31,7 +31,7 @@ class DbClient:
 			"tier" : tier,
 			"division" : division
 			})
-		return record
+		return record.inserted_id
 	
 	## update existing summoner with new values passed in
 	def update_summoner(self, id, name, tier, division):
@@ -42,6 +42,16 @@ class DbClient:
 						"tier" : tier,
 						"division" : division}
 				})
+
+	##mostly for testing
+	##return first summoner found
+	def get_one_summoner(self):
+		cursor = self.db.summoners.find()
+		if cursor.count() > 0:
+			return cursor
+		else:
+			print "Summoner collection is empty"
+			return None
 
 	## find summoner and return it based on league_id
 	def find_summoner(self, league_id):
