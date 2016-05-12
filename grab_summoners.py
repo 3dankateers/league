@@ -19,8 +19,7 @@ def get_challanger_data():
 def parse_data(data):
 	summoners = data["entries"]
 	for s in summoners:
-		print s
-
+		
 def main():
 	data = get_challanger_data()
 	parse_data(data)
