@@ -18,6 +18,7 @@ WAIT_TIME = 1500
 class LeagueClient:
 
 	def __init__(self, region):
+		self.region = region
 		self.last_request = time.time()
 
 	##may sleep to delay consecutive requests and make sure there is at most 1 request every 1.5 seconds
@@ -25,7 +26,7 @@ class LeagueClient:
 		if self.last_request == None:
 			self.last_request = time.time()
 		else:
-			t_delta = time.time() - self.last_request()
+			t_delta = time.time() - self.last_request
 			if t_delta < WAIT_TIME:
 				time.sleep((WAIT_TIME - t_delta)/1000)
 				self.last_request = time.time()

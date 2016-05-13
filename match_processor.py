@@ -17,7 +17,7 @@ TEAM2 = 200
 class MatchProcessor:
 	##given recent match data, add all new matches to db
 	@staticmethod
-	def populate_match_db(s, data):
+	def populate_match_db(lc, s, data):
 		games = data["games"]
 		for g in games: 
 			##only allow 5v5 ranked
@@ -32,7 +32,7 @@ class MatchProcessor:
 					champs1 = []
 					champs2 = []
 					
-					s_id = s.id
+					s_id = s.league_id
 					s_team = g["stats"]["team"]
 					s_champ = g["championId"]
 					MatchProcessor.classify(team1, team2, champs1, champs2, s_id, s_champ, s_team)
@@ -57,9 +57,10 @@ class MatchProcessor:
 						win = TEAM1
 
 					gametype = g["subType"]
+					region = lc.region
 					tier = s.tier
 					date = g["createDate"]
-					match = Match(league_id, team1, team2, champs1, champs2, duration, win, gametype, tier, date)
+					match = Match(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date)
 					match.save()				
 
 
@@ -77,7 +78,7 @@ class MatchProcessor:
 	##crawl recent matches of summoner
 	##add matches to db
 	@staticmethod
-	def grab_matches(s):
+	def grab_matches(lc, s):
 		print "Grabbing matches of summoner: " + s.name.encode(encoding='UTF-8',errors='replace')
 
 		## update date_scraped_peers
@@ -86,14 +87,14 @@ class MatchProcessor:
 		
 		recent_matches_data = LeagueClient.get_recent_matches_data(s.league_id)
 		
-		MatchProcessor.populate_match_db(s, recent_matches_data)	
+		MatchProcessor.populate_match_db(lc, s, recent_matches_data)	
 	
 	## grab recent relevant matches by summoner
 	@staticmethod
-	def grab_matches_challenger():
+	def grab_matches_challenger(lc):
 		print "Adding all matches of challengers to db"
 		with DbClient() as db_client:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
 			for o in cursor:
 				s = Summoner.from_object(o)
-				MatchProcessor.grab_matches(s)
+				MatchProcessor.grab_matches(lc, s)

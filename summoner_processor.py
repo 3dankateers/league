@@ -16,22 +16,23 @@ class SummonerProcessor:
 	
 	##add all challangers to db
 	@staticmethod
-	def add_challengers_to_db():
+	def add_challengers_to_db(lc):
 		print "Adding all challengers to db..."
-		data = LeagueClient.get_challanger_data()
-		SummonerProcessor.populate_challengers(data)
+		data = lc.get_challanger_data()
+		SummonerProcessor.populate_challengers(lc, data)
 
 
 	## populate db with all challangers given data
 	@staticmethod
-	def populate_challengers(data):
+	def populate_challengers(lc, data):
 		summoners = data["entries"]
 		for s in summoners:
 			name = s["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
 			league_id = s["playerOrTeamId"]
 			division = s["division"]
+			region = lc.region
 			tier = "CHALLENGER"
-			s_model = Summoner.get_summoner(name, league_id, tier, division)
+			s_model = Summoner.get_summoner(name, league_id, tier, division, region)
 			s_model.save()
 	
 	##given recent match data, return list of peers ids
@@ -52,7 +53,7 @@ class SummonerProcessor:
 	##crawl recent matches of summoner to get summoners he has played with
 	##add summoners to db
 	@staticmethod
-	def grab_peers(s):
+	def grab_peers(lc, s):
 		print "Grabbing peers of summoner: " + s.name.encode(encoding='UTF-8',errors='replace')
 
 			
@@ -60,28 +61,29 @@ class SummonerProcessor:
 		s.date_scraped_peers = datetime.datetime.utcnow()
 		s.save()
 		
-		recent_matches_data = LeagueClient.get_recent_matches_data(s.league_id)
+		recent_matches_data = lc.get_recent_matches_data(s.league_id)
 		peer_ids = SummonerProcessor.extract_peers_ids(recent_matches_data)
-		league_summoner_data = LeagueClient.get_summoner_data_all(peer_ids)
-		SummonerProcessor.populate_summoner_db(league_summoner_data)	
+		league_summoner_data = lc.get_summoner_data_all(peer_ids)
+		SummonerProcessor.populate_summoner_db(lc, league_summoner_data)	
 
 	##given summoner league data, add all new summoners to db
 	@staticmethod
-	def populate_summoner_db(data):
+	def populate_summoner_db(lc, data):
 		for key in data:
 			value = data[str(key)]
 			name = value[0]["entries"][0]["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
 			league_id = key
-			division = value[0]["entries"][0]["division"]
 			tier = value[0]["tier"]
+			division = value[0]["entries"][0]["division"]
+			region = lc.region
 			##only grab diamond+ players
 			if tier_converter[tier] <= 3:
-				s_model = Summoner.get_summoner(name, league_id, division, tier)
+				s_model = Summoner.get_summoner(name, league_id, tier, division, region)
 				s_model.save()
 	
 	## grab peers of all challangers
 	@staticmethod
-	def grab_peers_challenger():
+	def grab_peers_challenger(lc):
 		print "Adding all peers of challengers to db"
 		with DbClient() as db_client:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")

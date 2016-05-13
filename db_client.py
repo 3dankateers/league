@@ -3,8 +3,8 @@
 ## db: league
 ##
 ## collections: summoners, matches
-## Summoner: id, name, tier, division, league_id, date_scraped_peers, date_scraped_matches
-## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, tier, date
+## Summoner: id, name, tier, division, region, league_id, date_scraped_peers, date_scraped_matches
+## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date
 #################################################################################################
 
 from pymongo import MongoClient
@@ -25,22 +25,21 @@ class DbClient:
 		self.client.close()
 
 	## add new summoner to db and return its id
-	def create_summoner(self, name, league_id, tier, division, date_scraped_peers, date_scraped_matches):
+	def create_summoner(self, name, league_id, tier, division, region, date_scraped_peers, date_scraped_matches):
 		record = self.db.summoners.insert_one({
 			"name" : name,
 			"league_id" : league_id,
 			"tier" : tier,
 			"division" : division,
+			"region" : region,
 			"date_scraped_peers" : date_scraped_peers,
 			"date_scraped_matches" : date_scraped_matches
 			})
 		print "Created summoner: " + name.encode(encoding='UTF-8',errors='replace')
 		return record.inserted_id
 	
-	## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, tier, date
-
 	## add new match to db and return its id
-	def create_match(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, tier, date):	
+	def create_match(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date):	
 		record = self.db.matches.insert_one({
 			"league_id" : league_id,
 			"team1" : team1,
@@ -50,6 +49,7 @@ class DbClient:
 			"duration" : duration,
 			"win" : win,
 			"gametype" : gametype,
+			"region" : region,
 			"tier" : tier,
 			"date" : date
 			})
@@ -57,13 +57,14 @@ class DbClient:
 		return record.inserted_id
 	
 	## update existing summoner with new values passed in
-	def update_summoner(self, id, name, tier, division, date_scraped_peers, date_scraped_matches):
+	def update_summoner(self, id, name, tier, division, region, date_scraped_peers, date_scraped_matches):
 		self.db.summoners.update_one(
 				{"_id" : id},{
 					"$set": {
 						"name" : name,
 						"tier" : tier,
 						"division" : division,
+						"region" : region,
 						"date_scraped_peers" : date_scraped_peers,
 						"date_scraped_matches" : date_scraped_matches
 						}
