@@ -1,7 +1,8 @@
 from summoner import Summoner
 from league_client import LeagueClient
 from db_client import DbClient
-from processor import Processor
+from summoner_processor import SummonerProcessor
+from match_processor import MatchProcessor
 		
 def test_grab():
 	with DbClient() as db_client:
@@ -9,13 +10,13 @@ def test_grab():
 		assert c.count() >= 1, "Trying to initilize summoner model from empty cursor"
 
 		summoner = Summoner.from_object(c[0])
-		Processor.grab_peers(summoner)
+		SummonerProcessor.grab_peers(summoner)
 
 def main():
 	
-	##Processor.add_challengers_to_db()
+	SummonerProcessor.add_challengers_to_db()
 	##test_grab()
-	Processor.grab_peers_challenger()
+	##SummonerProcessor.grab_peers_challenger()
 
 
 main()

@@ -5,20 +5,21 @@
 
 import datetime
 import time
-from summoner import Summoner, tier_converter
+from summoner import Summoner
+from tier_converter import tier_converter
 from db_client import DbClient
 from league_client import LeagueClient
+from processor_helper import ProcessorHelper
 
-SCRAPE_RESET_DAYS = 10
 
-class Processor:
-
+class SummonerProcessor:
+	
 	##add all challangers to db
 	@staticmethod
 	def add_challengers_to_db():
 		print "Adding all challengers to db..."
 		data = LeagueClient.get_challanger_data()
-		Processor.populate_challengers(data)
+		SummonerProcessor.populate_challengers(data)
 
 
 	## populate db with all challangers given data
@@ -26,7 +27,7 @@ class Processor:
 	def populate_challengers(data):
 		summoners = data["entries"]
 		for s in summoners:
-			name = s["playerOrTeamName"]
+			name = s["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
 			league_id = s["playerOrTeamId"]
 			division = s["division"]
 			tier = "CHALLENGER"
@@ -38,11 +39,10 @@ class Processor:
 	def extract_peers_ids(data):
 		peer_ids = []
 		games = data["games"]
-		print "got here"	
 		for g in games:
 
 		##only care about ranked 5v5 games
-			if (g["gameType"] == "MATCHED_GAME") and (g["subType"] == "RANKED_SOLO_5x5"):
+			if (ProcessorHelper.check_game_type(g)):
 				peers = g["fellowPlayers"]
 				for p in peers:
 					s_id = p["summonerId"]
@@ -53,23 +53,24 @@ class Processor:
 	##add summoners to db
 	@staticmethod
 	def grab_peers(s):
-		print "Grabbing peers of summoner: " + s.name
+		print "Grabbing peers of summoner: " + s.name.encode(encoding='UTF-8',errors='replace')
+
 			
 		## update date_scraped_peers
 		s.date_scraped_peers = datetime.datetime.utcnow()
 		s.save()
 		
 		recent_matches_data = LeagueClient.get_recent_matches_data(s.league_id)
-		peer_ids = Processor.extract_peers_ids(recent_matches_data)
+		peer_ids = SummonerProcessor.extract_peers_ids(recent_matches_data)
 		league_summoner_data = LeagueClient.get_summoner_data_all(peer_ids)
-		Processor.populate_summoner_db(league_summoner_data)	
+		SummonerProcessor.populate_summoner_db(league_summoner_data)	
 
 	##given summoner league data, add all new summoners to db
 	@staticmethod
 	def populate_summoner_db(data):
 		for key in data:
 			value = data[str(key)]
-			name = value[0]["entries"][0]["playerOrTeamName"]
+			name = value[0]["entries"][0]["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
 			league_id = key
 			division = value[0]["entries"][0]["division"]
 			tier = value[0]["tier"]
@@ -87,22 +88,7 @@ class Processor:
 			for o in cursor:
 				s = Summoner.from_object(o)
 				if check_time_diff(s.date_scraped_peers):
-					Processor.grab_peers(s)
-
-## return true if never scraped or scraped really long time ago (true allows new scrape)
-def check_time_diff(dt_past):	
-	if dt_past == None:
-		##means summoner never got scraped
-		return True
-	else:
-		time_elapsed = datetime.datetime.utcnow() - dt_past
-		if time_elapsed.days > SCRAPE_RESET_DAYS:
-			return True
-		else:
-			##TODO make a global request staggerer
-			##sleep to prevent too many request
-			time.sleep(5)
-			return False
+					SummonerProcessor.grab_peers(s)
 
 
 
