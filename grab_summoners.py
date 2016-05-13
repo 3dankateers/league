@@ -14,8 +14,8 @@ def test_grab():
 def main():
 	
 	##Processor.add_challengers_to_db()
-	test_grab()
-	##Processor.grab_peers_challenger()
+	##test_grab()
+	Processor.grab_peers_challenger()
 
 
 main()

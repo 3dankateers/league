@@ -4,9 +4,12 @@
 ########################################################################
 
 import datetime
-from summoner import Summoner
+import time
+from summoner import Summoner, tier_converter
 from db_client import DbClient
 from league_client import LeagueClient
+
+SCRAPE_RESET_DAYS = 10
 
 class Processor:
 
@@ -35,11 +38,15 @@ class Processor:
 	def extract_peers_ids(data):
 		peer_ids = []
 		games = data["games"]
+		print "got here"	
 		for g in games:
-			peers = g["fellowPlayers"]
-			for p in peers:
-				s_id = p["summonerId"]
-				peer_ids.append(s_id)
+
+		##only care about ranked 5v5 games
+			if (g["gameType"] == "MATCHED_GAME") and (g["subType"] == "RANKED_SOLO_5x5"):
+				peers = g["fellowPlayers"]
+				for p in peers:
+					s_id = p["summonerId"]
+					peer_ids.append(s_id)
 		return peer_ids
 
 	##crawl recent matches of summoner to get summoners he has played with
@@ -47,7 +54,7 @@ class Processor:
 	@staticmethod
 	def grab_peers(s):
 		print "Grabbing peers of summoner: " + s.name
-		
+			
 		## update date_scraped_peers
 		s.date_scraped_peers = datetime.datetime.utcnow()
 		s.save()
@@ -66,8 +73,10 @@ class Processor:
 			league_id = key
 			division = value[0]["entries"][0]["division"]
 			tier = value[0]["tier"]
-			s_model = Summoner.get_summoner(name, league_id, division, tier)
-			s_model.save()
+			##only grab diamond+ players
+			if tier_converter[tier] <= 3:
+				s_model = Summoner.get_summoner(name, league_id, division, tier)
+				s_model.save()
 	
 	## grab peers of all challangers
 	@staticmethod
@@ -77,10 +86,23 @@ class Processor:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
 			for o in cursor:
 				s = Summoner.from_object(o)
-				LeagueClient.grab_peers(s)
+				if check_time_diff(s.date_scraped_peers):
+					Processor.grab_peers(s)
 
-
-
+## return true if never scraped or scraped really long time ago (true allows new scrape)
+def check_time_diff(dt_past):	
+	if dt_past == None:
+		##means summoner never got scraped
+		return True
+	else:
+		time_elapsed = datetime.datetime.utcnow() - dt_past
+		if time_elapsed.days > SCRAPE_RESET_DAYS:
+			return True
+		else:
+			##TODO make a global request staggerer
+			##sleep to prevent too many request
+			time.sleep(5)
+			return False
 
 
 

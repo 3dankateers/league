@@ -20,7 +20,7 @@ class Summoner:
 		self.league_id = league_id
 		self.tier = tier
 		self.division = division
-		self.date_scraped_peers = None
+		self.date_scraped_peers = date_scraped_peers
 
 	@classmethod
 	def from_object(cls, o):
@@ -46,6 +46,7 @@ class Summoner:
 			##create model from summoner data in db
 			assert (cursor.count() >= 1), "Error constructing Summoner model from cursor. Cursor is empty."
 			summoner = cls.from_object(cursor[0])
+			
 			##update model attributes in case they changed
 			summoner.name = name
 			summoner.league_id = league_id
