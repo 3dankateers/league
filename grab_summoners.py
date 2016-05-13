@@ -14,9 +14,9 @@ def test_grab():
 
 def main():
 	
-	SummonerProcessor.add_challengers_to_db()
+	##SummonerProcessor.add_challengers_to_db()
 	##test_grab()
 	##SummonerProcessor.grab_peers_challenger()
-
+	MatchProcessor.grab_matches_challenger()
 
 main()

@@ -24,7 +24,7 @@ class MatchProcessor:
 			if ProcessorHelper.check_game_type(g):
 				league_id =	g["gameId"]
 					
-				match = Match.find_match(league_id)
+				match = Match.get_match(league_id)
 				##only proceed if match doesn't already exist
 				if match == None:
 					team1 = []
@@ -35,14 +35,14 @@ class MatchProcessor:
 					s_id = s.id
 					s_team = g["stats"]["team"]
 					s_champ = g["championId"]
-					classify(team1, team2, champs1, champs2, s_id, s_champ, s_team)
+					MatchProcessor.classify(team1, team2, champs1, champs2, s_id, s_champ, s_team)
 
 					## classify current summoner in this match
 					for p in g["fellowPlayers"]:
 						peer_id = p["summonerId"]
 						peer_team = p["teamId"]
 						peer_champ = p["championId"]
-						classify(team1, team2, champs1, champs2, peer_id, peer_champ, peer_team)
+						MatchProcessor.classify(team1, team2, champs1, champs2, peer_id, peer_champ, peer_team)
 					
 					duration = g["stats"]["timePlayed"]
 
@@ -86,7 +86,7 @@ class MatchProcessor:
 		
 		recent_matches_data = LeagueClient.get_recent_matches_data(s.league_id)
 		
-		MatchProcessor.populate_match_db(recent_matches_data)	
+		MatchProcessor.populate_match_db(s, recent_matches_data)	
 	
 	## grab recent relevant matches by summoner
 	@staticmethod

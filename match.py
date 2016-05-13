@@ -1,5 +1,7 @@
 ## match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, tier, date
 
+from db_client import DbClient
+
 class Match:
 	def __init__(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, tier, date, id = None):
 		self.id = id
@@ -45,3 +47,8 @@ class Match:
 			match = cls.from_object(cursor[0])
 			
 			return match
+
+	## push match into database
+	def save(self):
+		with DbClient() as db_client:
+			self.id = db_client.create_match(self.league_id, self.team1, self.team2, self.champs1, self.champs2, self.duration, self.win, self.gametype, self.tier, self.date)
