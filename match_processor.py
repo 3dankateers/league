@@ -13,6 +13,7 @@ from processor_helper import ProcessorHelper
 
 TEAM1 = 100
 TEAM2 = 200
+PATCH = "6.9"
 
 class MatchProcessor:
 	##given recent match data, add all new matches to db
@@ -58,9 +59,10 @@ class MatchProcessor:
 
 					gametype = g["subType"]
 					region = lc.region
+					patch = PATCH
 					tier = s.tier
 					date = g["createDate"]
-					match = Match(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date)
+					match = Match(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
 					match.save()				
 
 
@@ -85,7 +87,7 @@ class MatchProcessor:
 		s.date_scraped_matches = datetime.datetime.utcnow()
 		s.save()
 		
-		recent_matches_data = LeagueClient.get_recent_matches_data(s.league_id)
+		recent_matches_data = lc.get_recent_matches_data(s.league_id)
 		
 		MatchProcessor.populate_match_db(lc, s, recent_matches_data)	
 	

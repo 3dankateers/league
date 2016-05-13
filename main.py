@@ -4,6 +4,13 @@ from db_client import DbClient
 from summoner_processor import SummonerProcessor
 from match_processor import MatchProcessor
 		
+##TODO: Try finding 5v5 games and mark them accordingly
+##TODO: Parallel region processing?
+##TODO: Add champions to collection
+##TODO: Add teams to collection
+##TODO: Firstblood idea
+## perhaps try finding smurfs statistically
+
 def test_grab(lc):
 	with DbClient() as db_client:
 		c = db_client.get_one_summoner()
@@ -14,9 +21,9 @@ def test_grab(lc):
 
 def main():
 	lc = LeagueClient("na")
-	SummonerProcessor.add_challengers_to_db(lc)
+	##SummonerProcessor.add_challengers_to_db(lc)
 	##test_grab(lc)
 	##SummonerProcessor.grab_peers_challenger(lc)
-	##MatchProcessor.grab_matches_challenger(lc)
+	MatchProcessor.grab_matches_challenger(lc)
 
 main()

@@ -89,8 +89,8 @@ class SummonerProcessor:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
 			for o in cursor:
 				s = Summoner.from_object(o)
-				if check_time_diff(s.date_scraped_peers):
-					SummonerProcessor.grab_peers(s)
+				if ProcessorHelper.check_time_diff(s.date_scraped_peers):
+					SummonerProcessor.grab_peers(lc, s)
 
 
 

@@ -1,9 +1,9 @@
-## match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date
+## match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 
 from db_client import DbClient
 
 class Match:
-	def __init__(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date, id = None):
+	def __init__(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, id = None):
 		self.id = id
 		self.league_id = league_id
 		self.team1 = team1
@@ -14,6 +14,7 @@ class Match:
 		self.win = win
 		self.gametype = gametype
 		self.region = region
+		self.patch = patch
 		self.tier = tier
 		self.date = date
 	
@@ -29,10 +30,11 @@ class Match:
 		win = o["win"]
 		gametype = o["gametype"]
 		region = o["region"]
+		patch = o["patch"]
 		tier = o["tier"]
 		date = o["date"]
 			
-		return cls(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date, id)
+		return cls(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, id)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
@@ -53,4 +55,4 @@ class Match:
 	## push match into database
 	def save(self):
 		with DbClient() as db_client:
-			self.id = db_client.create_match(self.league_id, self.team1, self.team2, self.champs1, self.champs2, self.duration, self.win, self.gametype, self.region, self.tier, self.date)
+			self.id = db_client.create_match(self.league_id, self.team1, self.team2, self.champs1, self.champs2, self.duration, self.win, self.gametype, self.region, self.patch, self.tier, self.date)

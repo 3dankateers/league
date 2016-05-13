@@ -4,7 +4,7 @@
 ##
 ## collections: summoners, matches
 ## Summoner: id, name, tier, division, region, league_id, date_scraped_peers, date_scraped_matches
-## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date
+## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 #################################################################################################
 
 from pymongo import MongoClient
@@ -35,11 +35,11 @@ class DbClient:
 			"date_scraped_peers" : date_scraped_peers,
 			"date_scraped_matches" : date_scraped_matches
 			})
-		print "Created summoner: " + name.encode(encoding='UTF-8',errors='replace')
+		print "Created summoner: " + name.decode(encoding='UTF-8',errors='ignore')
 		return record.inserted_id
 	
 	## add new match to db and return its id
-	def create_match(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, tier, date):	
+	def create_match(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):	
 		record = self.db.matches.insert_one({
 			"league_id" : league_id,
 			"team1" : team1,
@@ -50,6 +50,7 @@ class DbClient:
 			"win" : win,
 			"gametype" : gametype,
 			"region" : region,
+			"patch" : patch,
 			"tier" : tier,
 			"date" : date
 			})
