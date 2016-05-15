@@ -2,11 +2,12 @@
 ## mondodb api
 ## db: league
 ##
-## collections: summoners, matches
+## collections: summoners, matches, teams, champs, pairs
 ## Summoner: id, name, tier, division, region, date_scraped_peers, date_scraped_matches
 ## Match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 ## Team : id, summoners, matches, date_created 
 ## Champ: id, name, winrate, winrate_sample_size
+## pair: id, champ1, champ2, type, winrate, winrate_sample_size, date_created
 #################################################################################################
 
 from pymongo import MongoClient
@@ -67,6 +68,7 @@ class DbClient:
 				"date_created" : date_created
 			})
 		print "Created new team with ", str(len(matches)), " matches."
+		return record.inserted_id
 
 	def create_champ(self, id, name, winrate, winrate_sample_size):
 		record = self.db.champs.insert_one({
@@ -77,6 +79,17 @@ class DbClient:
 			})
 		print "created champ"
 
+	def create_pair(self, champ1, champ2, type, winrate, winrate_sample_size):
+		record = self.db.pairs.insert_one({
+				"champ1" : champ1,
+				"champ2" : champ2,
+				"type" : type,
+				"winrate" : winrate,
+				"winrate_sample_size" : winrate_sample_size
+			})
+		print "created pair"
+		return record.inserted_id
+	
 	## update existing summoner with new values passed in
 	def update_summoner(self, id, name, tier, division, region, date_scraped_peers, date_scraped_matches):
 		self.db.summoners.update_one(
@@ -116,6 +129,17 @@ class DbClient:
 				})
 		print "Updated champ" 
 	
+	## update existing pair with new values passed in
+	def update_pair(self, id, winrate, winrate_sample_size):
+		self.db.pairs.update_one(
+				{"_id" : id},{
+					"$set": {
+						"winrate" : winrate,
+						"winrate_sample_size" : winrate_sample_size
+						}
+				})
+		print "Updated pair." 
+	
 	##mostly for testing
 	##return first summoner found
 	def get_one_summoner(self):
@@ -150,6 +174,18 @@ class DbClient:
 		cursor = self.db.champs.find({"name" : name})
 		return cursor
 
+	def find_all_champs(self):
+		cursor = self.db.champs.find()
+		return cursor
+
+	## find pair and return it based on champ1, champ2, and type
+	def find_pair(self, champ1, champ2, type):
+		cursor = self.db.pairs.find({
+			"champ1" : champ1,
+			"champ2" : champ2,
+			"type" : type})
+		return cursor
+	
 	## return all matches
 	def get_all_matches(self):
 		cursor = self.db.matches.find()

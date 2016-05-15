@@ -6,20 +6,25 @@ from match_parser import MatchParser
 from team_finder import TeamFinder
 from champ_parser import ChampParser
 from champ_winrate_calculator import ChampWinrateCalculator
+from comp_evaluator import CompEvaluator
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
 ##TODO: Add champions to collection
 ##TODO: Add teams to collection
 ##TODO: Firstblood idea
 ##TODO: standardize date to either time.time() or datetime.datetime
-##TODO: deal with unicode errors instead of ignoring
+##TODO: deal with unicode errors insteadme.encode(encoding='UTF-8',errors='replace') of ignoring
 ##TODO: Add limits to amount of data pulled and come up with system to pull more efficiently
+##TODO: Set patch limits on recent_matches
 ## perhaps try finding smurfs statistically
 
 def main():
 	##calc_champ_winrates()
 	##pull_challengers("kr")
-	pull_matches("kr")
+	##pull_matches("kr")
+	team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
+	team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
+	evaluate_comp(team1, team2)
 
 def test_grab(lc):
 	with DbClient() as db_client:
@@ -53,5 +58,8 @@ def find_teams():
 	tf = TeamFinder()
 	tf.run()
 
+def evaluate_comp(t1, t2):
+	ce = CompEvaluator(t1,t2)
+	ce.run()
 
 main()
