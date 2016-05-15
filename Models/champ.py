@@ -19,7 +19,7 @@ class Champ:
 	
 	## if team already exists in db return it, otherwise return a new team
 	@classmethod
-	def get_champ(cls, id, name, winrate):
+	def get_champ(cls, id, name):
 		with DbClient() as db_client:
 			cursor = db_client.find_champ(id)
 		
