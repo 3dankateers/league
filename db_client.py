@@ -6,6 +6,7 @@
 ## Summoner: id, name, tier, division, region, date_scraped_peers, date_scraped_matches
 ## Match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 ## Team : id, summoners, matches, date_created 
+## Champ: id, name, winrate 
 #################################################################################################
 
 from pymongo import MongoClient
@@ -63,7 +64,15 @@ class DbClient:
 				"date_created" : date_created
 			})
 		print "Created new team with ", str(len(matches)), " matches."
-	
+
+	def create_champ(self, id, name, winrate):
+		record = self.db.champs.insert_one({
+				"_id" : id,
+				"name" : name,
+				"winrate" : winrate
+			})
+		print "created champ"
+
 	## update existing summoner with new values passed in
 	def update_summoner(self, id, name, tier, division, region, date_scraped_peers, date_scraped_matches):
 		self.db.summoners.update_one(
@@ -89,6 +98,16 @@ class DbClient:
 				})
 		print "Updated team" 
 
+	## update existing champ with new values passed in
+	def update_team(self, id, name, winrate):
+		self.db.champs.update_one(
+				{"_id" : id},{
+					"$set": {
+						"winrate" : winrate
+						}
+				})
+		print "Updated champ" 
+	
 	##mostly for testing
 	##return first summoner found
 	def get_one_summoner(self):
@@ -112,6 +131,11 @@ class DbClient:
 	## find match and return it based on id
 	def find_match(self, id):
 		cursor = self.db.matches.find({"_id" : id})
+		return cursor
+	
+	## find champ and return it based on id
+	def find_champ(self, id):
+		cursor = self.db.champs.find({"_id" : id})
 		return cursor
 
 	## return all matches

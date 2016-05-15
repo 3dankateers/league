@@ -4,6 +4,7 @@ from db_client import DbClient
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
 from team_finder import TeamFinder
+from champ_parser import ChampParser
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -22,12 +23,13 @@ def test_grab(lc):
 		SummonerParser.grab_peers(lc, summoner)
 
 def main():
-	lc = LeagueClient("na")
+	lc = LeagueClient("global")
 	##SummonerParser.add_challengers_to_db(lc)
 	##test_grab(lc)
 	##SummonerParser.grab_peers_challenger(lc)
 	##MatchParser.grab_matches_challenger(lc)
-	tf = TeamFinder()
-	tf.run()
+	##tf = TeamFinder()
+	##tf.run()
+	ChampParser.populate_champ_db(lc)
 
 main()

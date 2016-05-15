@@ -13,6 +13,8 @@ HTTPS = "https://"
 CHALLENGER_ENDPOINT = ".api.pvp.net/api/lol/na/v2.5/league/challenger?type=RANKED_SOLO_5x5"
 GAME_ENDPOINT = ".api.pvp.net/api/lol/na/v1.3/game/by-summoner/"	
 LEAGUE_ENDPOINT = ".api.pvp.net/api/lol/na/v2.5/league/by-summoner/"
+STATIC_ENDPOINT = ".api.pvp.net/api/lol/static-data/na/v1.2/champion"
+
 WAIT_TIME = 1500
 
 class LeagueClient:
@@ -39,6 +41,12 @@ class LeagueClient:
 		html = response.read();
 		data = json.loads(html);
 		return data;
+
+	##get all champions
+	def get_champ_data(self):
+		url = STATIC_ENDPOINT + "?" + API_KEY 
+		data = self.getJSONReply(url)
+		return data
 
 	##get challenger summoners
 	def get_challanger_data(self):
