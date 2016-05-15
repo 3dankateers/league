@@ -37,7 +37,10 @@ class DbClient:
 			"date_scraped_peers" : date_scraped_peers,
 			"date_scraped_matches" : date_scraped_matches
 			})
-		print "Created summoner: " + name.decode(encoding='UTF-8',errors='ignore')
+		try:		
+			print "Created summoner: " + name.encode(encoding='UTF-8',errors='replace')
+		except:
+			pass
 	
 	## add new match to db 
 	def create_match(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):	
@@ -87,7 +90,10 @@ class DbClient:
 						"date_scraped_matches" : date_scraped_matches
 						}
 				})
-		print "Updated summoner: " + name.encode(encoding='UTF-8',errors='replace')
+		try:		
+			print "Updated summoner: " + name.encode(encoding='UTF-8',errors='replace')
+		except:
+			pass
 
 	## update existing team with new values passed in
 	def update_team(self, id, matches):
@@ -138,6 +144,10 @@ class DbClient:
 	## find champ and return it based on id
 	def find_champ(self, id):
 		cursor = self.db.champs.find({"_id" : id})
+		return cursor
+
+	def find_champ_by_name(self, name):
+		cursor = self.db.champs.find({"name" : name})
 		return cursor
 
 	## return all matches

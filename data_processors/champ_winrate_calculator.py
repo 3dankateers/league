@@ -62,7 +62,8 @@ class ChampWinrateCalculator:
 	
 	##make sure wins and losses are non-zero	
 	def check_wins_losses(self, key):
-		return (self.wins[key] > 0) and (self.losses[key] > 0)
-
-	
+		if key in self.losses:
+			return (self.wins[key] > 0) and (self.losses[key] > 0)
+		else:
+			return False
 

@@ -12,11 +12,14 @@ from champ_winrate_calculator import ChampWinrateCalculator
 ##TODO: Add teams to collection
 ##TODO: Firstblood idea
 ##TODO: standardize date to either time.time() or datetime.datetime
+##TODO: deal with unicode errors instead of ignoring
+##TODO: Add limits to amount of data pulled and come up with system to pull more efficiently
 ## perhaps try finding smurfs statistically
 
 def main():
-	calc_champ_winrates()
-	##pull_champs()
+	##calc_champ_winrates()
+	##pull_challengers("kr")
+	pull_matches("kr")
 
 def test_grab(lc):
 	with DbClient() as db_client:
@@ -30,16 +33,16 @@ def pull_champs():
 	lc = LeagueClient("global")
 	ChampParser.populate_champ_db(lc)
 
-def pull_challengers():
-	lc = LeagueClient("na")
+def pull_challengers(region):
+	lc = LeagueClient(region)
 	SummonerParser.add_challengers_to_db(lc)
 
 def pull_challengers_peers():
 	lc = LeagueClient("na")
 	SummonerParser.grab_peers_challenger(lc)
 
-def pull_matches():
-	lc = LeagueClient("na")
+def pull_matches(region):
+	lc = LeagueClient(region)
 	MatchParser.grab_matches_challenger(lc)
 
 def calc_champ_winrates():

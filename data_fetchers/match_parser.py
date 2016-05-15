@@ -86,7 +86,7 @@ class MatchParser:
 		## update date_scraped_peers
 		s.date_scraped_matches = datetime.datetime.utcnow()
 		s.save()
-		
+			
 		recent_matches_data = lc.get_recent_matches_data(s.id)
 		
 		MatchParser.populate_match_db(lc, s, recent_matches_data)	
@@ -99,4 +99,6 @@ class MatchParser:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
 			for d in cursor:
 				s = Summoner.from_dict(d)
-				MatchParser.grab_matches(lc, s)
+				##make sure region matches
+				if s.region == lc.region:
+					MatchParser.grab_matches(lc, s)

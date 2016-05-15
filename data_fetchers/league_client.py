@@ -10,9 +10,10 @@ import time
 
 API_KEY = "api_key=eeff2e9b-5f33-4de0-af17-16b98a4c4b3e" 
 HTTPS = "https://"
-CHALLENGER_ENDPOINT = ".api.pvp.net/api/lol/na/v2.5/league/challenger?type=RANKED_SOLO_5x5"
-GAME_ENDPOINT = ".api.pvp.net/api/lol/na/v1.3/game/by-summoner/"	
-LEAGUE_ENDPOINT = ".api.pvp.net/api/lol/na/v2.5/league/by-summoner/"
+API_PART =  ".api.pvp.net/api/lol/"
+CHALLENGER_ENDPOINT = "/v2.5/league/challenger?type=RANKED_SOLO_5x5"
+GAME_ENDPOINT = "/v1.3/game/by-summoner/"	
+LEAGUE_ENDPOINT = "/v2.5/league/by-summoner/"
 STATIC_ENDPOINT = ".api.pvp.net/api/lol/static-data/na/v1.2/champion"
 
 WAIT_TIME = 1500
@@ -34,10 +35,9 @@ class LeagueClient:
 				self.last_request = time.time()
 
 
-	def getJSONReply(self, URL):
+	def getJSONReply(self, url):
 		self.stagger_response()
-		URL = HTTPS + self.region + URL
-		response = urllib2.urlopen(URL);
+		response = urllib2.urlopen(url);
 		html = response.read();
 		data = json.loads(html);
 		return data;
@@ -50,20 +50,20 @@ class LeagueClient:
 
 	##get challenger summoners
 	def get_challanger_data(self):
-		url = CHALLENGER_ENDPOINT + "&" + API_KEY 
+		url = HTTPS + self.region + API_PART + self.region + CHALLENGER_ENDPOINT + "&" + API_KEY 
 		data = self.getJSONReply(url)
 		return data
 	
 	##return recent match data given a summoner id
 	def get_recent_matches_data(self, s_id):
-		url = GAME_ENDPOINT + str(s_id) + "/recent?" + API_KEY
+		url = HTTPS + self.region + API_PART + self.region + GAME_ENDPOINT + str(s_id) + "/recent?" + API_KEY
 		data = self.getJSONReply(url)
 		return data
 
 	##return summoner data for a list of summoner ids
 	def get_summoner_data(self, s_ids):
 		assert s_ids > 1, "get_summoner_data called with empty s_ids"
-		url = LEAGUE_ENDPOINT
+		url = HTTPS + self.region + API_PART + self.region + LEAGUE_ENDPOINT
 		url += str(s_ids[0])	
 		for s_id in s_ids:
 			url += ","
