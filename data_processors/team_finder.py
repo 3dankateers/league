@@ -52,12 +52,12 @@ class TeamFinder:
 	## analyze all matches to find reoccuring teams
 	## add relevant teams to db
 	def find_all_potential_teams(self):
-		with DbClient() as db_client():
+		with DbClient() as db_client:
 			cursor = db_client.get_all_matches()
 			for d in cursor:
 				match = Match.from_dict(d)
 				m_id = match.id
-				potential_teams = potential_teams_from_match(match)
+				potential_teams = TeamFinder.potential_teams_from_match(match)
 				for p_team in potential_teams:
 					self.add_to_teams_found(p_team, m_id)
 	
@@ -67,7 +67,7 @@ class TeamFinder:
 		hash_key = TeamHash.calc_hash_key(p_team)
 		
 		##if hash_key doesn't exit already
-		if self.teams_found[hash_key] == None  
+		if self.teams_found[hash_key] == None: 
 			self.teams_found[hash_key] = [occ]
 		##if already exists, add new entry
 		else:
@@ -84,7 +84,7 @@ class TeamFinder:
 		big_team1 = match.team1
 		big_team2 = match.team2
 
-		all_teams = potential_teams_from_team(big_team1) + potential_teams_from_team(big_team2)
+		all_teams = TeamFinder.potential_teams_from_team(big_team1) + potential_teams_from_team(big_team2)
 		return all_teams
 	
 	## return list of lists of Summoners representing potential teams extracted from a large 5 person team
@@ -100,7 +100,7 @@ class TeamFinder:
 		##add all possible teams of 4 to all_teams
 		for i in range(5):
 			t = team[0:i] + team[i+1:5] 
-			all_team.append(t)
+			all_teams.append(t)
 
 		return all_teams
 

@@ -5,7 +5,7 @@
 from db_client import DbClient
 
 class Team:
-	def __init__(self, summoners, matches, date_created, date_created = None, id = None):
+	def __init__(self, summoners, matches, date_created = None, id = None):
 		self.id = id
 		self.summoners = summoners
 		self.matches = matches

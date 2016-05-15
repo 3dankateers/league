@@ -117,6 +117,7 @@ class DbClient:
 	## return all matches
 	def get_all_matches(self):
 		cursor = self.db.matches.find()
+		return cursor
 
 	## find team and return it based on list of summoners
 	def find_team(self, summoners):

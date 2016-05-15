@@ -6,20 +6,19 @@
 import datetime
 import time
 from summoner import Summoner
-from tier_converter import tier_converter
 from db_client import DbClient
 from league_client import LeagueClient
-from processor_helper import ProcessorHelper
+from misc_helper import MiscHelper
 
 
-class SummonerProcessor:
+class SummonerParser:
 	
 	##add all challangers to db
 	@staticmethod
 	def add_challengers_to_db(lc):
 		print "Adding all challengers to db..."
 		data = lc.get_challanger_data()
-		SummonerProcessor.populate_challengers(lc, data)
+		SummonerParser.populate_challengers(lc, data)
 
 
 	## populate db with all challangers given data
@@ -43,7 +42,7 @@ class SummonerProcessor:
 		for g in games:
 
 		##only care about ranked 5v5 games
-			if (ProcessorHelper.check_game_type(g)):
+			if (MiscHelper.check_game_type(g)):
 				peers = g["fellowPlayers"]
 				for p in peers:
 					s_id = p["summonerId"]
@@ -62,9 +61,9 @@ class SummonerProcessor:
 		s.save()
 		
 		recent_matches_data = lc.get_recent_matches_data(s.id)
-		peer_ids = SummonerProcessor.extract_peers_ids(recent_matches_data)
+		peer_ids = SummonerParser.extract_peers_ids(recent_matches_data)
 		league_summoner_data = lc.get_summoner_data_all(peer_ids)
-		SummonerProcessor.populate_summoner_db(lc, league_summoner_data)	
+		SummonerParser.populate_summoner_db(lc, league_summoner_data)	
 
 	##given summoner league data, add all new summoners to db
 	@staticmethod
@@ -77,7 +76,7 @@ class SummonerProcessor:
 			division = value[0]["entries"][0]["division"]
 			region = lc.region
 			##only grab diamond+ players
-			if tier_converter[tier] <= 3:
+			if MiscHelper.tier_converter[tier] <= 3:
 				s_model = Summoner.get_summoner(id, name, tier, division, region)
 				s_model.save()
 	
@@ -89,8 +88,8 @@ class SummonerProcessor:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
 			for d in cursor:
 				s = Summoner.from_dict(d)
-				if ProcessorHelper.check_time_diff(s.date_scraped_peers):
-					SummonerProcessor.grab_peers(lc, s)
+				if MiscHelper.check_time_diff(s.date_scraped_peers):
+					SummonerParser.grab_peers(lc, s)
 
 
 

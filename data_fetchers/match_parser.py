@@ -9,20 +9,20 @@ from summoner import Summoner
 from match import Match
 from db_client import DbClient
 from league_client import LeagueClient
-from processor_helper import ProcessorHelper
+from misc_helper import MiscHelper
 
 TEAM1 = 100
 TEAM2 = 200
 PATCH = "6.9"
 
-class MatchProcessor:
+class MatchParser:
 	##given recent match data, add all new matches to db
 	@staticmethod
 	def populate_match_db(lc, s, data):
 		games = data["games"]
 		for g in games: 
 			##only allow 5v5 ranked
-			if ProcessorHelper.check_game_type(g):
+			if MiscHelper.check_game_type(g):
 				id =	g["gameId"]
 					
 				match = Match.get_match(id)
@@ -36,14 +36,14 @@ class MatchProcessor:
 					s_id = s.id
 					s_team = g["stats"]["team"]
 					s_champ = g["championId"]
-					MatchProcessor.classify(team1, team2, champs1, champs2, s_id, s_champ, s_team)
+					MatchParser.classify(team1, team2, champs1, champs2, s_id, s_champ, s_team)
 
 					## classify current summoner in this match
 					for p in g["fellowPlayers"]:
 						peer_id = p["summonerId"]
 						peer_team = p["teamId"]
 						peer_champ = p["championId"]
-						MatchProcessor.classify(team1, team2, champs1, champs2, peer_id, peer_champ, peer_team)
+						MatchParser.classify(team1, team2, champs1, champs2, peer_id, peer_champ, peer_team)
 					
 					duration = g["stats"]["timePlayed"]
 
@@ -89,7 +89,7 @@ class MatchProcessor:
 		
 		recent_matches_data = lc.get_recent_matches_data(s.id)
 		
-		MatchProcessor.populate_match_db(lc, s, recent_matches_data)	
+		MatchParser.populate_match_db(lc, s, recent_matches_data)	
 	
 	## grab recent relevant matches by summoner
 	@staticmethod
@@ -99,4 +99,4 @@ class MatchProcessor:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
 			for d in cursor:
 				s = Summoner.from_dict(d)
-				MatchProcessor.grab_matches(lc, s)
+				MatchParser.grab_matches(lc, s)

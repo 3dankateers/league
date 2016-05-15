@@ -1,8 +1,8 @@
 from summoner import Summoner
 from league_client import LeagueClient
 from db_client import DbClient
-from summoner_processor import SummonerProcessor
-from match_processor import MatchProcessoruu
+from summoner_parser import SummonerParser
+from match_parser import MatchParser
 from team_finder import TeamFinder
 
 ##TODO: Try finding 5v5 games and mark them accordingly
@@ -19,13 +19,15 @@ def test_grab(lc):
 		assert c.count() >= 1, "Trying to initilize summoner model from empty cursor"
 
 		summoner = Summoner.from_dict(c[0])
-		SummonerProcessor.grab_peers(lc, summoner)
+		SummonerParser.grab_peers(lc, summoner)
 
 def main():
 	lc = LeagueClient("na")
-	##SummonerProcessor.add_challengers_to_db(lc)
+	##SummonerParser.add_challengers_to_db(lc)
 	##test_grab(lc)
-	##SummonerProcessor.grab_peers_challenger(lc)
-	MatchProcessor.grab_matches_challenger(lc)
+	##SummonerParser.grab_peers_challenger(lc)
+	##MatchParser.grab_matches_challenger(lc)
+	tf = TeamFinder()
+	tf.run()
 
 main()
