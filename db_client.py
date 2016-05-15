@@ -116,6 +116,10 @@ class DbClient:
 		cursor = self.db.matches.find({"league_id" : league_id})
 		return cursor
 
+	## return all matches
+	def get_all_matches(self):
+		cursor = self.db.matches.find()
+
 	## find team and return it based on list of summoners
 	def find_team(self, summoners):
 		cursor = self.db.teams.find({"summoners" : summoners})
