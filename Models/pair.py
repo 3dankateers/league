@@ -3,7 +3,7 @@
 from db_client import DbClient
 
 class Pair:
-	def __init__(self, champ1, champ2, type, winrate = None, winrate_sample_size = None, id = None):
+	def __init__(self, champs, type, winrate = None, winrate_sample_size = None, id = None):
 		self.id = id
 		self.champ1 = champ1
 		self.champ2 = champ2
