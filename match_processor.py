@@ -23,9 +23,9 @@ class MatchProcessor:
 		for g in games: 
 			##only allow 5v5 ranked
 			if ProcessorHelper.check_game_type(g):
-				league_id =	g["gameId"]
+				id =	g["gameId"]
 					
-				match = Match.get_match(league_id)
+				match = Match.get_match(id)
 				##only proceed if match doesn't already exist
 				if match == None:
 					team1 = []
@@ -33,7 +33,7 @@ class MatchProcessor:
 					champs1 = []
 					champs2 = []
 					
-					s_id = s.league_id
+					s_id = s.id
 					s_team = g["stats"]["team"]
 					s_champ = g["championId"]
 					MatchProcessor.classify(team1, team2, champs1, champs2, s_id, s_champ, s_team)
@@ -62,7 +62,7 @@ class MatchProcessor:
 					patch = PATCH
 					tier = s.tier
 					date = g["createDate"]
-					match = Match(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
+					match = Match(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
 					match.save()				
 
 
@@ -87,7 +87,7 @@ class MatchProcessor:
 		s.date_scraped_matches = datetime.datetime.utcnow()
 		s.save()
 		
-		recent_matches_data = lc.get_recent_matches_data(s.league_id)
+		recent_matches_data = lc.get_recent_matches_data(s.id)
 		
 		MatchProcessor.populate_match_db(lc, s, recent_matches_data)	
 	

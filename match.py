@@ -1,11 +1,10 @@
-## match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
+## match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 
 from db_client import DbClient
 
 class Match:
-	def __init__(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, id = None):
+	def __init__(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):
 		self.id = id
-		self.league_id = league_id
 		self.team1 = team1
 		self.team2 = team2
 		self.champs1 = champs1
@@ -21,7 +20,6 @@ class Match:
 	@classmethod
 	def from_dict(cls, d):
 		id = d["_id"]
-		league_id = d["league_id"]
 		team1 = d["team1"]
 		team2 = d["team2"]
 		champs1 = d["champs1"]
@@ -34,13 +32,13 @@ class Match:
 		tier = d["tier"]
 		date = d["date"]
 			
-		return cls(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, id)
+		return cls(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
-	def get_match(cls, league_id):
+	def get_match(cls, id):
 		with DbClient() as db_client:
-			cursor = db_client.find_match(league_id)
+			cursor = db_client.find_match(id)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:
@@ -55,4 +53,4 @@ class Match:
 	## push match into database
 	def save(self):
 		with DbClient() as db_client:
-			self.id = db_client.create_match(self.league_id, self.team1, self.team2, self.champs1, self.champs2, self.duration, self.win, self.gametype, self.region, self.patch, self.tier, self.date)
+			db_client.create_match(self.id, self.team1, self.team2, self.champs1, self.champs2, self.duration, self.win, self.gametype, self.region, self.patch, self.tier, self.date)

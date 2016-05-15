@@ -28,11 +28,11 @@ class SummonerProcessor:
 		summoners = data["entries"]
 		for s in summoners:
 			name = s["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
-			league_id = s["playerOrTeamId"]
+			id = s["playerOrTeamId"]
 			division = s["division"]
 			region = lc.region
 			tier = "CHALLENGER"
-			s_model = Summoner.get_summoner(name, league_id, tier, division, region)
+			s_model = Summoner.get_summoner(id, name, tier, division, region)
 			s_model.save()
 	
 	##given recent match data, return list of peers ids
@@ -61,7 +61,7 @@ class SummonerProcessor:
 		s.date_scraped_peers = datetime.datetime.utcnow()
 		s.save()
 		
-		recent_matches_data = lc.get_recent_matches_data(s.league_id)
+		recent_matches_data = lc.get_recent_matches_data(s.id)
 		peer_ids = SummonerProcessor.extract_peers_ids(recent_matches_data)
 		league_summoner_data = lc.get_summoner_data_all(peer_ids)
 		SummonerProcessor.populate_summoner_db(lc, league_summoner_data)	
@@ -72,13 +72,13 @@ class SummonerProcessor:
 		for key in data:
 			value = data[str(key)]
 			name = value[0]["entries"][0]["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
-			league_id = key
+			id = key
 			tier = value[0]["tier"]
 			division = value[0]["entries"][0]["division"]
 			region = lc.region
 			##only grab diamond+ players
 			if tier_converter[tier] <= 3:
-				s_model = Summoner.get_summoner(name, league_id, tier, division, region)
+				s_model = Summoner.get_summoner(id, name, tier, division, region)
 				s_model.save()
 	
 	## grab peers of all challangers

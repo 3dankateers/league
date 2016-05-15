@@ -3,8 +3,8 @@
 ## db: league
 ##
 ## collections: summoners, matches
-## Summoner: id, name, tier, division, region, league_id, date_scraped_peers, date_scraped_matches
-## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
+## Summoner: id, name, tier, division, region, date_scraped_peers, date_scraped_matches
+## Match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 ## Team : id, summoners, matches, date_created 
 #################################################################################################
 
@@ -25,11 +25,11 @@ class DbClient:
 	def __exit__(self, exc_type, exc_value, tb):
 		self.client.close()
 
-	## add new summoner to db and return its id
-	def create_summoner(self, name, league_id, tier, division, region, date_scraped_peers, date_scraped_matches):
+	## add new summoner to db 
+	def create_summoner(self, id, name, tier, division, region, date_scraped_peers = None, date_scraped_matches = None):
 		record = self.db.summoners.insert_one({
+			"_id" : id,
 			"name" : name,
-			"league_id" : league_id,
 			"tier" : tier,
 			"division" : division,
 			"region" : region,
@@ -37,12 +37,11 @@ class DbClient:
 			"date_scraped_matches" : date_scraped_matches
 			})
 		print "Created summoner: " + name.decode(encoding='UTF-8',errors='ignore')
-		return record.inserted_id
 	
-	## add new match to db and return its id
-	def create_match(self, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):	
+	## add new match to db 
+	def create_match(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):	
 		record = self.db.matches.insert_one({
-			"league_id" : league_id,
+			"_id" : id,
 			"team1" : team1,
 			"team2" : team2,
 			"champs1" : champs1,
@@ -56,7 +55,6 @@ class DbClient:
 			"date" : date
 			})
 		print "Created match"
-		return record.inserted_id
 	
 	def create_team(self, summoners, matches, date_created):
 		record = self.db.teams.insert_one({
@@ -106,14 +104,14 @@ class DbClient:
 		cursor = self.db.summoners.find({"tier" : t})
 		return cursor
 
-	## find summoner and return it based on league_id
-	def find_summoner(self, league_id):
-		cursor = self.db.summoners.find({"league_id" : league_id})
+	## find summoner and return it based on id
+	def find_summoner(self, id):
+		cursor = self.db.summoners.find({"_id" : id})
 		return cursor
 
-	## find match and return it based on league_id
-	def find_match(self, league_id):
-		cursor = self.db.matches.find({"league_id" : league_id})
+	## find match and return it based on id
+	def find_match(self, id):
+		cursor = self.db.matches.find({"_id" : id})
 		return cursor
 
 	## return all matches
