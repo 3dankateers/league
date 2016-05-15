@@ -87,8 +87,8 @@ class SummonerProcessor:
 		print "Adding all peers of challengers to db"
 		with DbClient() as db_client:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
-			for o in cursor:
-				s = Summoner.from_object(o)
+			for d in cursor:
+				s = Summoner.from_dict(d)
 				if ProcessorHelper.check_time_diff(s.date_scraped_peers):
 					SummonerProcessor.grab_peers(lc, s)
 

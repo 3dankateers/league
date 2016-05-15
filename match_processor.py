@@ -97,6 +97,6 @@ class MatchProcessor:
 		print "Adding all matches of challengers to db"
 		with DbClient() as db_client:
 			cursor = db_client.get_summoners_on_tier("CHALLENGER")
-			for o in cursor:
-				s = Summoner.from_object(o)
+			for d in cursor:
+				s = Summoner.from_dict(d)
 				MatchProcessor.grab_matches(lc, s)

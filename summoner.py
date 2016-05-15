@@ -14,15 +14,15 @@ class Summoner:
 		self.date_scraped_matches = date_scraped_matches
 
 	@classmethod
-	def from_object(cls, o):
-		id = o["_id"]
-		name = o["name"]
-		league_id = o["league_id"] 
-		tier = o["tier"]
-		division = o["division"]
-		region = o["region"]
-		date_scraped_peers = o["date_scraped_peers"]
-		date_scraped_matches = o["date_scraped_matches"]
+	def from_dict(cls, d):
+		id = d["_id"]
+		name = d["name"]
+		league_id = d["league_id"] 
+		tier = d["tier"]
+		division = d["division"]
+		region = d["region"]
+		date_scraped_peers = d["date_scraped_peers"]
+		date_scraped_matches = d["date_scraped_matches"]
 		
 		return cls(name, league_id, tier, division, region, date_scraped_peers, date_scraped_matches, id)
 	
@@ -38,7 +38,7 @@ class Summoner:
 		else:
 			##create model from summoner data in db
 			assert (cursor.count() >= 1), "Error constructing Summoner model from cursor. Cursor is empty."
-			summoner = cls.from_object(cursor[0])
+			summoner = cls.from_dict(cursor[0])
 			
 			##update model attributes in case they changed
 			summoner.name = name

@@ -19,20 +19,20 @@ class Match:
 		self.date = date
 	
 	@classmethod
-	def from_object(cls, o):
-		id = o["_id"]
-		league_id = o["league_id"]
-		team1 = o["team1"]
-		team2 = o["team2"]
-		champs1 = o["champs1"]
-		champs2 = o["champs2"]
-		duration = o["duration"]
-		win = o["win"]
-		gametype = o["gametype"]
-		region = o["region"]
-		patch = o["patch"]
-		tier = o["tier"]
-		date = o["date"]
+	def from_dict(cls, d):
+		id = d["_id"]
+		league_id = d["league_id"]
+		team1 = d["team1"]
+		team2 = d["team2"]
+		champs1 = d["champs1"]
+		champs2 = d["champs2"]
+		duration = d["duration"]
+		win = d["win"]
+		gametype = d["gametype"]
+		region = d["region"]
+		patch = d["patch"]
+		tier = d["tier"]
+		date = d["date"]
 			
 		return cls(league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, id)
 
@@ -48,7 +48,7 @@ class Match:
 		else:
 			##create model from summoner data in db
 			assert (cursor.count() >= 1), "Error constructing Summoner model from cursor. Cursor is empty."
-			match = cls.from_object(cursor[0])
+			match = cls.from_dict(cursor[0])
 			
 			return match
 

@@ -5,6 +5,7 @@
 ## collections: summoners, matches
 ## Summoner: id, name, tier, division, region, league_id, date_scraped_peers, date_scraped_matches
 ## Match : id, league_id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
+## Team : id, summoners, matches, date_created 
 #################################################################################################
 
 from pymongo import MongoClient
@@ -57,6 +58,14 @@ class DbClient:
 		print "Created match"
 		return record.inserted_id
 	
+	def create_team(self, summoners, matches, date_created):
+		record = self.db.teams.insert_one({
+				"summoners" : summoners,
+				"matches" : matches,
+				"date_created" : date_created
+			})
+		print "Created new team with ", str(len(matches)), " matches."
+	
 	## update existing summoner with new values passed in
 	def update_summoner(self, id, name, tier, division, region, date_scraped_peers, date_scraped_matches):
 		self.db.summoners.update_one(
@@ -71,6 +80,16 @@ class DbClient:
 						}
 				})
 		print "Updated summoner: " + name.encode(encoding='UTF-8',errors='replace')
+
+	## update existing team with new values passed in
+	def update_team(self, id, matches):
+		self.db.teams.update_one(
+				{"_id" : id},{
+					"$set": {
+						"matches" : matches
+						}
+				})
+		print "Updated team" 
 
 	##mostly for testing
 	##return first summoner found
@@ -97,4 +116,8 @@ class DbClient:
 		cursor = self.db.matches.find({"league_id" : league_id})
 		return cursor
 
+	## find team and return it based on list of summoners
+	def find_team(self, summoners):
+		cursor = self.db.teams.find({"summoners" : summoners})
+		return cursor
 

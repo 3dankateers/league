@@ -9,6 +9,7 @@ from match_processor import MatchProcessor
 ##TODO: Add champions to collection
 ##TODO: Add teams to collection
 ##TODO: Firstblood idea
+##TODO: standardize date to either time.time() or datetime.datetime
 ## perhaps try finding smurfs statistically
 
 def test_grab(lc):
@@ -16,7 +17,7 @@ def test_grab(lc):
 		c = db_client.get_one_summoner()
 		assert c.count() >= 1, "Trying to initilize summoner model from empty cursor"
 
-		summoner = Summoner.from_object(c[0])
+		summoner = Summoner.from_dict(c[0])
 		SummonerProcessor.grab_peers(lc, summoner)
 
 def main():
