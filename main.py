@@ -2,8 +2,9 @@ from summoner import Summoner
 from league_client import LeagueClient
 from db_client import DbClient
 from summoner_processor import SummonerProcessor
-from match_processor import MatchProcessor
-		
+from match_processor import MatchProcessoruu
+from team_finder import TeamFinder
+
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
 ##TODO: Add champions to collection
