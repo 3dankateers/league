@@ -40,12 +40,12 @@ class TeamFinder:
 					match_list = []
 					for occ in value:
 						if occ.summoners == t:
-							match_list += occ.match_id
+							match_list.append(occ.match_id)
 
 					##we have relevant team
 					if len(match_list) >= NUM_MATCH_REQUIREMENT:
 						relevant_team = Team.get_team(t)
-						relevant_team.add_matches(match_list)
+						relevant_team.update_matches(match_list)
 						relevant_team.save()
 
 
@@ -67,7 +67,7 @@ class TeamFinder:
 		hash_key = TeamHash.calc_hash_key(p_team)
 		
 		##if hash_key doesn't exit already
-		if self.teams_found[hash_key] == None: 
+		if hash_key not in self.teams_found: 
 			self.teams_found[hash_key] = [occ]
 		##if already exists, add new entry
 		else:
@@ -84,7 +84,7 @@ class TeamFinder:
 		big_team1 = match.team1
 		big_team2 = match.team2
 
-		all_teams = TeamFinder.potential_teams_from_team(big_team1) + potential_teams_from_team(big_team2)
+		all_teams = TeamFinder.potential_teams_from_team(big_team1) + TeamFinder.potential_teams_from_team(big_team2)
 		return all_teams
 	
 	## return list of lists of Summoners representing potential teams extracted from a large 5 person team

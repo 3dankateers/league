@@ -6,6 +6,6 @@ class TeamHash:
 	def calc_hash_key(summoners):
 		product = 1
 		for s in summoners:
-			product *= s
+			product *= long(s)
 		return product
 

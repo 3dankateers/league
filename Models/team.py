@@ -3,6 +3,7 @@
 ## defined uniquely by list of Summoners
 
 from db_client import DbClient
+import time
 
 class Team:
 	def __init__(self, summoners, matches, date_created = None, id = None):
@@ -38,7 +39,7 @@ class Team:
 
 	## add new matches from list to existing list of matches
 	def update_matches(self, new_matches):
-		updated_matches = self.matches + new_matches
+		updated_matches = list(set(self.matches) | set(new_matches))
 		self.matches = updated_matches
 	
 	## push team into database
