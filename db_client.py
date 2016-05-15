@@ -6,7 +6,7 @@
 ## Summoner: id, name, tier, division, region, date_scraped_peers, date_scraped_matches
 ## Match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
 ## Team : id, summoners, matches, date_created 
-## Champ: id, name, winrate 
+## Champ: id, name, winrate, winrate_sample_size
 #################################################################################################
 
 from pymongo import MongoClient
@@ -65,11 +65,12 @@ class DbClient:
 			})
 		print "Created new team with ", str(len(matches)), " matches."
 
-	def create_champ(self, id, name, winrate):
+	def create_champ(self, id, name, winrate, winrate_sample_size):
 		record = self.db.champs.insert_one({
 				"_id" : id,
 				"name" : name,
-				"winrate" : winrate
+				"winrate" : winrate,
+				"winrate_sample_size" : winrate_sample_size
 			})
 		print "created champ"
 
@@ -99,11 +100,12 @@ class DbClient:
 		print "Updated team" 
 
 	## update existing champ with new values passed in
-	def update_team(self, id, name, winrate):
+	def update_champ(self, id, name, winrate, winrate_sample_size):
 		self.db.champs.update_one(
 				{"_id" : id},{
 					"$set": {
-						"winrate" : winrate
+						"winrate" : winrate,
+						"winrate_sample_size" : winrate_sample_size
 						}
 				})
 		print "Updated champ" 

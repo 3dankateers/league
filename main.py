@@ -5,6 +5,7 @@ from summoner_parser import SummonerParser
 from match_parser import MatchParser
 from team_finder import TeamFinder
 from champ_parser import ChampParser
+from champ_winrate_calculator import ChampWinrateCalculator
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
 ##TODO: Add champions to collection
@@ -14,9 +15,8 @@ from champ_parser import ChampParser
 ## perhaps try finding smurfs statistically
 
 def main():
-	lc = LeagueClient("global")
-	##SummonerParser.add_challengers_to_db(lc)
-	##MatchParser.grab_matches_challenger(lc)
+	calc_champ_winrates()
+	##pull_champs()
 
 def test_grab(lc):
 	with DbClient() as db_client:
@@ -42,6 +42,9 @@ def pull_matches():
 	lc = LeagueClient("na")
 	MatchParser.grab_matches_challenger(lc)
 
+def calc_champ_winrates():
+	winrate_calc = ChampWinrateCalculator()
+	winrate_calc.run()
 
 def find_teams():
 	tf = TeamFinder()
