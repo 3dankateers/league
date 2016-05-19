@@ -27,6 +27,8 @@ class Test:
 			else match.is_test == True:
 				match.is_test = False
 				match.save()
+	
+	def run_tests
 
 
 

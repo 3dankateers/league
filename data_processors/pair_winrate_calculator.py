@@ -78,7 +78,7 @@ class PairWinrateCalculator:
 		for c1 in champs:
 			for c2 in champs:
 				if c1 != c2:
-					pair_tuple = Pair.get_pair_tuple(c1,c2)	
+					pair_tuple = Pair.calc_pair_tuple(c1,c2)	
 					##if pair was seen before
 					if pair_tuple in d:
 						d[pair_tuple] += 1
@@ -93,7 +93,7 @@ class PairWinrateCalculator:
 		for c1 in champs1:
 			for c2 in champs2:
 				if c1 != c2:
-					pair_tuple = Pair.get_pair_tuple(c1,c2)	
+					pair_tuple = Pair.calc_pair_tuple(c1,c2)	
 
 					if win == 100:
 						if pair_tuple[0] in champs1:
