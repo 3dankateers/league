@@ -37,7 +37,6 @@ class LeagueClient:
 
 
 	def getJSONReply(self, url):
-		print url
 		self.stagger_response()
 		response = urllib2.urlopen(url);
 		html = response.read();

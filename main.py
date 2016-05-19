@@ -20,8 +20,7 @@ from comp_evaluator import CompEvaluator
 ## perhaps try finding smurfs statistically
 
 def main():
-	pull_champs()
-	##calc_pair_winrates()
+	calc_pair_winrates()
 	##calc_champ_winrates()
 	##pull_challengers("kr")
 	##pull_matches("kr")

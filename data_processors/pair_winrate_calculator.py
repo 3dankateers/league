@@ -27,11 +27,11 @@ class PairWinrateCalculator:
 	##update db pairs with a new winrate and sample size fot that winrate
 	## type = "ally" or "enemy", and d_wins and d_losses are the correponding dictionaries for ally or enemy
 	def update_winrates(self, d_wins, d_losses, type):
-		for key, value in self.d_wins.iteritems():
+		for key, value in d_wins.iteritems():
 			if key in d_losses:
 				with DbClient() as db_client:
 					pair = Pair.get_pair(key[0], key[1], type)
-				sample_size = value + self.d_losses[key]
+				sample_size = value + d_losses[key]
 				winrate = value / float(sample_size)
 				pair.winrate = winrate
 				pair.winrate_sample_size = sample_size
@@ -40,8 +40,6 @@ class PairWinrateCalculator:
 
 	def count_matches(self):
 		cursor = Match.get_all_matches()
-		total_matches = cursor.count()
-		i = 0
 		for d in cursor:
 			match = Match.from_dict(d)
 			c1 = match.champs1
@@ -61,13 +59,10 @@ class PairWinrateCalculator:
 			## count enemy pairs in match
 			self.add_enemy_pairs_to_dict(win, c1, c2)
 
-			print "Processed match: ", str(i), " / ", str(total_matches)
-			i += 1
 	
 	## generate all pairs from champs 
 	## increment the entries in the dictionary(d) that correspond to the pairs found in champs
 	def add_ally_pairs_to_dict(self, d, champs):
-		print len(champs)
 		for c1 in champs:
 			for c2 in champs:
 				if c1 != c2:
@@ -77,7 +72,6 @@ class PairWinrateCalculator:
 						d[pair_tuple] += 1
 					else:
 						d[pair_tuple] = 1
-		print "wtf"
 
 
 	## generate all enemy pairs from champs1, champs2 

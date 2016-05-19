@@ -37,8 +37,7 @@ class Match:
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
 	def get_match(cls, id):
-		with DbClient() as db_client:
-			cursor = db_client.find_match(id)
+		cursor = Match.find_match(id)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:

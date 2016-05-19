@@ -8,9 +8,9 @@ class Pair:
 
 		## pair ignores order of champ1/champ2 passed in
 
-		self.champ1 = sorted_champs[0]
-		self.champ2 = sorted_champs[1]
-		self.pair_tuple = Pair.get_pair_tuple()
+		self.pair_tuple = Pair.get_pair_tuple(champ1, champ2)
+		self.champ1 = self.pair_tuple[0]
+		self.champ2 = self.pair_tuple[1]
 		
 		self.type = type
 		self.winrate = winrate
