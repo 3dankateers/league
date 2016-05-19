@@ -37,16 +37,6 @@ class DbClient:
 		return record.inserted_id
 
 
-	def create_pair(self, champ1, champ2, type, winrate, winrate_sample_size):
-		record = self.db.pairs.insert_one({
-				"champ1" : champ1,
-				"champ2" : champ2,
-				"type" : type,
-				"winrate" : winrate,
-				"winrate_sample_size" : winrate_sample_size
-			})
-		print "created pair"
-		return record.inserted_id
 	
 	## update existing team with new values passed in
 	def update_team(self, id, matches):
@@ -57,28 +47,6 @@ class DbClient:
 						}
 				})
 		print "Updated team" 
-
-	
-	## update existing pair with new values passed in
-	def update_pair(self, id, winrate, winrate_sample_size):
-		self.db.pairs.update_one(
-				{"_id" : id},{
-					"$set": {
-						"winrate" : winrate,
-						"winrate_sample_size" : winrate_sample_size
-						}
-				})
-		print "Updated pair." 
-	
-
-	## find pair and return it based on champ1, champ2, and type
-	def find_pair(self, champ1, champ2, type):
-		cursor = self.db.pairs.find({
-			"champ1" : champ1,
-			"champ2" : champ2,
-			"type" : type})
-		return cursor
-	
 
 	## find team and return it based on list of summoners
 	def find_team(self, summoners):

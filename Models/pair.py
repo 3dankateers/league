@@ -34,7 +34,7 @@ class Pair:
 		sorted_champs = [champ1, champ2]
 		sorted_champs.sort()
 		with DbClient() as db_client:
-			cursor = db_client.find_pair(sorted_champs[0], sorted_champs[1], type)
+			cursor = Pair.find_pair(sorted_champs[0], sorted_champs[1], type)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:
@@ -47,9 +47,42 @@ class Pair:
 			return pair
 	
 	def save(self):
-		with DbClient() as db_client:	
-			##if already in db
-			if self.id != None:
-				db_client.update_pair(self.id, self.winrate, self.winrate_sample_size)
-			else:
-				self.id = db_client.create_pair(self.champ1, self.champ2, self.type, self.winrate, self.winrate_sample_size)
+		##if already in db
+		if self.id != None:
+			self.update_pair()
+		else:
+			self.id = self.create_pair()
+	
+	def create_pair(self):
+		with DbClient() as db_client:
+			record = db_client.db.pairs.insert_one({
+					"champ1" : self.champ1,
+					"champ2" : self.champ2,
+					"type" : self.type,
+					"winrate" : self.winrate,
+					"winrate_sample_size" : self.winrate_sample_size
+				})
+			print "created pair"
+			return record.inserted_id
+	
+	## update existing pair with new values 
+	def update_pair(self):
+		with DbClient() as db_client:
+			db_client.db.pairs.update_one(
+					{"_id" : self.id},{
+						"$set": {
+							"winrate" : self.winrate,
+							"winrate_sample_size" : self.winrate_sample_size
+							}
+					})
+			print "Updated pair." 
+	
+	## find pair and return it based on champ1, champ2, and type
+	@staticmethod
+	def find_pair(champ1, champ2, type):
+		with DbClient() as db_client:
+			cursor = db_client.db.pairs.find({
+				"champ1" : champ1,
+				"champ2" : champ2,
+				"type" : type})
+			return cursor
