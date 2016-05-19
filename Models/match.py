@@ -52,5 +52,39 @@ class Match:
 
 	## push match into database
 	def save(self):
+		create_match()
+	
+	
+	## add new match to db 
+	def create_match():
 		with DbClient() as db_client:
-			db_client.create_match(self.id, self.team1, self.team2, self.champs1, self.champs2, self.duration, self.win, self.gametype, self.region, self.patch, self.tier, self.date)
+			record = db_client.db.matches.insert_one({
+				"_id" : self.id,
+				"team1" : self.team1,
+				"team2" : self.team2,
+				"champs1" : self.champs1,
+				"champs2" : self.champs2,
+				"duration" : self.duration,
+				"win" : self.win,
+				"gametype" : self.gametype,
+				"region" : self.region,
+				"patch" : self.patch,
+				"tier" : self.tier,
+				"date" : self.date
+				})
+			print "Created match"
+	
+	
+	## find match and return it based on id
+	@staticmethod
+	def find_match(id):
+		with DbClient() as db_client:
+			cursor = db_client.db.matches.find({"_id" : id})
+			return cursor
+	
+	## return all matches
+	@staticmethod
+	def get_all_matches():
+		with DbClient() as db_client:	
+			cursor = db_client.db.matches.find()
+			return cursor

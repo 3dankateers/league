@@ -19,20 +19,19 @@ class ChampWinrateCalculator:
 	
 	##populate losses and wins with the information from each match in db
 	def count_all_matches(self):
-		with DbClient() as db_client:
-			cursor = db_client.get_all_matches()
-			for d in cursor:
-				match = Match.from_dict(d)
-				c1 = match.champs1
-				c2 = match.champs2
-				## 100 means team1 won, 200 means team2 won
-				win = match.win
-				if win  == 100:
-					ChampWinrateCalculator.add_champs_to_dict(self.wins, c1)
-					ChampWinrateCalculator.add_champs_to_dict(self.losses, c2)
-				elif win == 200:
-					ChampWinrateCalculator.add_champs_to_dict(self.losses, c1)
-					ChampWinrateCalculator.add_champs_to_dict(self.wins, c2)
+		cursor = Match.get_all_matches()
+		for d in cursor:
+			match = Match.from_dict(d)
+			c1 = match.champs1
+			c2 = match.champs2
+			## 100 means team1 won, 200 means team2 won
+			win = match.win
+			if win  == 100:
+				ChampWinrateCalculator.add_champs_to_dict(self.wins, c1)
+				ChampWinrateCalculator.add_champs_to_dict(self.losses, c2)
+			elif win == 200:
+				ChampWinrateCalculator.add_champs_to_dict(self.losses, c1)
+				ChampWinrateCalculator.add_champs_to_dict(self.wins, c2)
 
 	
 	@staticmethod

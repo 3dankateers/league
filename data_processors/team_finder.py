@@ -52,14 +52,13 @@ class TeamFinder:
 	## analyze all matches to find reoccuring teams
 	## add relevant teams to db
 	def find_all_potential_teams(self):
-		with DbClient() as db_client:
-			cursor = db_client.get_all_matches()
-			for d in cursor:
-				match = Match.from_dict(d)
-				m_id = match.id
-				potential_teams = TeamFinder.potential_teams_from_match(match)
-				for p_team in potential_teams:
-					self.add_to_teams_found(p_team, m_id)
+		cursor = Match.get_all_matches()
+		for d in cursor:
+			match = Match.from_dict(d)
+			m_id = match.id
+			potential_teams = TeamFinder.potential_teams_from_match(match)
+			for p_team in potential_teams:
+				self.add_to_teams_found(p_team, m_id)
 	
 	## creates team_match_occurance and adds it to teams_found dict
 	def add_to_teams_found(self, p_team, m_id):

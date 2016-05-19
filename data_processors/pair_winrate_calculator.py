@@ -39,25 +39,24 @@ class PairWinrateCalculator:
 				print "Updated ", pair.pair_tuple, ". Winrate: ", str(pair.winrate), ". Size: ", str(pair.winrate_sample_size)
 
 	def count_matches(self):
-		with DbClient() as db_client:
-			cursor = db_client.get_all_matches()
-			for d in cursor:
-				match = Match.from_dict(d)
-				c1 = match.champs1
-				c2 = match.champs2
-				## 100 means team1 won, 200 means team2 won
-				win = match.win
-				
-				## count ally pairs in match
-				if win  == 100:
-					self.add_ally_pairs_to_dict(self.ally_wins, c1)
-					self.add_ally_pairs_to_dict(self.ally_losses, c2)
-				elif win == 200:
-					self.add_ally_pairs_to_dict(self.ally_wins, c2)
-					self.add_ally_pairs_to_dict(self.ally_losses, c1)
+		cursor = Match.get_all_matches()
+		for d in cursor:
+			match = Match.from_dict(d)
+			c1 = match.champs1
+			c2 = match.champs2
+			## 100 means team1 won, 200 means team2 won
+			win = match.win
+			
+			## count ally pairs in match
+			if win  == 100:
+				self.add_ally_pairs_to_dict(self.ally_wins, c1)
+				self.add_ally_pairs_to_dict(self.ally_losses, c2)
+			elif win == 200:
+				self.add_ally_pairs_to_dict(self.ally_wins, c2)
+				self.add_ally_pairs_to_dict(self.ally_losses, c1)
 
-				## count enemy pairs in match
-				self.add_enemy_pairs_to_dict(win, c1, c2)
+			## count enemy pairs in match
+			self.add_enemy_pairs_to_dict(win, c1, c2)
 	
 	## generate all pairs from champs 
 	## increment the entries in the dictionary(d) that correspond to the pairs found in champs
@@ -96,7 +95,7 @@ class PairWinrateCalculator:
 							PairWinrateCalculator.increment_dict(self.enemy_losses, pair_tuple)
 	
 	##increment count in d for that specific pair
-	@classmethod
+	@staticmethod
 	def increment_dict(d, pair_tuple):
 		if pair_tuple in d:
 			self.d[pair_tuple] += 1

@@ -43,23 +43,6 @@ class DbClient:
 		except:
 			pass
 	
-	## add new match to db 
-	def create_match(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):	
-		record = self.db.matches.insert_one({
-			"_id" : id,
-			"team1" : team1,
-			"team2" : team2,
-			"champs1" : champs1,
-			"champs2" : champs2,
-			"duration" : duration,
-			"win" : win,
-			"gametype" : gametype,
-			"region" : region,
-			"patch" : patch,
-			"tier" : tier,
-			"date" : date
-			})
-		print "Created match"
 	
 	def create_team(self, summoners, matches, date_created):
 		record = self.db.teams.insert_one({
@@ -160,10 +143,6 @@ class DbClient:
 		cursor = self.db.summoners.find({"_id" : id})
 		return cursor
 
-	## find match and return it based on id
-	def find_match(self, id):
-		cursor = self.db.matches.find({"_id" : id})
-		return cursor
 	
 	## find champ and return it based on id
 	def find_champ(self, id):
@@ -186,10 +165,6 @@ class DbClient:
 			"type" : type})
 		return cursor
 	
-	## return all matches
-	def get_all_matches(self):
-		cursor = self.db.matches.find()
-		return cursor
 
 	## find team and return it based on list of summoners
 	def find_team(self, summoners):
