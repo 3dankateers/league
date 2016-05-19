@@ -65,6 +65,6 @@ def find_teams():
 
 def evaluate_comp(t1, t2):
 	ce = CompEvaluator(t1,t2)
-	ce.run()
+	ce.evaluate_all()
 
 main()
