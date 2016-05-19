@@ -29,9 +29,8 @@ def main():
 	##evaluate_comp(team1, team2)
 
 def test_grab(lc):
-	with DbClient() as db_client:
-		c = db_client.get_one_summoner()
-		assert c.count() >= 1, "Trying to initilize summoner model from empty cursor"
+	c = Summoner.get_one_summoner()
+	assert c.count() >= 1, "Trying to initilize summoner model from empty cursor"
 
 		summoner = Summoner.from_dict(c[0])
 		SummonerParser.grab_peers(lc, summoner)

@@ -98,7 +98,7 @@ class PairWinrateCalculator:
 	@staticmethod
 	def increment_dict(d, pair_tuple):
 		if pair_tuple in d:
-			self.d[pair_tuple] += 1
+			d[pair_tuple] += 1
 		else:
-			self.d[pair_tuple] = 1
+			d[pair_tuple] = 1
 					

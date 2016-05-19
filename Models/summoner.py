@@ -27,8 +27,7 @@ class Summoner:
 	## if summoner already exists in db return it, otherwise return new summoner object
 	@classmethod
 	def get_summoner(cls, id, name, tier, division, region):
-		with DbClient() as db_client:
-			cursor = db_client.find_summoner(id)
+		cursor = Summoner.find_summoner(id)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:
@@ -46,13 +45,72 @@ class Summoner:
 			return summoner
 
 	def save(self):
-		with DbClient() as db_client:	
-			cursor = db_client.find_summoner(self.id)
-			##if already in db
-			if cursor.count() > 0:
-				db_client.update_summoner(self.id, self.name, self.tier, self.division, self.region, self.date_scraped_peers, self.date_scraped_matches)
-			else:
-				db_client.create_summoner(self.id, self.name, self.tier, self.division, self.region, self.date_scraped_peers, self.date_scraped_matches)
+		cursor = Summoner.find_summoner(self.id)
+		##if already in db
+		if cursor.count() > 0:
+			self.update_summoner()
+		else:
+			self.create_summoner()
 				
-	
+	## add new summoner to db 
+	def create_summoner(self):
+		with DbClient() as db_client:
+			record = db_client.db.summoners.insert_one({
+				"_id" : self.id,
+				"name" : self.name,
+				"tier" : self.tier,
+				"division" : self.division,
+				"region" : self.region,
+				"date_scraped_peers" : self.date_scraped_peers,
+				"date_scraped_matches" : self.date_scraped_matches
+				})
+			try:		
+				print "Created summoner: " + self.name.encode(encoding='UTF-8',errors='replace')
+			except:
+				pass
 		
+	## update existing summoner with new values 
+	def update_summoner(self):
+		with DbClient() as db_client:
+			db_client.db.summoners.update_one(
+					{"_id" : self.id},{
+						"$set": {
+							"name" : self.name,
+							"tier" : self.tier,
+							"division" : self.division,
+							"region" : self.region,
+							"date_scraped_peers" : self.date_scraped_peers,
+							"date_scraped_matches" : self.date_scraped_matches
+							}
+					})
+			try:		
+				print "Updated summoner: " + self.name.encode(encoding='UTF-8',errors='replace')
+			except:
+				pass
+
+	##mostly for testing
+	##return first summoner found
+	@staticmethod
+	def get_one_summoner():
+		with DbClient() as db_client:
+			cursor = db_client.db.summoners.find()
+			if cursor.count() > 0:
+				return cursor
+			else:
+				print "Summoner collection is empty"
+				return None
+	
+	## return cursor to all summoners of the given tier
+	@staticmethod
+	def get_summoners_on_tier(t):
+		with DbClient() as db_client:
+			cursor = db_client.db.summoners.find({"tier" : t})
+			return cursor
+	
+	
+	## find summoner and return it based on id
+	@staticmethod
+	def find_summoner(id):
+		with DbClient() as db_client:
+			cursor = db_client.db.summoners.find({"_id" : id})
+			return cursor

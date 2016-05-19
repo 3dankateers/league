@@ -95,10 +95,9 @@ class MatchParser:
 	@staticmethod
 	def grab_matches_challenger(lc):
 		print "Adding all matches of challengers to db"
-		with DbClient() as db_client:
-			cursor = db_client.get_summoners_on_tier("CHALLENGER")
-			for d in cursor:
-				s = Summoner.from_dict(d)
-				##make sure region matches
-				if s.region == lc.region:
-					MatchParser.grab_matches(lc, s)
+		cursor = Summoner.get_summoners_on_tier("CHALLENGER")
+		for d in cursor:
+			s = Summoner.from_dict(d)
+			##make sure region matches
+			if s.region == lc.region:
+				MatchParser.grab_matches(lc, s)

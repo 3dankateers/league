@@ -27,23 +27,6 @@ class DbClient:
 	def __exit__(self, exc_type, exc_value, tb):
 		self.client.close()
 
-	## add new summoner to db 
-	def create_summoner(self, id, name, tier, division, region, date_scraped_peers = None, date_scraped_matches = None):
-		record = self.db.summoners.insert_one({
-			"_id" : id,
-			"name" : name,
-			"tier" : tier,
-			"division" : division,
-			"region" : region,
-			"date_scraped_peers" : date_scraped_peers,
-			"date_scraped_matches" : date_scraped_matches
-			})
-		try:		
-			print "Created summoner: " + name.encode(encoding='UTF-8',errors='replace')
-		except:
-			pass
-	
-	
 	def create_team(self, summoners, matches, date_created):
 		record = self.db.teams.insert_one({
 				"summoners" : summoners,
@@ -73,24 +56,6 @@ class DbClient:
 		print "created pair"
 		return record.inserted_id
 	
-	## update existing summoner with new values passed in
-	def update_summoner(self, id, name, tier, division, region, date_scraped_peers, date_scraped_matches):
-		self.db.summoners.update_one(
-				{"_id" : id},{
-					"$set": {
-						"name" : name,
-						"tier" : tier,
-						"division" : division,
-						"region" : region,
-						"date_scraped_peers" : date_scraped_peers,
-						"date_scraped_matches" : date_scraped_matches
-						}
-				})
-		try:		
-			print "Updated summoner: " + name.encode(encoding='UTF-8',errors='replace')
-		except:
-			pass
-
 	## update existing team with new values passed in
 	def update_team(self, id, matches):
 		self.db.teams.update_one(
@@ -122,27 +87,6 @@ class DbClient:
 						}
 				})
 		print "Updated pair." 
-	
-	##mostly for testing
-	##return first summoner found
-	def get_one_summoner(self):
-		cursor = self.db.summoners.find()
-		if cursor.count() > 0:
-			return cursor
-		else:
-			print "Summoner collection is empty"
-			return None
-
-	## return cursor to all summoners of the given tier
-	def get_summoners_on_tier(self, t):
-		cursor = self.db.summoners.find({"tier" : t})
-		return cursor
-
-	## find summoner and return it based on id
-	def find_summoner(self, id):
-		cursor = self.db.summoners.find({"_id" : id})
-		return cursor
-
 	
 	## find champ and return it based on id
 	def find_champ(self, id):

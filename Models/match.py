@@ -52,11 +52,11 @@ class Match:
 
 	## push match into database
 	def save(self):
-		create_match()
+		self.create_match()
 	
 	
 	## add new match to db 
-	def create_match():
+	def create_match(self):
 		with DbClient() as db_client:
 			record = db_client.db.matches.insert_one({
 				"_id" : self.id,
