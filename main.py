@@ -6,6 +6,7 @@ from match_parser import MatchParser
 from team_finder import TeamFinder
 from champ_parser import ChampParser
 from champ_winrate_calculator import ChampWinrateCalculator
+from pair_winrate_calculator import PairWinrateCalculator
 from comp_evaluator import CompEvaluator
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -19,12 +20,13 @@ from comp_evaluator import CompEvaluator
 ## perhaps try finding smurfs statistically
 
 def main():
+	calc_pair_winrates()
 	##calc_champ_winrates()
 	##pull_challengers("kr")
 	##pull_matches("kr")
-	team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
-	team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
-	evaluate_comp(team1, team2)
+	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
+	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
+	##evaluate_comp(team1, team2)
 
 def test_grab(lc):
 	with DbClient() as db_client:
@@ -52,6 +54,10 @@ def pull_matches(region):
 
 def calc_champ_winrates():
 	winrate_calc = ChampWinrateCalculator()
+	winrate_calc.run()
+
+def calc_pair_winrates():
+	winrate_calc = PairWinrateCalculator()
 	winrate_calc.run()
 
 def find_teams():

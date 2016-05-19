@@ -48,7 +48,8 @@ class ChampWinrateCalculator:
 	##update db champ with a new winrate and sample size fot that winrate
 	def update_winrates(self):
 		for key, value in self.wins.iteritems():
-			if self.check_wins_losses(key):
+			##make sure key is present in both dicts
+			if key in self.losses:
 				with DbClient() as db_client:
 					cursor = db_client.find_champ(key)
 					champ = Champ.from_dict(cursor[0])
@@ -60,10 +61,4 @@ class ChampWinrateCalculator:
 				print "Updated ", champ.name, ". Winrate: ", str(champ.winrate), ". Size: ", str(champ.winrate_sample_size)
 
 	
-	##make sure wins and losses are non-zero	
-	def check_wins_losses(self, key):
-		if key in self.losses:
-			return (self.wins[key] > 0) and (self.losses[key] > 0)
-		else:
-			return False
 
