@@ -10,6 +10,7 @@ import time
 
 API_KEY = "api_key=eeff2e9b-5f33-4de0-af17-16b98a4c4b3e" 
 HTTPS = "https://"
+GLOBAL = "global"
 API_PART =  ".api.pvp.net/api/lol/"
 CHALLENGER_ENDPOINT = "/v2.5/league/challenger?type=RANKED_SOLO_5x5"
 GAME_ENDPOINT = "/v1.3/game/by-summoner/"	
@@ -36,6 +37,7 @@ class LeagueClient:
 
 
 	def getJSONReply(self, url):
+		print url
 		self.stagger_response()
 		response = urllib2.urlopen(url);
 		html = response.read();
@@ -44,7 +46,7 @@ class LeagueClient:
 
 	##get all champions
 	def get_champ_data(self):
-		url = STATIC_ENDPOINT + "?" + API_KEY 
+		url = HTTPS + GLOBAL +  STATIC_ENDPOINT + "?" + API_KEY 
 		data = self.getJSONReply(url)
 		return data
 

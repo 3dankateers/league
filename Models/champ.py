@@ -44,7 +44,7 @@ class Champ:
 
 	
 	def create_champ(self):
-		with DbClient() as db_client():
+		with DbClient() as db_client:
 			record = db_client.db.champs.insert_one({
 					"_id" : self.id,
 					"name" : self.name,
@@ -55,7 +55,7 @@ class Champ:
 	
 	## update existing champ with new values passed in
 	def update_champ(self):
-		with DbClient() as db_client():
+		with DbClient() as db_client:
 			db_client.db.champs.update_one(
 					{"_id" : self.id},{
 						"$set": {

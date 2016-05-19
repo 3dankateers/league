@@ -20,7 +20,8 @@ from comp_evaluator import CompEvaluator
 ## perhaps try finding smurfs statistically
 
 def main():
-	calc_pair_winrates()
+	pull_champs()
+	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##pull_challengers("kr")
 	##pull_matches("kr")
@@ -32,8 +33,8 @@ def test_grab(lc):
 	c = Summoner.get_one_summoner()
 	assert c.count() >= 1, "Trying to initilize summoner model from empty cursor"
 
-		summoner = Summoner.from_dict(c[0])
-		SummonerParser.grab_peers(lc, summoner)
+	summoner = Summoner.from_dict(c[0])
+	SummonerParser.grab_peers(lc, summoner)
 
 def pull_champs():
 	lc = LeagueClient("global")

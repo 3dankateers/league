@@ -40,6 +40,8 @@ class PairWinrateCalculator:
 
 	def count_matches(self):
 		cursor = Match.get_all_matches()
+		total_matches = cursor.count()
+		i = 0
 		for d in cursor:
 			match = Match.from_dict(d)
 			c1 = match.champs1
@@ -54,25 +56,28 @@ class PairWinrateCalculator:
 			elif win == 200:
 				self.add_ally_pairs_to_dict(self.ally_wins, c2)
 				self.add_ally_pairs_to_dict(self.ally_losses, c1)
+			
 
 			## count enemy pairs in match
 			self.add_enemy_pairs_to_dict(win, c1, c2)
+
+			print "Processed match: ", str(i), " / ", str(total_matches)
+			i += 1
 	
 	## generate all pairs from champs 
 	## increment the entries in the dictionary(d) that correspond to the pairs found in champs
 	def add_ally_pairs_to_dict(self, d, champs):
+		print len(champs)
 		for c1 in champs:
 			for c2 in champs:
 				if c1 != c2:
-					pair = Pair.get_pair(c1, c2, "ally")
-					pair.save()
-					pair_tuple = pair.pair_tuple
-					
+					pair_tuple = Pair.get_pair_tuple(c1,c2)	
 					##if pair was seen before
 					if pair_tuple in d:
 						d[pair_tuple] += 1
 					else:
 						d[pair_tuple] = 1
+		print "wtf"
 
 
 	## generate all enemy pairs from champs1, champs2 
@@ -82,9 +87,7 @@ class PairWinrateCalculator:
 		for c1 in champs1:
 			for c2 in champs2:
 				if c1 != c2:
-					pair = Pair.get_pair(c1, c2, "enemy")
-					pair.save()
-					pair_tuple = pair.pair_tuple
+					pair_tuple = Pair.get_pair_tuple(c1,c2)	
 
 					if win == 100:
 						if pair_tuple[0] in champs1:

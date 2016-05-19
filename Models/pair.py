@@ -7,12 +7,10 @@ class Pair:
 		self.id = id
 
 		## pair ignores order of champ1/champ2 passed in
-		sorted_champs = [champ1, champ2]
-		sorted_champs.sort()
 
 		self.champ1 = sorted_champs[0]
 		self.champ2 = sorted_champs[1]
-		self.pair_tuple = (self.champ1, self.champ2)
+		self.pair_tuple = Pair.get_pair_tuple()
 		
 		self.type = type
 		self.winrate = winrate
@@ -45,6 +43,13 @@ class Pair:
 			assert (cursor.count() >= 1), "Error constructing Summoner model from cursor. Cursor is empty."
 			pair = cls.from_dict(cursor[0])
 			return pair
+
+	@staticmethod
+	def get_pair_tuple(c1,c2):
+		sorted_champs = [c1, c2]
+		sorted_champs.sort()
+		pair_tuple = (sorted_champs[0], sorted_champs[1])
+		return pair_tuple
 	
 	def save(self):
 		##if already in db
