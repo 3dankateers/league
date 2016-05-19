@@ -22,7 +22,8 @@ class Champ:
 	## if team already exists in db return it, otherwise return a new team
 	@classmethod
 	def get_champ(cls, id, name):
-		cursor = Champ.find_champ(id)
+		with DbClient() as db_client:
+			cursor = Champ.find_champ(db_client, id)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:
@@ -35,7 +36,8 @@ class Champ:
 			return champ
 	
 	def save(self):
-		cursor = Champ.find_champ(self.id)
+		with DbClient() as db_client:
+			cursor = Champ.find_champ(db_client, self.id)
 		##if already in db
 		if cursor.count() > 0:
 			self.update_champ()
@@ -67,10 +69,9 @@ class Champ:
 	
 	## find champ and return it based on id
 	@staticmethod
-	def find_champ(id):
-		with DbClient() as db_client:
-			cursor = db_client.db.champs.find({"_id" : id})
-			return cursor
+	def find_champ(db_client, id):
+		cursor = db_client.db.champs.find({"_id" : id})
+		return cursor
 
 	@staticmethod
 	def find_champ_by_name(name):

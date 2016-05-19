@@ -3,30 +3,70 @@
 ############################################################################
 from db_client import DbClient
 from champ import Champ
+from evaluator import Evaluator
 
 ONE_CHAMP_SAMPLE_LIMIT = 20
 
-class OneChampEvaluator:
+##stores information calculated in process()
+class TeamInfo:
+	def __init__(self, champ_ids):
+		self.champ_ids = champ_ids
+		self.winrates = [-1] * 5
+		self.aggregate_winrate = 0
+		self.total_winrate = 0
+		self.num_champs_considered = 0
 	
-	## print one champ simple analysis results for a team comp
-	@staticmethod
-	def print_one_champ_result(t):
-		total_winrate = 0
-		num_champs_considered = 0
-
-		for champ_name in t:
-			with DbClient() as db_client:
-				cursor = Champ.find_champ_by_name(champ_name)
-			try:
-				champ = Champ.from_dict(cursor[0])
-			except:
-				print "Mistyped champ name: ", champ_name
-
-			if (champ.winrate != None) and (champ.winrate_sample_size > ONE_CHAMP_SAMPLE_LIMIT):
-				total_winrate += champ.winrate
-				num_champs_considered += 1
-				print champ.name, " ", str(champ.winrate)
+	def update_aggregate_winrate(self):
+		for r in self.winrates:
+			if r != -1:
+				self.total_winrate += r
+		self.aggregate_winrate = self.total_winrate/self.num_champs_considered
+				
+	def print_result(self):
+		for i,id in enumerate(self.champ_ids):
+			if (self.winrates[i] != -1):
+				print id, " ", str(self.winrates[i])
 			else:
-				print champ.name, " not enough winrate data"
+				print id, " not enough winrate data"
 			
-		print "Normalized win rate = ", str(total_winrate / num_champs_considered)
+		print "Normalized win rate = ", str(self.aggregate_winrate)
+
+
+class OneChampEvaluator(Evaluator):
+	
+	def __init__(self, champs1_ids, champs2_ids):
+		self.ti1 = TeamInfo(champs1_ids)
+		self.ti2 = TeamInfo(champs2_ids)
+		self.winner = 1
+
+	## return 1 if team1 is favoured, else return 2
+	def predict_winner(self):
+		return self.winner
+	
+	## calculate winrates needed
+	## process each team independently
+	def process(self):
+		self.process_team(self.ti1)
+		self.process_team(self.ti2)
+
+	##calculates all neccesary team info and updates ti (teaminfo)
+	def process_team(self, ti):
+		with DbClient() as db_client:
+			for i,champ_id in enumerate(ti.champ_ids):
+				cursor = Champ.find_champ(db_client, champ_id)
+				champ = Champ.from_dict(cursor[0])
+				if (champ.winrate != None) and (champ.winrate_sample_size > ONE_CHAMP_SAMPLE_LIMIT):
+					ti.winrates[i] = champ.winrate
+					ti.num_champs_considered += 1
+		ti.update_aggregate_winrate()
+
+	def print_results(self):
+		print "#################################################################################"
+		print "One Champ Results: "
+		print "Team1"
+		self.ti1.print_result()
+		print "#########################################################"
+		print "Team2"
+		self.ti2.print_result()
+		print "#################################################################################"
+

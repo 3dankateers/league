@@ -7,7 +7,7 @@ from team_finder import TeamFinder
 from champ_parser import ChampParser
 from champ_winrate_calculator import ChampWinrateCalculator
 from pair_winrate_calculator import PairWinrateCalculator
-from comp_evaluator import CompEvaluator
+from comp_analyzer import CompAnalyzer
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
 ##TODO: Add champions to collection
@@ -64,7 +64,7 @@ def find_teams():
 	tf.run()
 
 def evaluate_comp(t1, t2):
-	ce = CompEvaluator(t1,t2)
-	ce.evaluate_pairs()
+	ca = CompAnalyzer(t1,t2)
+	ca.evaluate_all()
 
 main()

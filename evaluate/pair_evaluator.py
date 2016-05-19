@@ -4,8 +4,9 @@
 
 from db_client import DbClient
 from pair import Pair
+from evaluator import Evaluator
 
-PAIR_SAMPLE_LIMIT = 1
+PAIR_SAMPLE_LIMIT = 10
 
 ##helper class to store results for each team comp
 class TeamWinrateInfo:
@@ -19,7 +20,7 @@ class TeamWinrateInfo:
 		self.aggregate_winrate = self.total_winrate/self.num_relevant_pairs
 
 
-class PairEvaluator:
+class PairEvaluator(Evaluator):
 
 	def __init__(self, team1, team2):
 		self.team1_ally_info = TeamWinrateInfo(team1)
@@ -27,17 +28,27 @@ class PairEvaluator:
 		
 		self.team1_enemy_info = TeamWinrateInfo(team1)
 		self.team2_enemy_info = TeamWinrateInfo(team2)
+		self.winner = 1
 	
 	##processes each team comp in turn
-	def process_teams(self):
+	def process(self):
 		print "Processing pairs in team comp ..."
 		self.process_winrate_allies(self.team1_ally_info)
 		self.process_winrate_allies(self.team2_ally_info)
 		self.process_winrate_enemies(self.team1_enemy_info, self.team2_enemy_info)
 
+		if self.team1_ally_info.aggregate_winrate > self.team2_ally_info.aggregate_winrate:
+			self.winner = 1
+		else:
+			self.winner = 2
+
+	## return 1 if team1 is favoured, else return 2
+	def predict_winner(self):
+		return self.winner
+
 	## prints winrate calculation results
 	def print_results(self):
-		self.process_teams()
+		self.process()
 		print "#################################################################################"
 		print "Pair Analysis Results: "
 		print "Team1"
