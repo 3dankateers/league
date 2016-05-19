@@ -33,7 +33,7 @@ class CompEvaluator:
 
 		for champ_name in t:
 			with DbClient() as db_client:
-				cursor = db_client.find_champ_by_name(champ_name)
+				cursor = Champ.find_champ_by_name(champ_name)
 			try:
 				champ = Champ.from_dict(cursor[0])
 			except:

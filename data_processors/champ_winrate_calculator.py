@@ -49,9 +49,8 @@ class ChampWinrateCalculator:
 		for key, value in self.wins.iteritems():
 			##make sure key is present in both dicts
 			if key in self.losses:
-				with DbClient() as db_client:
-					cursor = db_client.find_champ(key)
-					champ = Champ.from_dict(cursor[0])
+				cursor = Champ.find_champ(key)
+				champ = Champ.from_dict(cursor[0])
 				sample_size = value + self.losses[key]
 				winrate = value / float(sample_size)
 				champ.winrate = winrate

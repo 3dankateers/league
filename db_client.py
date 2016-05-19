@@ -36,14 +36,6 @@ class DbClient:
 		print "Created new team with ", str(len(matches)), " matches."
 		return record.inserted_id
 
-	def create_champ(self, id, name, winrate, winrate_sample_size):
-		record = self.db.champs.insert_one({
-				"_id" : id,
-				"name" : name,
-				"winrate" : winrate,
-				"winrate_sample_size" : winrate_sample_size
-			})
-		print "created champ"
 
 	def create_pair(self, champ1, champ2, type, winrate, winrate_sample_size):
 		record = self.db.pairs.insert_one({
@@ -66,16 +58,6 @@ class DbClient:
 				})
 		print "Updated team" 
 
-	## update existing champ with new values passed in
-	def update_champ(self, id, name, winrate, winrate_sample_size):
-		self.db.champs.update_one(
-				{"_id" : id},{
-					"$set": {
-						"winrate" : winrate,
-						"winrate_sample_size" : winrate_sample_size
-						}
-				})
-		print "Updated champ" 
 	
 	## update existing pair with new values passed in
 	def update_pair(self, id, winrate, winrate_sample_size):
@@ -88,18 +70,6 @@ class DbClient:
 				})
 		print "Updated pair." 
 	
-	## find champ and return it based on id
-	def find_champ(self, id):
-		cursor = self.db.champs.find({"_id" : id})
-		return cursor
-
-	def find_champ_by_name(self, name):
-		cursor = self.db.champs.find({"name" : name})
-		return cursor
-
-	def find_all_champs(self):
-		cursor = self.db.champs.find()
-		return cursor
 
 	## find pair and return it based on champ1, champ2, and type
 	def find_pair(self, champ1, champ2, type):
