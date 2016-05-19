@@ -25,7 +25,16 @@ class Pair:
 		winrate = d["winrate"]
 		winrate_sample_size = d["winrate_sample_size"]
 		return cls(champ1, champ2, type, winrate, winrate_sample_size, id)
-	
+
+	def to_dict(self):
+		d = { 
+				"champ1" : self.champ1,
+				"champ2" : self.champ2,
+				"type" : self.type,
+				"winrate" : self.winrate,
+				"winrate_sample_size" : self.winrate_sample_size}
+		return d
+
 	## if pair already exists in db return it, otherwise return a new team
 	@classmethod
 	def get_pair(cls, champ1, champ2, type):
@@ -81,6 +90,18 @@ class Pair:
 							}
 					})
 			print "Updated pair." 
+
+	##insert multiple documents
+	@staticmethod
+	def insert_all(dicts):
+		with DbClient() as db_client:
+			db_client.db.pairs.insert(dicts)
+
+	## delete all documents
+	@staticmethod
+	def drop_all():
+		with DbClient() as db_client:
+			db_client.db.pairs.drop()
 	
 	## find pair and return it based on champ1, champ2, and type
 	@staticmethod

@@ -80,7 +80,7 @@ class PairEvaluator:
 							twi1.winrate_sample_size += 1
 							twi2.total_winrate += (1- pair.winrate)
 							twi2.winrate_sample_size += 1
-						elif: pair.pair_tuple[0] == c2:
+						elif pair.pair_tuple[0] == c2:
 							twi1.total_winrate += (1 - pair.winrate)
 							twi1.winrate_sample_size += 1
 							twi2.total_winrate += pair.winrate

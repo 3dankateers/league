@@ -1,9 +1,9 @@
-## match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date
+## match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test
 
 from db_client import DbClient
 
 class Match:
-	def __init__(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date):
+	def __init__(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test = None):
 		self.id = id
 		self.team1 = team1
 		self.team2 = team2
@@ -16,6 +16,7 @@ class Match:
 		self.patch = patch
 		self.tier = tier
 		self.date = date
+		self.is_test = is_test
 	
 	@classmethod
 	def from_dict(cls, d):
@@ -31,8 +32,9 @@ class Match:
 		patch = d["patch"]
 		tier = d["tier"]
 		date = d["date"]
+		is_test = d["is_test"]
 			
-		return cls(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
+		return cls(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
@@ -51,7 +53,11 @@ class Match:
 
 	## push match into database
 	def save(self):
-		self.create_match()
+		cursor = Match.find_match(self.id)
+		if cursor.count == 0:
+			self.create_match()
+		else:
+			self.update_match()
 	
 	
 	## add new match to db 
@@ -73,6 +79,17 @@ class Match:
 				})
 			print "Created match"
 	
+	## update existing pair with new values 
+	def update_match(self):
+		with DbClient() as db_client:
+			db_client.db.matches.update_one(
+					{"_id" : self.id},{
+						"$set": {
+							"is_test" : self.is_test,
+							}
+					})
+			print "Updated match." 
+
 	
 	## find match and return it based on id
 	@staticmethod
