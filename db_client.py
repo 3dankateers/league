@@ -27,29 +27,3 @@ class DbClient:
 	def __exit__(self, exc_type, exc_value, tb):
 		self.client.close()
 
-	def create_team(self, summoners, matches, date_created):
-		record = self.db.teams.insert_one({
-				"summoners" : summoners,
-				"matches" : matches,
-				"date_created" : date_created
-			})
-		print "Created new team with ", str(len(matches)), " matches."
-		return record.inserted_id
-
-
-	
-	## update existing team with new values passed in
-	def update_team(self, id, matches):
-		self.db.teams.update_one(
-				{"_id" : id},{
-					"$set": {
-						"matches" : matches
-						}
-				})
-		print "Updated team" 
-
-	## find team and return it based on list of summoners
-	def find_team(self, summoners):
-		cursor = self.db.teams.find({"summoners" : summoners})
-		return cursor
-
