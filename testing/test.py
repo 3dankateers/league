@@ -8,6 +8,11 @@ NUM_TESTS = 10
 
 class Test:
 
+	def __init__():
+		self.tests_passed
+		self.tests_failed
+
+
 	@staticmethod
 	def set_new_tests():
 		##used to decide which matches are set as tests	
@@ -28,7 +33,10 @@ class Test:
 				match.is_test = False
 				match.save()
 	
-	def run_tests
+	## passed in an evaluator
+	## print
+	def run_tests(evaluator):
+
 
 
 
