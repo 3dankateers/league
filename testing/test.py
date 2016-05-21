@@ -8,7 +8,7 @@ NUM_TESTS = 10
 
 class Test:
 
-	def __init__():
+	def __init__(self):
 		self.tests_passed
 		self.tests_failed
 
@@ -34,9 +34,10 @@ class Test:
 				match.save()
 	
 	## passed in an evaluator
-	## print
-	def run_tests(evaluator):
-
+	## run soloq data tests on evaluator to measure performance
+	## print results
+	def run_simple_tests(self, evaluator):
+			cursor = Match.get_tests()
 
 
 

@@ -23,10 +23,10 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##pull_challengers("kr")
-	##pull_matches("kr")
-	team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
-	team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
-	evaluate_comp(team1, team2)
+	pull_matches("kr")
+	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
+	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
+	##evaluate_comp(team1, team2)
 
 def test_grab(lc):
 	c = Summoner.get_one_summoner()
