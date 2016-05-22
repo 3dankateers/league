@@ -45,7 +45,6 @@ class LeagueClient:
 
 	##get all champions
 	def get_champ_data(self):
-		print "here"
 		url = HTTPS + GLOBAL +  STATIC_ENDPOINT + "?" + API_KEY 
 		data = self.getJSONReply(url)
 		return data

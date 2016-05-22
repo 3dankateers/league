@@ -8,9 +8,11 @@ NUM_TESTS = 10
 
 class TestSuite:
 
-	def __init__(self):
+	def __init__(self, evaluator_class):
 		self.tests_passed = 0
 		self.tests_failed = 0
+		self.evaluator_class = evaluator_class
+
 
 
 	@staticmethod
@@ -20,28 +22,37 @@ class TestSuite:
 		
 		cursor = Match.get_all_matches()
 		num_matches = cursor.count()
+		##num_tests = 0
+		##num_non_tests = 0
 
 		for i in range(num_matches):
 			match = Match.from_dict(cursor[i])
-			
+
 			## set match as test
-			if  i%rand == 0:
+			if  i%NUM_TESTS == rand:
+				##num_tests+= 1
 				match.is_test = True
 				match.save()
 			##match is not test
 			elif match.is_test == True:
+				##num_non_tests += 1
 				match.is_test = False
 				match.save()
+		##print "matches :", str(num_matches)
+		##print "no tests: ", str(num_non_tests)
+		##print "tests: ", str(num_tests)
+
 	
 	## passed in an evaluator
 	## run soloq data tests on evaluator to measure performance
 	## print results
-	def run_simple_tests(self, evaluator_class):
+	def run_simple_tests(self):
 		cursor = Match.get_all_tests()
 		for t in cursor:
 			test_match = Match.from_dict(t)
 			
-			evaluator = evaluator_class(test_match.champs1, test_match.champs2)
+			evaluator = self.evaluator_class(test_match.champs1, test_match.champs2)
+			evaluator.process()
 			winner_predicted = evaluator.predict_winner()
 			actual_winner = test_match.win
 			if(winner_predicted == actual_winner):
@@ -51,7 +62,7 @@ class TestSuite:
 
 		print "Tests Passed: ", self.tests_passed
 		print "Tests Failed: ", self.tests_failed
-		print "Performance: ", self.tests_passed/(self.tests_passed + self.tests_failed)
+		print "Performance: ", self.tests_passed/float(self.tests_passed + self.tests_failed)
 
 
 

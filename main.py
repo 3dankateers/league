@@ -28,10 +28,12 @@ def main():
 	##calc_champ_winrates()
 	##pull_challengers("kr")
 	##pull_matches("kr")
+	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
-	run_tests()
+	
+	run_tests(PairEvaluator)
 
 
 def test_grab(lc):
@@ -72,10 +74,12 @@ def find_teams():
 def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
 	ca.evaluate_all()
+	##print str(ca.predict_winner())
 
-def run_tests():
-	TestSuite.set_new_tests()	
-	ts = TestSuite()
-	ts.run_simple_tests(OneChampEvaluator)
+## run test suite using whatever evaluator class is passed in to predict winners
+def run_tests(evaluator_class):
+	##TestSuite.set_new_tests()	
+	ts = TestSuite(evaluator_class)
+	ts.run_simple_tests()
 
 main()
