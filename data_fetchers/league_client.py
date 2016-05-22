@@ -17,7 +17,7 @@ GAME_ENDPOINT = "/v1.3/game/by-summoner/"
 LEAGUE_ENDPOINT = "/v2.5/league/by-summoner/"
 STATIC_ENDPOINT = ".api.pvp.net/api/lol/static-data/na/v1.2/champion"
 
-WAIT_TIME = 1500
+WAIT_TIME = 3000
 
 class LeagueClient:
 
@@ -45,6 +45,7 @@ class LeagueClient:
 
 	##get all champions
 	def get_champ_data(self):
+		print "here"
 		url = HTTPS + GLOBAL +  STATIC_ENDPOINT + "?" + API_KEY 
 		data = self.getJSONReply(url)
 		return data

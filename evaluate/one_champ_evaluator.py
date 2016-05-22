@@ -37,7 +37,7 @@ class OneChampEvaluator(Evaluator):
 	def __init__(self, champs1_ids, champs2_ids):
 		self.ti1 = TeamInfo(champs1_ids)
 		self.ti2 = TeamInfo(champs2_ids)
-		self.winner = 1
+		self.winner = 100
 
 	## return 1 if team1 is favoured, else return 2
 	def predict_winner(self):
@@ -48,6 +48,11 @@ class OneChampEvaluator(Evaluator):
 	def process(self):
 		self.process_team(self.ti1)
 		self.process_team(self.ti2)
+		if self.ti1.aggregate_winrate > self.ti2.aggregate_winrate:
+			self.winner = 100
+		else:
+			self.winner = 200
+
 
 	##calculates all neccesary team info and updates ti (teaminfo)
 	def process_team(self, ti):

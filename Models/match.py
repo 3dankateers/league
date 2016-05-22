@@ -3,7 +3,7 @@
 from db_client import DbClient
 
 class Match:
-	def __init__(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test = None):
+	def __init__(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test = False):
 		self.id = id
 		self.team1 = team1
 		self.team2 = team2
@@ -54,7 +54,7 @@ class Match:
 	## push match into database
 	def save(self):
 		cursor = Match.find_match(self.id)
-		if cursor.count == 0:
+		if cursor.count() == 0:
 			self.create_match()
 		else:
 			self.update_match()
@@ -75,7 +75,8 @@ class Match:
 				"region" : self.region,
 				"patch" : self.patch,
 				"tier" : self.tier,
-				"date" : self.date
+				"date" : self.date,
+				"is_test" : self.is_test
 				})
 			print "Created match"
 	
@@ -103,4 +104,11 @@ class Match:
 	def get_all_matches():
 		with DbClient() as db_client:	
 			cursor = db_client.db.matches.find()
+			return cursor
+	
+	## return all matches that are labeled is_test
+	@staticmethod
+	def get_all_tests():
+		with DbClient() as db_client:	
+			cursor = db_client.db.matches.find({"is_test" : True})
 			return cursor

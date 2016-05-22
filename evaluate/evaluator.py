@@ -6,8 +6,14 @@ class Evaluator:
 	__metaclass__ = ABCMeta
 
 	@abstractmethod
+	
+	## process team comp and update stats calculated
 	def process(self): pass
+
+	## use processing results to decide if team 1 or team 2 is more likely to win, return 1 or 2
 	def predict_winner(self): pass
+
+	## print summary of results calculated
 	def print_results(self): pass
 
 	## take in a list of champ names and return a list of champ ids

@@ -8,6 +8,10 @@ from champ_parser import ChampParser
 from champ_winrate_calculator import ChampWinrateCalculator
 from pair_winrate_calculator import PairWinrateCalculator
 from comp_analyzer import CompAnalyzer
+from test_suite import TestSuite
+from one_champ_evaluator import OneChampEvaluator
+from pair_evaluator import PairEvaluator
+
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
 ##TODO: Add champions to collection
@@ -23,10 +27,12 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##pull_challengers("kr")
-	pull_matches("kr")
+	##pull_matches("kr")
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
+	run_tests()
+
 
 def test_grab(lc):
 	c = Summoner.get_one_summoner()
@@ -66,5 +72,10 @@ def find_teams():
 def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
 	ca.evaluate_all()
+
+def run_tests():
+	TestSuite.set_new_tests()	
+	ts = TestSuite()
+	ts.run_simple_tests(OneChampEvaluator)
 
 main()

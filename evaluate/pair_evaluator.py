@@ -28,7 +28,7 @@ class PairEvaluator(Evaluator):
 		
 		self.team1_enemy_info = TeamWinrateInfo(team1)
 		self.team2_enemy_info = TeamWinrateInfo(team2)
-		self.winner = 1
+		self.winner = 100
 	
 	##processes each team comp in turn
 	def process(self):
@@ -38,9 +38,9 @@ class PairEvaluator(Evaluator):
 		self.process_winrate_enemies(self.team1_enemy_info, self.team2_enemy_info)
 
 		if self.team1_ally_info.aggregate_winrate > self.team2_ally_info.aggregate_winrate:
-			self.winner = 1
+			self.winner = 100
 		else:
-			self.winner = 2
+			self.winner = 200
 
 	## return 1 if team1 is favoured, else return 2
 	def predict_winner(self):
