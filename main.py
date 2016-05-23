@@ -14,6 +14,8 @@ from ally_pair_evaluator import AllyPairEvaluator
 from enemy_pair_evaluator import EnemyPairEvaluator
 from trivial_evaluator import TrivialEvaluator
 from hyperpoint_calculator import HyperpointCalculator
+from svm_calculator import SVMCalculator
+from svm_evaluator import SVMEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -35,9 +37,17 @@ def main():
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
-	calc_hyperpoints()
-	##run_tests(EnemyPairEvaluator)
+	##calc_hyperpoints()
+	run_tests(SVMEvaluator)
+	##svm_model = calc_svm_model()
+	##evaluate_svm(team1, team2, svm_model)
 
+def evaluate_svm(t1, t2, svm_model):
+	ca = CompAnalyzer(t1, t2)
+	ca.evaluate_svm(svm_model)
+
+def calc_svm_model():
+	return SVMCalculator.get_svm_model()
 
 def calc_hyperpoints():
 	hc = HyperpointCalculator()
@@ -81,8 +91,10 @@ def find_teams():
 
 def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
-	ca.evaluate_all()
+	##ca.evaluate_all()
 	##print str(ca.predict_winner())
+
+
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class):

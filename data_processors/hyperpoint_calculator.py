@@ -18,21 +18,11 @@ class HyperpointCalculator:
 			match = Match.from_dict(m)
 			
 			match_id = match.id
-			coordinates = []
+			coordinates = MatchHyperpoint.get_coordinates(match.champs1, match.champs2)
 			winner = match.win
+			
 
-
-			with DbClient() as db_client:
-				cursor = Champ.get_all_champs()
-				for c in cursor:
-					champ = Champ.from_dict(c)
-					if champ.id in match.champs1:
-						coordinates.append(-1)
-					elif champ.id in match.champs2:
-						coordinates.append(1)
-					else:
-						coordinates.append(0)
 			mhp = MatchHyperpoint(match_id, coordinates, winner)
 			mhp.save()
-
-
+	
+ 

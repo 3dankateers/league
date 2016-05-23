@@ -38,7 +38,22 @@ class MatchHyperpoint:
 			print "Created match_hyperpoint"
 		return record.inserted_id
 	
-	
+	## given team1 and team2 champids	return corresponding coordinates
+	@staticmethod
+	def get_coordinates(team1_ids, team2_ids):
+		coordinates = []
+		with DbClient() as db_client:
+			cursor = Champ.get_all_champs()
+			for c in cursor:
+				champ = Champ.from_dict(c)
+				if champ.id in team1_ids:
+					coordinates.append(-1)
+				elif champ.id in team2_ids:
+					coordinates.append(1)
+				else:
+					coordinates.append(0)
+		return coordinates
+
 	## return all match_hyperpoints
 	@staticmethod
 	def get_all():
