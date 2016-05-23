@@ -106,9 +106,16 @@ class Match:
 			cursor = db_client.db.matches.find()
 			return cursor
 	
+	## return all matches not marked as is_test
+	@staticmethod
+	def get_training_set():
+		with DbClient() as db_client:	
+			cursor = db_client.db.matches.find({"is_test" : False})
+			return cursor
+	
 	## return all matches that are labeled is_test
 	@staticmethod
-	def get_all_tests():
+	def get_test_set():
 		with DbClient() as db_client:	
 			cursor = db_client.db.matches.find({"is_test" : True})
 			return cursor

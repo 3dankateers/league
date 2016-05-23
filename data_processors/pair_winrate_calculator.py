@@ -51,7 +51,7 @@ class PairWinrateCalculator:
 		Pair.insert_all(all_pairs_dicts)
 
 	def count_matches(self):
-		cursor = Match.get_all_matches()
+		cursor = Match.get_training_set()
 		for d in cursor:
 			match = Match.from_dict(d)
 			c1 = match.champs1

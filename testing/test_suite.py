@@ -24,6 +24,7 @@ class TestSuite:
 		num_matches = cursor.count()
 		##num_tests = 0
 		##num_non_tests = 0
+		##print "Num matches: ", num_matches
 
 		for i in range(num_matches):
 			match = Match.from_dict(cursor[i])
@@ -47,7 +48,7 @@ class TestSuite:
 	## run soloq data tests on evaluator to measure performance
 	## print results
 	def run_simple_tests(self):
-		cursor = Match.get_all_tests()
+		cursor = Match.get_test_set()
 		for t in cursor:
 			test_match = Match.from_dict(t)
 			

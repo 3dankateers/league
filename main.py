@@ -11,6 +11,7 @@ from comp_analyzer import CompAnalyzer
 from test_suite import TestSuite
 from one_champ_evaluator import OneChampEvaluator
 from pair_evaluator import PairEvaluator
+from trivial_evaluator import TrivialEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -26,14 +27,14 @@ from pair_evaluator import PairEvaluator
 def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
-	##pull_challengers("kr")
-	##pull_matches("kr")
+	##pull_challengers("na")
+	##pull_matches("na")
 	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
 	
-	run_tests(PairEvaluator)
+	run_tests(TrivialEvaluator)
 
 
 def test_grab(lc):
