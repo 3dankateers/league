@@ -60,5 +60,11 @@ class MatchHyperpoint:
 		with DbClient() as db_client:	
 			cursor = db_client.db.matches_hyperpoints.find()
 			return cursor
+	
+	## return all match_hyperpoints
+	@staticmethod
+	def delete_all():
+		with DbClient() as db_client:	
+			cursor = db_client.db.matches_hyperpoints.drop()
 
 	

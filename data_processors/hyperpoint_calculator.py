@@ -13,6 +13,9 @@ class HyperpointCalculator:
 
 	def run(self):
 		with DbClient() as db_client:
+			##delete old hyperpoints
+			MatchHyperpoint.delete_all()
+
 			cursor = Match.get_training_set()
 		for m in cursor:
 			match = Match.from_dict(m)

@@ -35,7 +35,6 @@ class SVMCalculator:
 			X.append(mh.coordinates)
 			y.append(mh.winner)
 		
-		##TODO get rid of warning and clean this up
 		X = np.array(X)
 		y = np.array(y)
 		##print str(X.size)
@@ -45,10 +44,11 @@ class SVMCalculator:
 		##X = np.array(X).reshape(1,(len(X)))
 		##y = np.array(y).
 
-		svm_model = svm.SVC(kernel = "rbf", probability = True)
+		svm_model = svm.SVC(kernel = "rbf", C = 1, gamma = 1/float(10), decision_function_shape = "ovr",  verbose = True)
 		svm_model.fit(X,y)
 		print "New SVM model created: "
 		print str(svm_model)
+		print str(svm_model.decision_function)
 		return svm_model
 
 

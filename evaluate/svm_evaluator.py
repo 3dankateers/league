@@ -25,7 +25,9 @@ class SVMEvaluator(Evaluator):
 		self.winner = svm_model.predict(coordinates)[0]
 	
 	def predict_winner(self):
+		print str(self.winner)
 		return self.winner
+		
 	
 	def print_results(self):
 		print "Winner predicted by svm is : ", str(self.winner) 

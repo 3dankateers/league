@@ -13,6 +13,7 @@ HTTPS = "https://"
 GLOBAL = "global"
 API_PART =  ".api.pvp.net/api/lol/"
 CHALLENGER_ENDPOINT = "/v2.5/league/challenger?type=RANKED_SOLO_5x5"
+MASTER_ENDPOINT = "/v2.5/league/master?type=RANKED_SOLO_5x5"
 GAME_ENDPOINT = "/v1.3/game/by-summoner/"	
 LEAGUE_ENDPOINT = "/v2.5/league/by-summoner/"
 STATIC_ENDPOINT = ".api.pvp.net/api/lol/static-data/na/v1.2/champion"
@@ -32,11 +33,13 @@ class LeagueClient:
 		else:
 			t_delta = time.time() - self.last_request
 			if t_delta < WAIT_TIME:
+				print "waiting"
 				time.sleep((WAIT_TIME - t_delta)/1000)
 				self.last_request = time.time()
 
 
 	def getJSONReply(self, url):
+		print url
 		self.stagger_response()
 		response = urllib2.urlopen(url);
 		html = response.read();
@@ -52,6 +55,12 @@ class LeagueClient:
 	##get challenger summoners
 	def get_challanger_data(self):
 		url = HTTPS + self.region + API_PART + self.region + CHALLENGER_ENDPOINT + "&" + API_KEY 
+		data = self.getJSONReply(url)
+		return data
+	
+	##get challenger summoners
+	def get_master_data(self):
+		url = HTTPS + self.region + API_PART + self.region + MASTER_ENDPOINT + "&" + API_KEY 
 		data = self.getJSONReply(url)
 		return data
 	

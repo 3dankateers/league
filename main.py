@@ -26,19 +26,20 @@ from svm_evaluator import SVMEvaluator
 ##TODO: deal with unicode errors insteadme.encode(encoding='UTF-8',errors='replace') of ignoring
 ##TODO: Add limits to amount of data pulled and come up with system to pull more efficiently
 ##TODO: Set patch limits on recent_matches
-## perhaps try finding smurfs statistically
+##TODO: perhaps try finding smurfs statistically
+##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
-	##pull_challengers("na")
-	##pull_matches("na")
+	pull_challengers("na")
+	pull_matches("na")
 	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
 	##calc_hyperpoints()
-	run_tests(SVMEvaluator)
+	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
 
