@@ -10,7 +10,8 @@ from pair_winrate_calculator import PairWinrateCalculator
 from comp_analyzer import CompAnalyzer
 from test_suite import TestSuite
 from one_champ_evaluator import OneChampEvaluator
-from pair_evaluator import PairEvaluator
+from ally_pair_evaluator import AllyPairEvaluator
+from enemy_pair_evaluator import EnemyPairEvaluator
 from trivial_evaluator import TrivialEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
@@ -34,7 +35,7 @@ def main():
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
 	
-	run_tests(TrivialEvaluator)
+	run_tests(EnemyPairEvaluator)
 
 
 def test_grab(lc):

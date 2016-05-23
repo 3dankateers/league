@@ -7,7 +7,7 @@ from db_client import DbClient
 from champ import Champ
 from one_champ_evaluator import OneChampEvaluator
 from evaluator import Evaluator
-from pair_evaluator import PairEvaluator
+from ally_pair_evaluator import AllyPairEvaluator
 
 
 
@@ -44,7 +44,7 @@ class CompAnalyzer:
 		one_champ_evaluator.print_results()
 	
 	def evaluate_pairs(self):
-		pair_evaluator = PairEvaluator(self.team1_ids, self.team2_ids)
+		pair_evaluator = AllyPairEvaluator(self.team1_ids, self.team2_ids)
 		pair_evaluator.process()
 		pair_evaluator.print_results()
 
