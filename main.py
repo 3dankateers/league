@@ -13,6 +13,7 @@ from one_champ_evaluator import OneChampEvaluator
 from ally_pair_evaluator import AllyPairEvaluator
 from enemy_pair_evaluator import EnemyPairEvaluator
 from trivial_evaluator import TrivialEvaluator
+from hyperpoint_calculator import HyperpointCalculator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -34,9 +35,14 @@ def main():
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
-	
-	run_tests(EnemyPairEvaluator)
+	calc_hyperpoints()
+	##run_tests(EnemyPairEvaluator)
 
+
+def calc_hyperpoints():
+	hc = HyperpointCalculator()
+	hc.run()
+	
 
 def test_grab(lc):
 	c = Summoner.get_one_summoner()

@@ -80,7 +80,7 @@ class Champ:
 			return cursor
 
 	@staticmethod
-	def find_all_champs():
+	def get_all_champs():
 		with DbClient() as db_client:
-			cursor = db_client.db.champs.find()
+			cursor = db_client.db.champs.find().sort("_id", 1)
 			return cursor
