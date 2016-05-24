@@ -32,13 +32,14 @@ from svm_evaluator import SVMEvaluator
 def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
-	pull_challengers("na")
-	pull_matches("na")
+	##calc_hyperpoints()
+	##pull_summoners("kr", "MASTER")
+	##pull_matches("kr", "MASTER")
 	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
-	##calc_hyperpoints()
+	new_tests()
 	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
@@ -66,17 +67,17 @@ def pull_champs():
 	lc = LeagueClient("global")
 	ChampParser.populate_champ_db(lc)
 
-def pull_challengers(region):
+def pull_summoners(region, tier):
 	lc = LeagueClient(region)
-	SummonerParser.add_challengers_to_db(lc)
+	SummonerParser.add_summoners_to_db(lc, tier)
 
 def pull_challengers_peers():
 	lc = LeagueClient("na")
 	SummonerParser.grab_peers_challenger(lc)
 
-def pull_matches(region):
+def pull_matches(region, tier):
 	lc = LeagueClient(region)
-	MatchParser.grab_matches_challenger(lc)
+	MatchParser.grab_matches_by_tier(lc, tier)
 
 def calc_champ_winrates():
 	winrate_calc = ChampWinrateCalculator()
@@ -92,14 +93,19 @@ def find_teams():
 
 def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
-	##ca.evaluate_all()
+	ca.evaluate_all()
 	##print str(ca.predict_winner())
 
+
+def new_tests():
+	TestSuite.set_new_tests()	
+	calc_hyperpoints()
+	calc_pair_winrates()
+	calc_champ_winrates()
 
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class):
-	##TestSuite.set_new_tests()	
 	ts = TestSuite(evaluator_class)
 	ts.run_simple_tests()
 

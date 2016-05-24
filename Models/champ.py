@@ -22,8 +22,8 @@ class Champ:
 	## if team already exists in db return it, otherwise return a new team
 	@classmethod
 	def get_champ(cls, id, name):
-		with DbClient() as db_client:
-			cursor = Champ.find_champ(db_client, id)
+		db_client = DbClient.get_client()	
+		cursor = Champ.find_champ(db_client, id)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:
@@ -36,8 +36,8 @@ class Champ:
 			return champ
 	
 	def save(self):
-		with DbClient() as db_client:
-			cursor = Champ.find_champ(db_client, self.id)
+		db_client = DbClient.get_client() 
+		cursor = Champ.find_champ(self.id)
 		##if already in db
 		if cursor.count() > 0:
 			self.update_champ()
@@ -46,41 +46,42 @@ class Champ:
 
 	
 	def create_champ(self):
-		with DbClient() as db_client:
-			record = db_client.db.champs.insert_one({
-					"_id" : self.id,
-					"name" : self.name,
-					"winrate" : self.winrate,
-					"winrate_sample_size" : self.winrate_sample_size
-				})
-			print "created champ"
+		db_client = DbClient.get_client()	
+		record = db_client.league.champs.insert_one({
+				"_id" : self.id,
+				"name" : self.name,
+				"winrate" : self.winrate,
+				"winrate_sample_size" : self.winrate_sample_size
+			})
+		print "created champ"
 	
 	## update existing champ with new values passed in
 	def update_champ(self):
-		with DbClient() as db_client:
-			db_client.db.champs.update_one(
-					{"_id" : self.id},{
-						"$set": {
-							"winrate" : self.winrate,
-							"winrate_sample_size" : self.winrate_sample_size
-							}
-					})
-			print "Updated champ" 
+		db_client = DbClient.get_client()	
+		db_client.league.champs.update_one(
+				{"_id" : self.id},{
+					"$set": {
+						"winrate" : self.winrate,
+						"winrate_sample_size" : self.winrate_sample_size
+						}
+				})
+		print "Updated champ" 
 	
 	## find champ and return it based on id
 	@staticmethod
-	def find_champ(db_client, id):
-		cursor = db_client.db.champs.find({"_id" : id})
+	def find_champ(id):
+		db_client = DbClient.get_client()
+		cursor = db_client.league.champs.find({"_id" : id})
 		return cursor
 
 	@staticmethod
 	def find_champ_by_name(name):
-		with DbClient() as db_client:
-			cursor = db_client.db.champs.find({"name" : name})
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.champs.find({"name" : name})
+		return cursor
 
 	@staticmethod
 	def get_all_champs():
-		with DbClient() as db_client:
-			cursor = db_client.db.champs.find().sort("_id", 1)
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.champs.find().sort("_id", 1)
+		return cursor

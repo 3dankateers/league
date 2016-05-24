@@ -2,11 +2,10 @@
 ## evaluate 2 team comps based on enemy pairs of champions 
 ############################################################################
 
-from db_client import DbClient
 from pair import Pair
 from evaluator import Evaluator
 
-PAIR_SAMPLE_LIMIT = 10
+PAIR_SAMPLE_LIMIT = 20
 
 ##helper class to store results for each team comp
 class TeamWinrateInfo:
@@ -55,37 +54,36 @@ class EnemyPairEvaluator(Evaluator):
 	
 	## takes 2 team_winrate_info and processes enemy winrates
 	def process_winrate_enemies(self, twi1, twi2):
-		with DbClient() as db_client:
-			champs1 = twi1.team_comp
-			champs2 = twi2.team_comp
-			for c1 in champs1:
-				for c2 in champs2:
-						## create all possible combinations of pairs from 2 team comps
-						pair_id = Pair.calc_id(c1,c2,"enemy")
-						cursor = Pair.find_pair(db_client, pair_id)
+		champs1 = twi1.team_comp
+		champs2 = twi2.team_comp
+		for c1 in champs1:
+			for c2 in champs2:
+					## create all possible combinations of pairs from 2 team comps
+					pair_id = Pair.calc_id(c1,c2,"enemy")
+					cursor = Pair.find_pair(pair_id)
 
-						##only look at winrates if we can find pair in db 
-						if cursor.count() > 0:
-							pair = Pair.from_dict(cursor[0])
+					##only look at winrates if we can find pair in db 
+					if cursor.count() > 0:
+						pair = Pair.from_dict(cursor[0])
 
-							##make sure pair same size is statistically significant
-							if pair.winrate_sample_size > PAIR_SAMPLE_LIMIT:
-								## winrate doesn't need to be inversed since c1 remains c1 in pair_tuple
-								if pair.pair_tuple[0] == c1:
-									twi1.total_winrate += pair.winrate
-									twi1.num_relevant_pairs += 1
-									twi2.total_winrate += (1- pair.winrate)
-									twi2.num_relevant_pairs += 1
-								elif pair.pair_tuple[0] == c2:
-									twi1.total_winrate += (1 - pair.winrate)
-									twi1.num_relevant_pairs += 1
-									twi2.total_winrate += pair.winrate
-									twi2.num_relevant_pairs += 1
-			
-			if twi1.num_relevant_pairs > 0:
-				twi1.update_aggregate_winrate()
-			if twi2.num_relevant_pairs > 0:
-				twi2.update_aggregate_winrate()
+						##make sure pair same size is statistically significant
+						if pair.winrate_sample_size > PAIR_SAMPLE_LIMIT:
+							## winrate doesn't need to be inversed since c1 remains c1 in pair_tuple
+							if pair.pair_tuple[0] == c1:
+								twi1.total_winrate += pair.winrate
+								twi1.num_relevant_pairs += 1
+								twi2.total_winrate += (1- pair.winrate)
+								twi2.num_relevant_pairs += 1
+							elif pair.pair_tuple[0] == c2:
+								twi1.total_winrate += (1 - pair.winrate)
+								twi1.num_relevant_pairs += 1
+								twi2.total_winrate += pair.winrate
+								twi2.num_relevant_pairs += 1
+		
+		if twi1.num_relevant_pairs > 0:
+			twi1.update_aggregate_winrate()
+		if twi2.num_relevant_pairs > 0:
+			twi2.update_aggregate_winrate()
 
 
 

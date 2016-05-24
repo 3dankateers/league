@@ -54,63 +54,63 @@ class Summoner:
 				
 	## add new summoner to db 
 	def create_summoner(self):
-		with DbClient() as db_client:
-			record = db_client.db.summoners.insert_one({
-				"_id" : self.id,
-				"name" : self.name,
-				"tier" : self.tier,
-				"division" : self.division,
-				"region" : self.region,
-				"date_scraped_peers" : self.date_scraped_peers,
-				"date_scraped_matches" : self.date_scraped_matches
-				})
-			try:		
-				print "Created summoner: " + self.name.encode(encoding='UTF-8',errors='replace')
-			except:
-				pass
+		db_client = DbClient.get_client()	
+		record = db_client.league.summoners.insert_one({
+			"_id" : self.id,
+			"name" : self.name,
+			"tier" : self.tier,
+			"division" : self.division,
+			"region" : self.region,
+			"date_scraped_peers" : self.date_scraped_peers,
+			"date_scraped_matches" : self.date_scraped_matches
+			})
+		try:		
+			print "Created summoner: " + self.name.encode(encoding='UTF-8',errors='replace')
+		except:
+			pass
 		
 	## update existing summoner with new values 
 	def update_summoner(self):
-		with DbClient() as db_client:
-			db_client.db.summoners.update_one(
-					{"_id" : self.id},{
-						"$set": {
-							"name" : self.name,
-							"tier" : self.tier,
-							"division" : self.division,
-							"region" : self.region,
-							"date_scraped_peers" : self.date_scraped_peers,
-							"date_scraped_matches" : self.date_scraped_matches
-							}
-					})
-			try:		
-				print "Updated summoner: " + self.name.encode(encoding='UTF-8',errors='replace')
-			except:
-				pass
+		db_client = DbClient.get_client()
+		db_client.league.summoners.update_one(
+				{"_id" : self.id},{
+					"$set": {
+						"name" : self.name,
+						"tier" : self.tier,
+						"division" : self.division,
+						"region" : self.region,
+						"date_scraped_peers" : self.date_scraped_peers,
+						"date_scraped_matches" : self.date_scraped_matches
+						}
+				})
+		try:		
+			print "Updated summoner: " + self.name.encode(encoding='UTF-8',errors='replace')
+		except:
+			pass
 
 	##mostly for testing
 	##return first summoner found
 	@staticmethod
 	def get_one_summoner():
-		with DbClient() as db_client:
-			cursor = db_client.db.summoners.find()
-			if cursor.count() > 0:
-				return cursor
-			else:
-				print "Summoner collection is empty"
-				return None
+		db_client = DbClient.get_client()
+		cursor = db_client.league.summoners.find()
+		if cursor.count() > 0:
+			return cursor
+		else:
+			print "Summoner collection is empty"
+			return None
 	
 	## return cursor to all summoners of the given tier
 	@staticmethod
 	def get_summoners_on_tier(t):
-		with DbClient() as db_client:
-			cursor = db_client.db.summoners.find({"tier" : t})
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.summoners.find({"tier" : t})
+		return cursor
 	
 	
 	## find summoner and return it based on id
 	@staticmethod
 	def find_summoner(id):
-		with DbClient() as db_client:
-			cursor = db_client.db.summoners.find({"_id" : id})
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.summoners.find({"_id" : id})
+		return cursor

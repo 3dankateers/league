@@ -60,44 +60,45 @@ class Pair:
 			self.id = self.create_pair()
 	
 	def create_pair(self):
-		with DbClient() as db_client:
-			record = db_client.db.pairs.insert_one({
-					"champ1" : self.champ1,
-					"champ2" : self.champ2,
-					"type" : self.type,
-					"winrate" : self.winrate,
-					"winrate_sample_size" : self.winrate_sample_size
-				})
-			print "created pair"
-			return record.inserted_id
+		db_client = DbClient.get_client()
+		record = db_client.league.pairs.insert_one({
+				"champ1" : self.champ1,
+				"champ2" : self.champ2,
+				"type" : self.type,
+				"winrate" : self.winrate,
+				"winrate_sample_size" : self.winrate_sample_size
+			})
+		print "created pair"
+		return record.inserted_id
 	
 	## update existing pair with new values 
 	def update_pair(self):
-		with DbClient() as db_client:
-			db_client.db.pairs.update_one(
-					{"_id" : self.id},{
-						"$set": {
-							"winrate" : self.winrate,
-							"winrate_sample_size" : self.winrate_sample_size
-							}
-					})
-			print "Updated pair." 
+		db_client = DbClient.get_client()
+		db_client.league.pairs.update_one(
+				{"_id" : self.id},{
+					"$set": {
+						"winrate" : self.winrate,
+						"winrate_sample_size" : self.winrate_sample_size
+						}
+				})
+		print "Updated pair." 
 
 	##insert multiple documents
 	@staticmethod
 	def insert_all(dicts):
-		with DbClient() as db_client:
-			db_client.db.pairs.insert(dicts)
+		db_client = DbClient.get_client()
+		db_client.league.pairs.insert(dicts)
 
 	## delete all documents
 	@staticmethod
 	def drop_all():
-		with DbClient() as db_client:
-			db_client.db.pairs.drop()
-	
+		db_client = DbClient.get_client()
+		db_client.league.pairs.drop()
+
 	## find pair and return it based on champ1, champ2, and type
 	@staticmethod
-	def find_pair(db_client, id):
-		cursor = db_client.db.pairs.find({
+	def find_pair(id):
+		db_client = DbClient.get_client()
+		cursor = db_client.league.pairs.find({
 			"_id" : id})
 		return cursor

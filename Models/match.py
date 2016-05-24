@@ -62,60 +62,60 @@ class Match:
 	
 	## add new match to db 
 	def create_match(self):
-		with DbClient() as db_client:
-			record = db_client.db.matches.insert_one({
-				"_id" : self.id,
-				"team1" : self.team1,
-				"team2" : self.team2,
-				"champs1" : self.champs1,
-				"champs2" : self.champs2,
-				"duration" : self.duration,
-				"win" : self.win,
-				"gametype" : self.gametype,
-				"region" : self.region,
-				"patch" : self.patch,
-				"tier" : self.tier,
-				"date" : self.date,
-				"is_test" : self.is_test
-				})
-			print "Created match"
+		db_client = DbClient.get_client()
+		record = db_client.league.matches.insert_one({
+			"_id" : self.id,
+			"team1" : self.team1,
+			"team2" : self.team2,
+			"champs1" : self.champs1,
+			"champs2" : self.champs2,
+			"duration" : self.duration,
+			"win" : self.win,
+			"gametype" : self.gametype,
+			"region" : self.region,
+			"patch" : self.patch,
+			"tier" : self.tier,
+			"date" : self.date,
+			"is_test" : self.is_test
+			})
+		print "Created match"
 	
 	## update existing pair with new values 
 	def update_match(self):
-		with DbClient() as db_client:
-			db_client.db.matches.update_one(
-					{"_id" : self.id},{
-						"$set": {
-							"is_test" : self.is_test,
-							}
-					})
-			print "Updated match." 
+		db_client = DbClient.get_client()	
+		db_client.league.matches.update_one(
+				{"_id" : self.id},{
+					"$set": {
+						"is_test" : self.is_test,
+						}
+				})
+		print "Updated match." 
 
 	
 	## find match and return it based on id
 	@staticmethod
 	def find_match(id):
-		with DbClient() as db_client:
-			cursor = db_client.db.matches.find({"_id" : id})
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.matches.find({"_id" : id})
+		return cursor
 	
 	## return all matches
 	@staticmethod
 	def get_all_matches():
-		with DbClient() as db_client:	
-			cursor = db_client.db.matches.find()
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.matches.find()
+		return cursor
 	
 	## return all matches not marked as is_test
 	@staticmethod
 	def get_training_set():
-		with DbClient() as db_client:	
-			cursor = db_client.db.matches.find({"is_test" : False})
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.matches.find({"is_test" : False})
+		return cursor
 	
 	## return all matches that are labeled is_test
 	@staticmethod
 	def get_test_set():
-		with DbClient() as db_client:	
-			cursor = db_client.db.matches.find({"is_test" : True})
-			return cursor
+		db_client = DbClient.get_client()	
+		cursor = db_client.league.matches.find({"is_test" : True})
+		return cursor

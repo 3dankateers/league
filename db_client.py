@@ -15,15 +15,12 @@ from pymongo import MongoClient
 class DbClient:
 	##MONGO_USERNAME = 'root'
 	##MONGO_PASSWORD = 'm6E7K1GLwcz58q'
-
-	def __init__(self):
-		self.client = MongoClient("mongodb://localhost:27017/")
-		self.db = self.client.league
-		##self.db.authenticate(self.MONGO_USERNAME, self.MONGO_PASSWORD, source='admin')
 	
-	def __enter__(self):
-		return self
-	
-	def __exit__(self, exc_type, exc_value, tb):
-		self.client.close()
+	client = None
 
+	@staticmethod
+	def get_client():
+		if DbClient.client == None:
+			DbClient.client = MongoClient("mongodb://localhost:27017/")
+		return DbClient.client
+			##self.db.authenticate(self.MONGO_USERNAME, self.MONGO_PASSWORD, source='admin')

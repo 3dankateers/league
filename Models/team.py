@@ -24,8 +24,8 @@ class Team:
 	## if team already exists in db return it, otherwise return a new team
 	@classmethod
 	def get_team(cls, summoners):
-		with DbClient() as db_client:
-			cursor = Team.find_team(summoners)
+		db_client = DbClient.get_client()
+		cursor = Team.find_team(summoners)
 		
 		##if doesn't exist in db
 		if cursor.count() == 0:
@@ -44,40 +44,40 @@ class Team:
 	
 	## push team into database
 	def save(self):
-		with DbClient() as db_client:
-			#if already exists in db
-			if self.id != None:
-				self.update_team()
-			else:
-				self.id = self.create_team()
+		db_client.get_client()
+		#if already exists in db
+		if self.id != None:
+			self.update_team()
+		else:
+			self.id = self.create_team()
 	
 	
 	def create_team(self):
-		with DbClient() as db_client:
-			record = db_client.db.teams.insert_one({
-					"summoners" : self.summoners,
-					"matches" : self.matches,
-					"date_created" : self.date_created
-				})
-			print "Created new team with ", str(len(self.matches)), " matches."
-			return record.inserted_id
+		db_client = DbClient.get_client()	
+		record = db_client.league.teams.insert_one({
+				"summoners" : self.summoners,
+				"matches" : self.matches,
+				"date_created" : self.date_created
+			})
+		print "Created new team with ", str(len(self.matches)), " matches."
+		return record.inserted_id
 
 	
 	## update existing team with new values passed in
 	def update_team(self):
-		with DbClient() as db_client:
-			db_client.db.teams.update_one(
-					{"_id" : self.id},{
-						"$set": {
-							"matches" : self.matches
-							}
-					})
-			print "Updated team" 
+		db_client = DbClient.get_client()
+		db_client.league.teams.update_one(
+				{"_id" : self.id},{
+					"$set": {
+						"matches" : self.matches
+						}
+				})
+		print "Updated team" 
 
 	## find team and return it based on list of summoners
 	@staticmethod
 	def find_team(summoners):
-		with DbClient() as db_client:
-			cursor = db_client.db.teams.find({"summoners" : summoners})
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.teams.find({"summoners" : summoners})
+		return cursor
 

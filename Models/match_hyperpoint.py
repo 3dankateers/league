@@ -26,45 +26,43 @@ class MatchHyperpoint:
 	def save(self):
 		self.id = self.create_match_hyperpoint()
 	
-	
 	## add new match to db 
 	def create_match_hyperpoint(self):
-		with DbClient() as db_client:
-			record = db_client.db.matches_hyperpoints.insert_one({
-				"match_id" : self.match_id,
-				"coordinates" : self.coordinates,
-				"winner" : self.winner
-				})
-			print "Created match_hyperpoint"
+		db_client = DbClient.get_client()
+		record = db_client.league.matches_hyperpoints.insert_one({
+			"match_id" : self.match_id,
+			"coordinates" : self.coordinates,
+			"winner" : self.winner
+			})
+		print "Created match_hyperpoint"
 		return record.inserted_id
 	
 	## given team1 and team2 champids	return corresponding coordinates
 	@staticmethod
 	def get_coordinates(team1_ids, team2_ids):
 		coordinates = []
-		with DbClient() as db_client:
-			cursor = Champ.get_all_champs()
-			for c in cursor:
-				champ = Champ.from_dict(c)
-				if champ.id in team1_ids:
-					coordinates.append(-1)
-				elif champ.id in team2_ids:
-					coordinates.append(1)
-				else:
-					coordinates.append(0)
+		cursor = Champ.get_all_champs()
+		for c in cursor:
+			champ = Champ.from_dict(c)
+			if champ.id in team1_ids:
+				coordinates.append(-1)
+			elif champ.id in team2_ids:
+				coordinates.append(1)
+			else:
+				coordinates.append(0)
 		return coordinates
 
 	## return all match_hyperpoints
 	@staticmethod
 	def get_all():
-		with DbClient() as db_client:	
-			cursor = db_client.db.matches_hyperpoints.find()
-			return cursor
+		db_client = DbClient.get_client()
+		cursor = db_client.league.matches_hyperpoints.find()
+		return cursor
 	
 	## return all match_hyperpoints
 	@staticmethod
 	def delete_all():
-		with DbClient() as db_client:	
-			cursor = db_client.db.matches_hyperpoints.drop()
+		db_client = DbClient.get_client()
+		cursor = db_client.league.matches_hyperpoints.drop()
 
 	

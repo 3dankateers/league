@@ -2,7 +2,6 @@
 ## analyzes data from matches db and calculates winrates for each champ
 ## inserts winrates into db
 ############################################################################
-from db_client import DbClient
 from champ import Champ
 from match import Match
 
@@ -46,11 +45,10 @@ class ChampWinrateCalculator:
 
 	##update db champ with a new winrate and sample size fot that winrate
 	def update_winrates(self):
-		with DbClient() as db_client:
 			for key, value in self.wins.iteritems():
 				##make sure key is present in both dicts
 				if key in self.losses:
-					cursor = Champ.find_champ(db_client, key)
+					cursor = Champ.find_champ(key)
 					champ = Champ.from_dict(cursor[0])
 					sample_size = value + self.losses[key]
 					winrate = value / float(sample_size)

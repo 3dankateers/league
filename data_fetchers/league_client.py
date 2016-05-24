@@ -5,8 +5,10 @@
 
 import json;
 import urllib2
+from urllib2 import URLError
 import datetime
 import time
+from retrying import retry
 
 API_KEY = "api_key=eeff2e9b-5f33-4de0-af17-16b98a4c4b3e" 
 HTTPS = "https://"
@@ -18,7 +20,11 @@ GAME_ENDPOINT = "/v1.3/game/by-summoner/"
 LEAGUE_ENDPOINT = "/v2.5/league/by-summoner/"
 STATIC_ENDPOINT = ".api.pvp.net/api/lol/static-data/na/v1.2/champion"
 
-WAIT_TIME = 3000
+WAIT_TIME = 1500
+
+def retry_if_url_error(exception):
+	return isinstance(exception, URLError)
+
 
 class LeagueClient:
 
@@ -36,12 +42,17 @@ class LeagueClient:
 				print "waiting"
 				time.sleep((WAIT_TIME - t_delta)/1000)
 				self.last_request = time.time()
-
+	
+	
+	@retry(retry_on_exception=retry_if_url_error)
+	def urlopen_with_retry(self, url):
+		return urllib2.urlopen(url)
+	
 
 	def getJSONReply(self, url):
 		print url
 		self.stagger_response()
-		response = urllib2.urlopen(url);
+		response = self.urlopen_with_retry(url)
 		html = response.read();
 		data = json.loads(html);
 		return data;

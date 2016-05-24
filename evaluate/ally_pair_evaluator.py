@@ -2,11 +2,10 @@
 ## evaluate 2 team comps based on pairs of champions 
 ############################################################################
 
-from db_client import DbClient
 from pair import Pair
 from evaluator import Evaluator
 
-PAIR_SAMPLE_LIMIT = 10
+PAIR_SAMPLE_LIMIT = 20
 
 ##helper class to store results for each team comp
 class TeamWinrateInfo:
@@ -55,22 +54,21 @@ class AllyPairEvaluator(Evaluator):
 
 	## takes team_ally_info and processes it by calculating all ally winrates
 	def process_winrate_allies(self, twi):
-		with DbClient() as db_client:
-			champs = twi.team_comp
-			for c1 in champs:
-				for c2 in champs:
-					if c1 != c2:
-						## create all possible combinations of pairs from team comp
-						pair_id = Pair.calc_id(c1,c2,"ally")
-						cursor = Pair.find_pair(db_client, pair_id)
-						if cursor.count() > 0:
-							pair = Pair.from_dict(cursor[0])
+		champs = twi.team_comp
+		for c1 in champs:
+			for c2 in champs:
+				if c1 != c2:
+					## create all possible combinations of pairs from team comp
+					pair_id = Pair.calc_id(c1,c2,"ally")
+					cursor = Pair.find_pair(pair_id)
+					if cursor.count() > 0:
+						pair = Pair.from_dict(cursor[0])
 
-							##make sure pair same size is statistically significant
-							if pair.winrate_sample_size > PAIR_SAMPLE_LIMIT:
-								twi.total_winrate += pair.winrate
-								twi.num_relevant_pairs += 1
-			
-			if twi.num_relevant_pairs > 0:
-				twi.update_aggregate_winrate()	
-	
+						##make sure pair same size is statistically significant
+						if pair.winrate_sample_size > PAIR_SAMPLE_LIMIT:
+							twi.total_winrate += pair.winrate
+							twi.num_relevant_pairs += 1
+		
+		if twi.num_relevant_pairs > 0:
+			twi.update_aggregate_winrate()	
+

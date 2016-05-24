@@ -1,7 +1,6 @@
 ############################################################################
 ## prints results of evaluating team comp based on winrates of each champ 
 ############################################################################
-from db_client import DbClient
 from champ import Champ
 from evaluator import Evaluator
 
@@ -56,13 +55,12 @@ class OneChampEvaluator(Evaluator):
 
 	##calculates all neccesary team info and updates ti (teaminfo)
 	def process_team(self, ti):
-		with DbClient() as db_client:
-			for i,champ_id in enumerate(ti.champ_ids):
-				cursor = Champ.find_champ(db_client, champ_id)
-				champ = Champ.from_dict(cursor[0])
-				if (champ.winrate != None) and (champ.winrate_sample_size > ONE_CHAMP_SAMPLE_LIMIT):
-					ti.winrates[i] = champ.winrate
-					ti.num_champs_considered += 1
+		for i,champ_id in enumerate(ti.champ_ids):
+			cursor = Champ.find_champ(champ_id)
+			champ = Champ.from_dict(cursor[0])
+			if (champ.winrate != None) and (champ.winrate_sample_size > ONE_CHAMP_SAMPLE_LIMIT):
+				ti.winrates[i] = champ.winrate
+				ti.num_champs_considered += 1
 		ti.update_aggregate_winrate()
 
 	def print_results(self):

@@ -13,24 +13,27 @@ from misc_helper import MiscHelper
 
 class SummonerParser:
 	
-	##add all challangers to db
+	##add all summoners to db
 	@staticmethod
-	def add_challengers_to_db(lc):
-		print "Adding all challengers to db..."
-		data = lc.get_challanger_data()
-		SummonerParser.populate_challengers(lc, data)
+	def add_summoners_to_db(lc, tier):
+		print "Adding all summoners to db..."
+		if tier == "CHALLENGER":
+			data = lc.get_challanger_data()
+		else:
+			data = lc.get_master_data()
+		SummonerParser.populate_summoners(lc, tier, data)
 
 
 	## populate db with all challangers given data
 	@staticmethod
-	def populate_challengers(lc, data):
+	def populate_summoners(lc, t, data):
 		summoners = data["entries"]
 		for s in summoners:
 			name = s["playerOrTeamName"].encode(encoding='UTF-8',errors='replace')
 			id = s["playerOrTeamId"]
 			division = s["division"]
 			region = lc.region
-			tier = "CHALLENGER"
+			tier = t
 			s_model = Summoner.get_summoner(id, name, tier, division, region)
 			s_model.save()
 	
@@ -84,12 +87,11 @@ class SummonerParser:
 	@staticmethod
 	def grab_peers_challenger(lc):
 		print "Adding all peers of challengers to db"
-		with DbClient() as db_client:
-			cursor = db_client.get_summoners_on_tier("CHALLENGER")
-			for d in cursor:
-				s = Summoner.from_dict(d)
-				if MiscHelper.check_time_diff(s.date_scraped_peers):
-					SummonerParser.grab_peers(lc, s)
+		cursor = Summoner.get_summoners_on_tier("CHALLENGER")
+		for d in cursor:
+			s = Summoner.from_dict(d)
+			if MiscHelper.check_time_diff(s.date_scraped_peers):
+				SummonerParser.grab_peers(lc, s)
 
 
 

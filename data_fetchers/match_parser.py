@@ -93,9 +93,9 @@ class MatchParser:
 	
 	## grab recent relevant matches by summoner
 	@staticmethod
-	def grab_matches_challenger(lc):
+	def grab_matches_by_tier(lc, tier):
 		print "Adding all matches of challengers to db"
-		cursor = Summoner.get_summoners_on_tier("CHALLENGER")
+		cursor = Summoner.get_summoners_on_tier(tier)
 		for d in cursor:
 			s = Summoner.from_dict(d)
 			##make sure region matches

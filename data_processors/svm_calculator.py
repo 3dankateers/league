@@ -44,10 +44,11 @@ class SVMCalculator:
 		##X = np.array(X).reshape(1,(len(X)))
 		##y = np.array(y).
 
-		svm_model = svm.SVC(kernel = "rbf", C = 1, gamma = 1/float(10), decision_function_shape = "ovr",  verbose = True)
+		svm_model = svm.SVC(kernel = "poly", C = 2, degree = 3, gamma = 0.1, decision_function_shape = "ovr",  verbose = True)
 		svm_model.fit(X,y)
 		print "New SVM model created: "
 		print str(svm_model)
+		print str(svm_model.n_support_)
 		print str(svm_model.decision_function)
 		return svm_model
 
