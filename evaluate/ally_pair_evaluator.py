@@ -4,6 +4,7 @@
 
 from pair import Pair
 from evaluator import Evaluator
+from pair_winrate_calculator import PairWinrateCalculator
 
 PAIR_SAMPLE_LIMIT = 20
 
@@ -25,6 +26,12 @@ class AllyPairEvaluator(Evaluator):
 		self.team1_ally_info = TeamWinrateInfo(team1)
 		self.team2_ally_info = TeamWinrateInfo(team2)
 	
+	@staticmethod
+	def retrain():
+		winrate_calc = PairWinrateCalculator()
+		winrate_calc.run()
+		
+
 	##processes each team comp in turn
 	def process(self):
 		print "Processing pairs in team comp ..."

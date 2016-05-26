@@ -17,6 +17,10 @@ class Evaluator:
 	@abstractmethod
 	## print summary of results calculated
 	def print_results(self): pass
+	
+	@abstractmethod
+	## recalculate values used to train model(presumably called after tests were changed)
+	def retrain(): pass
 
 	## take in a list of champ names and return a list of champ ids
 	@staticmethod

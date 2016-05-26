@@ -60,10 +60,13 @@ class TestSuite:
 				self.tests_passed += 1
 			else:
 				self.tests_failed += 1
+		self.performance = self.tests_passed/float(self.tests_passed + self.tests_failed)
+		return self.performance
 
+	##print results of running tests
+	def print_results(self):
 		print "Tests Passed: ", self.tests_passed
 		print "Tests Failed: ", self.tests_failed
-		print "Performance: ", self.tests_passed/float(self.tests_passed + self.tests_failed)
-
+		print "Performance: ", self.performance 
 
 

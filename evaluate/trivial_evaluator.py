@@ -10,6 +10,10 @@ class TrivialEvaluator(Evaluator):
 
 	def predict_winner(self):
 		return self.winner
+	
+	@staticmethod
+	def retrain():
+		pass
 
 	def print_results(self):
 		print "Trivial Evaluator"

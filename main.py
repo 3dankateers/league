@@ -17,6 +17,7 @@ from hyperpoint_calculator import HyperpointCalculator
 from svm_calculator import SVMCalculator
 from svm_evaluator import SVMEvaluator
 from edge_calculator import EdgeCalculator
+from cross_validator import CrossValidator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -44,7 +45,13 @@ def main():
 	##run_tests(TrivialEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
-	calc_edge(-118,135)
+	##calc_edge(-118,135)
+	cross_validate(AllyPairEvaluator)
+
+def cross_validate(evaluator):
+	cv = CrossValidator(evaluator)
+	cv.run()
+	cv.print_results()
 
 def calc_edge(ml1, ml2):
 	EdgeCalculator.analyze_odds(ml1,ml2)

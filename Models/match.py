@@ -89,7 +89,7 @@ class Match:
 						"is_test" : self.is_test,
 						}
 				})
-		print "Updated match." 
+		##print "Updated match." 
 
 	
 	## find match and return it based on id

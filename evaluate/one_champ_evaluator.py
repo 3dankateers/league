@@ -3,6 +3,7 @@
 ############################################################################
 from champ import Champ
 from evaluator import Evaluator
+from champ_winrate_calculator import ChampWinrateCalculator
 
 ONE_CHAMP_SAMPLE_LIMIT = 20
 
@@ -41,7 +42,13 @@ class OneChampEvaluator(Evaluator):
 	## return 1 if team1 is favoured, else return 2
 	def predict_winner(self):
 		return self.winner
-	
+
+	@staticmethod
+	def retrain():
+		winrate_calc = ChampWinrateCalculator()
+		winrate_calc.run()
+		
+
 	## calculate winrates needed
 	## process each team independently
 	def process(self):

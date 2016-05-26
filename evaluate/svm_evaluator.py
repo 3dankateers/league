@@ -6,6 +6,7 @@ from evaluator import Evaluator
 from db_client import DbClient
 from svm_calculator import SVMCalculator
 from match_hyperpoint import MatchHyperpoint
+from hyperpoint_calculator import HyperpointCalculator
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -15,6 +16,11 @@ class SVMEvaluator(Evaluator):
 	def __init__(self, team1, team2):
 		self.team1_ids = team1
 		self.team2_ids = team2
+	
+	@staticmethod
+	def retrain():
+		hc = HyperpointCalculator()
+		hc.run()
 
 	def process(self):
 		svm_model = SVMCalculator.get_svm_model()
