@@ -33,14 +33,14 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	##pull_summoners("kr", "MASTER")
-	##pull_matches("kr", "MASTER")
+	##pull_summoners("na", "MASTER")
+	##pull_matches("na", "MASTER")
 	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
-	new_tests()
-	##run_tests(SVMEvaluator)
+	##new_tests()
+	run_tests(TrivialEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
 
