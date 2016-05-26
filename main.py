@@ -16,6 +16,7 @@ from trivial_evaluator import TrivialEvaluator
 from hyperpoint_calculator import HyperpointCalculator
 from svm_calculator import SVMCalculator
 from svm_evaluator import SVMEvaluator
+from edge_calculator import EdgeCalculator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -40,9 +41,13 @@ def main():
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
 	##new_tests()
-	run_tests(TrivialEvaluator)
+	##run_tests(TrivialEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
+	calc_edge(-118,135)
+
+def calc_edge(ml1, ml2):
+	EdgeCalculator.analyze_odds(ml1,ml2)
 
 def evaluate_svm(t1, t2, svm_model):
 	ca = CompAnalyzer(t1, t2)
