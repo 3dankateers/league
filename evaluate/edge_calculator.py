@@ -12,7 +12,12 @@ class EdgeCalculator:
 		implied_p1 = EdgeCalculator.ml_to_prob(ml1)
 		implied_p2 = EdgeCalculator.ml_to_prob(ml2)
 		print "implied probability1 = ", str(implied_p1)	
-		print "implied probability2 = ", str(implied_p2)	
+		print "implied probability2 = ", str(implied_p2)
+		normal_p1 = implied_p1/(implied_p1 + implied_p2)
+		normal_p2 = implied_p2/(implied_p1 + implied_p2)
+		print "actual probability1 = ", str(normal_p1)	
+		print "actual probability2 = ", str(normal_p2)
+		print "loss spread = ", str(implied_p1 + implied_p2 - 1)
 
 
 	

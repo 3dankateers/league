@@ -5,7 +5,7 @@ from champ import Champ
 from evaluator import Evaluator
 from champ_winrate_calculator import ChampWinrateCalculator
 
-CONF_THRESHOLD = 0.03
+CONF_THRESHOLD = 0.02
 ONE_CHAMP_SAMPLE_LIMIT = 20
 
 ##stores information calculated in process()

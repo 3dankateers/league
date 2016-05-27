@@ -37,21 +37,14 @@ class SVMCalculator:
 		
 		X = np.array(X)
 		y = np.array(y)
-		##print str(X.size)
-		##print str(X.size)
-		##print str(X.shape)
-		
-		##X = np.array(X).reshape(1,(len(X)))
-		##y = np.array(y).
-		
-		##58%
-		new_svm_model = svm.SVC(kernel = "linear", C = 0.5, degree = 3, probability = True, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
+		##C=0.5 gamma = 0.05 => 58%
+		new_svm_model = svm.SVC(kernel = "linear", C = 0.5, degree = 1, probability = True, gamma = 0.01, decision_function_shape = "ovr",  verbose = False)
 		##svm_model = svm.SVC(kernel = "poly", C = 1, degree = 3, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
 		new_svm_model.fit(X,y)
 		print "New SVM model created: "
-		print str(new_svm_model)
-		print str(new_svm_model.n_support_)
-		print str(new_svm_model.decision_function)
+		##print str(new_svm_model)
+		##print str(new_svm_model.n_support_)
+		##print str(new_svm_model.decision_function)
 		SVMCalculator.svm_model = new_svm_model
 		return new_svm_model
 

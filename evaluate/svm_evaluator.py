@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-CONF_THRESHOLD = 0.08
+CONF_THRESHOLD = 0.10
 
 class SVMEvaluator(Evaluator):
 

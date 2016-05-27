@@ -18,6 +18,7 @@ from svm_calculator import SVMCalculator
 from svm_evaluator import SVMEvaluator
 from edge_calculator import EdgeCalculator
 from cross_validator import CrossValidator
+from svm_trainer import SVMTrainer
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -42,11 +43,12 @@ def main():
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
 	##evaluate_comp(team1, team2)
 	##new_tests()
-	##run_tests(TrivialEvaluator)
+	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
-	##calc_edge(-118,135)
-	cross_validate(SVMEvaluator, 5)
+	calc_edge(200,-302)
+	##SVMTrainer.run()	
+	##cross_validate(SVMEvaluator, 5)
 
 def cross_validate(evaluator, num_runs):
 	cv = CrossValidator(evaluator, num_runs)
