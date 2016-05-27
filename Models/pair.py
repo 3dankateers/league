@@ -81,7 +81,7 @@ class Pair:
 						"winrate_sample_size" : self.winrate_sample_size
 						}
 				})
-		print "Updated pair." 
+		##print "Updated pair." 
 
 	##insert multiple documents
 	@staticmethod

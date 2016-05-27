@@ -46,10 +46,10 @@ def main():
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
 	##calc_edge(-118,135)
-	cross_validate(AllyPairEvaluator)
+	cross_validate(SVMEvaluator, 5)
 
-def cross_validate(evaluator):
-	cv = CrossValidator(evaluator)
+def cross_validate(evaluator, num_runs):
+	cv = CrossValidator(evaluator, num_runs)
 	cv.run()
 	cv.print_results()
 
@@ -107,7 +107,6 @@ def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
 	ca.evaluate_all()
 	##print str(ca.predict_winner())
-
 
 def new_tests():
 	TestSuite.set_new_tests()	

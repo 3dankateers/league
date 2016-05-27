@@ -11,6 +11,8 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
+CONF_THRESHOLD = 0.08
+
 class SVMEvaluator(Evaluator):
 
 	def __init__(self, team1, team2):
@@ -21,6 +23,7 @@ class SVMEvaluator(Evaluator):
 	def retrain():
 		hc = HyperpointCalculator()
 		hc.run()
+		SVMCalculator.get_new_model()
 
 	def process(self):
 		svm_model = SVMCalculator.get_svm_model()
@@ -28,11 +31,22 @@ class SVMEvaluator(Evaluator):
 		coordinates = MatchHyperpoint.get_coordinates(self.team1_ids, self.team2_ids) 
 		
 		##returns array of 1 element which should be 100 or 200
-		self.winner = svm_model.predict(coordinates)[0]
-	
+		##self.winner = svm_model.predict(coordinates)[0]
+		self.probs = svm_model.predict_proba(coordinates)[0]
+		if self.probs[0] > self.probs[1]:
+			self.winner = 100
+		else:
+			self.winner = 200
+		
+
 	def predict_winner(self):
-		print str(self.winner)
 		return self.winner
+
+	def is_confident(self):
+		if abs(self.probs[0] - self.probs[1]) > CONF_THRESHOLD:
+			return True
+		else:
+			return False
 		
 	
 	def print_results(self):

@@ -19,12 +19,12 @@ class SVMCalculator:
 	@staticmethod
 	def get_svm_model():
 		if SVMCalculator.svm_model == None:
-			SVMCalculator.svm_model = SVMCalculator.train_model()
+			SVMCalculator.svm_model = SVMCalculator.get_new_model()
 		return SVMCalculator.svm_model
 	
 	##returns svm model
 	@staticmethod
-	def train_model():
+	def get_new_model():
 		X = []
 		y = []
 
@@ -43,14 +43,17 @@ class SVMCalculator:
 		
 		##X = np.array(X).reshape(1,(len(X)))
 		##y = np.array(y).
-
-		svm_model = svm.SVC(kernel = "linear", C = 0.5, degree = 1, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
-		svm_model.fit(X,y)
+		
+		##58%
+		new_svm_model = svm.SVC(kernel = "linear", C = 0.5, degree = 3, probability = True, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
+		##svm_model = svm.SVC(kernel = "poly", C = 1, degree = 3, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
+		new_svm_model.fit(X,y)
 		print "New SVM model created: "
-		print str(svm_model)
-		print str(svm_model.n_support_)
-		print str(svm_model.decision_function)
-		return svm_model
+		print str(new_svm_model)
+		print str(new_svm_model.n_support_)
+		print str(new_svm_model.decision_function)
+		SVMCalculator.svm_model = new_svm_model
+		return new_svm_model
 
 
 

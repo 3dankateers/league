@@ -34,7 +34,7 @@ class MatchHyperpoint:
 			"coordinates" : self.coordinates,
 			"winner" : self.winner
 			})
-		print "Created match_hyperpoint"
+		##print "Created match_hyperpoint"
 		return record.inserted_id
 	
 	## given team1 and team2 champids	return corresponding coordinates

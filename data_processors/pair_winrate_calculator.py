@@ -45,7 +45,7 @@ class PairWinrateCalculator:
 					pair.winrate_sample_size = sample_size
 					d = pair.to_dict()
 					all_pairs_dicts.append(d)
-					print "Updated ", pair.pair_tuple, ". Winrate: ", str(pair.winrate), ". Size: ", str(pair.winrate_sample_size)
+					##print "Updated ", pair.pair_tuple, ". Winrate: ", str(pair.winrate), ". Size: ", str(pair.winrate_sample_size)
 		
 		##insert all pairs into db
 		Pair.insert_all(all_pairs_dicts)

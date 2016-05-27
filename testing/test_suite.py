@@ -8,10 +8,13 @@ NUM_TESTS = 10
 
 class TestSuite:
 
-	def __init__(self, evaluator_class):
+	def __init__(self, evaluator_class, need_confidence = False):
 		self.tests_passed = 0
 		self.tests_failed = 0
+		self.total_tests = 0
+		self.total_confident_tests = 0
 		self.evaluator_class = evaluator_class
+		self.need_confidence = need_confidence
 
 
 
@@ -49,17 +52,21 @@ class TestSuite:
 	## print results
 	def run_simple_tests(self):
 		cursor = Match.get_test_set()
+		self.total_tests = cursor.count()
 		for t in cursor:
 			test_match = Match.from_dict(t)
 			
 			evaluator = self.evaluator_class(test_match.champs1, test_match.champs2)
 			evaluator.process()
-			winner_predicted = evaluator.predict_winner()
-			actual_winner = test_match.win
-			if(winner_predicted == actual_winner):
-				self.tests_passed += 1
-			else:
-				self.tests_failed += 1
+			##only count test matches if either confidence is not needed( if it is make sure evaluator is confident)
+			if((not self.need_confidence) or evaluator.is_confident()):
+				self.total_confident_tests += 1
+				winner_predicted = evaluator.predict_winner()
+				actual_winner = test_match.win
+				if(winner_predicted == actual_winner):
+					self.tests_passed += 1
+				else:
+					self.tests_failed += 1
 		self.performance = self.tests_passed/float(self.tests_passed + self.tests_failed)
 		return self.performance
 

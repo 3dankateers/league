@@ -65,7 +65,7 @@ class Champ:
 						"winrate_sample_size" : self.winrate_sample_size
 						}
 				})
-		print "Updated champ" 
+		##print "Updated champ" 
 	
 	## find champ and return it based on id
 	@staticmethod

@@ -55,7 +55,7 @@ class ChampWinrateCalculator:
 					champ.winrate = winrate
 					champ.winrate_sample_size = sample_size
 					champ.save()
-					print "Updated ", champ.name, ". Winrate: ", str(champ.winrate), ". Size: ", str(champ.winrate_sample_size)
+					##print "Updated ", champ.name, ". Winrate: ", str(champ.winrate), ". Size: ", str(champ.winrate_sample_size)
 
 	
 

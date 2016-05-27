@@ -22,6 +22,10 @@ class Evaluator:
 	## recalculate values used to train model(presumably called after tests were changed)
 	def retrain(): pass
 
+	@abstractmethod
+	## returns True if evaluator is confident in predicted winner
+	def is_confident(self): pass
+
 	## take in a list of champ names and return a list of champ ids
 	@staticmethod
 	def get_champ_ids(team):

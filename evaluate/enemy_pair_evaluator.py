@@ -7,6 +7,7 @@ from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
 
 PAIR_SAMPLE_LIMIT = 20
+CONF_THRESHOLD = 0.05
 
 ##helper class to store results for each team comp
 class TeamWinrateInfo:
@@ -33,8 +34,9 @@ class EnemyPairEvaluator(Evaluator):
 
 	##processes each team comp in turn
 	def process(self):
-		print "Processing pairs in team comp ..."
+		##print "Processing pairs in team comp ..."
 		self.process_winrate_enemies(self.team1_enemy_info, self.team2_enemy_info)
+		self.normalize_winrates()
 
 		if self.team1_enemy_info.aggregate_winrate > self.team2_enemy_info.aggregate_winrate:
 			self.winner = 100
@@ -44,6 +46,19 @@ class EnemyPairEvaluator(Evaluator):
 	## return 1 if team1 is favoured, else return 2
 	def predict_winner(self):
 		return self.winner
+	
+	def is_confident(self):
+		if abs(self.team1_enemy_info.aggregate_winrate - self.team2_enemy_info.aggregate_winrate) > CONF_THRESHOLD:
+			return True
+		else:
+			return False
+	
+	
+	def normalize_winrates(self):
+		winrate1 = self.team1_enemy_info.aggregate_winrate
+		winrate2 = self.team2_enemy_info.aggregate_winrate
+		self.team1_enemy_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
+		self.team2_enemy_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
 
 	## prints winrate calculation results
 	def print_results(self):

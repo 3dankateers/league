@@ -5,6 +5,7 @@ from champ import Champ
 from evaluator import Evaluator
 from champ_winrate_calculator import ChampWinrateCalculator
 
+CONF_THRESHOLD = 0.03
 ONE_CHAMP_SAMPLE_LIMIT = 20
 
 ##stores information calculated in process()
@@ -15,7 +16,7 @@ class TeamInfo:
 		self.aggregate_winrate = 0
 		self.total_winrate = 0
 		self.num_champs_considered = 0
-	
+
 	def update_aggregate_winrate(self):
 		for r in self.winrates:
 			if r != -1:
@@ -37,11 +38,17 @@ class OneChampEvaluator(Evaluator):
 	def __init__(self, champs1_ids, champs2_ids):
 		self.ti1 = TeamInfo(champs1_ids)
 		self.ti2 = TeamInfo(champs2_ids)
-		self.winner = 100
 
 	## return 1 if team1 is favoured, else return 2
 	def predict_winner(self):
 		return self.winner
+
+	##return true if confident in predicted winner, otherwise false
+	def is_confident(self):
+		if abs(self.ti1.aggregate_winrate - self.ti2.aggregate_winrate) > CONF_THRESHOLD:
+			return True
+		else:
+			return False
 
 	@staticmethod
 	def retrain():
@@ -54,10 +61,18 @@ class OneChampEvaluator(Evaluator):
 	def process(self):
 		self.process_team(self.ti1)
 		self.process_team(self.ti2)
+		self.normalize_winrates()
+
 		if self.ti1.aggregate_winrate > self.ti2.aggregate_winrate:
 			self.winner = 100
 		else:
 			self.winner = 200
+
+	def normalize_winrates(self):
+		winrate1 = self.ti1.aggregate_winrate
+		winrate2 = self.ti2.aggregate_winrate
+		self.ti1.aggregate_winrate = winrate1/(winrate1 + winrate2)
+		self.ti2.aggregate_winrate = winrate2/(winrate1 + winrate2)
 
 
 	##calculates all neccesary team info and updates ti (teaminfo)

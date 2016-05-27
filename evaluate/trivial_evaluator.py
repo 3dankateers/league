@@ -10,7 +10,10 @@ class TrivialEvaluator(Evaluator):
 
 	def predict_winner(self):
 		return self.winner
-	
+
+	def is_confident(self):
+		return True
+
 	@staticmethod
 	def retrain():
 		pass
