@@ -13,7 +13,9 @@ from misc_helper import MiscHelper
 
 TEAM1 = 100
 TEAM2 = 200
-PATCH = "6.9"
+PATCH = "6.10"
+##date when patch starts in milliseconds
+PATCH_DATE = 1463630400000 
 
 class MatchParser:
 	##given recent match data, add all new matches to db
@@ -26,8 +28,9 @@ class MatchParser:
 				id =	g["gameId"]
 					
 				match = Match.get_match(id)
-				##only proceed if match doesn't already exist
-				if match == None:
+				date = g["createDate"]
+				##only proceed if match doesn't already exist and game is played on current patch
+				if match == None and date > PATCH_DATE:
 					team1 = []
 					team2 = []
 					champs1 = []
@@ -61,7 +64,6 @@ class MatchParser:
 					region = lc.region
 					patch = PATCH
 					tier = s.tier
-					date = g["createDate"]
 					match = Match(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
 					match.save()				
 
