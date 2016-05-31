@@ -57,8 +57,9 @@ class EnemyPairEvaluator(Evaluator):
 	def normalize_winrates(self):
 		winrate1 = self.team1_enemy_info.aggregate_winrate
 		winrate2 = self.team2_enemy_info.aggregate_winrate
-		self.team1_enemy_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
-		self.team2_enemy_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
+		if (winrate1 > 0 and winrate2 > 0):
+			self.team1_enemy_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
+			self.team2_enemy_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
 
 	## prints winrate calculation results
 	def print_results(self):

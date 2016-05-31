@@ -8,7 +8,8 @@ NUM_TESTS = 10
 
 class TestSuite:
 
-	def __init__(self, evaluator_class, need_confidence = False):
+	def __init__(self, evaluator_class, match_class, need_confidence = False):
+		self.match_class = match_class
 		self.tests_passed = 0
 		self.tests_failed = 0
 		self.total_tests = 0
@@ -51,11 +52,10 @@ class TestSuite:
 	## run soloq data tests on evaluator to measure performance
 	## print results
 	def run_simple_tests(self):
-		cursor = Match.get_test_set()
+		cursor = self.match_class.get_test_set()
 		self.total_tests = cursor.count()
 		for t in cursor:
-			test_match = Match.from_dict(t)
-			
+			test_match = self.match_class.from_dict(t)
 			evaluator = self.evaluator_class(test_match.champs1, test_match.champs2)
 			evaluator.process()
 			##only count test matches if either confidence is not needed( if it is make sure evaluator is confident)

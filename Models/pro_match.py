@@ -25,12 +25,12 @@ class ProMatch:
 		patch = d["patch"]
 		date_created = d["date_created"]
 		is_test = d["is_test"]
+		
+		return cls(description, champs1, champs2, win, region, patch, date_created, id = id, is_test = is_test)
 	
 	## push match into database
 	def save(self):
-		cursor = ProMatch.find_match(self.id)
-		if cursor.count() == 0:
-			self.create_pro_match()
+		self.id = self.create_pro_match()
 	
 	## find match and return it based on id
 	@staticmethod
@@ -64,7 +64,6 @@ class ProMatch:
 	def create_pro_match(self):
 		db_client = DbClient.get_client()
 		record = db_client.league.pro_matches.insert_one({
-			"_id" : self.id,
 			"description" : self.description,
 			"champs1" : self.champs1,
 			"champs2" : self.champs2,
@@ -74,4 +73,5 @@ class ProMatch:
 			"date_created" : self.date_created,
 			"is_test" : self.is_test
 			})
-		print "Created match"
+		print "Created pro match"
+		return record.inserted_id

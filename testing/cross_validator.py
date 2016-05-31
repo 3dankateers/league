@@ -64,7 +64,7 @@ class CrossValidator:
 		for i in range(self.num_runs):
 			self.set_new_tests()
 			self.evaluator.retrain()
-			ts = TestSuite(self.evaluator, NEED_CONFIDENCE)
+			ts = TestSuite(self.evaluator, Match, NEED_CONFIDENCE)
 			performance = ts.run_simple_tests()
 			self.total_performance += performance
 			self.total_tests += ts.total_tests

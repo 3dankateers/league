@@ -21,6 +21,7 @@ from cross_validator import CrossValidator
 from svm_trainer import SVMTrainer
 from pair_evaluator import PairEvaluator
 from pro_match_creator import ProMatchCreator
+from pro_match import ProMatch
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -38,8 +39,8 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	##pull_summoners("kr", "CHALLENGER")
-	##pull_matches("kr", "CHALLENGER")
+	##pull_summoners("BR", "CHALLENGER")
+	##pull_matches("BR", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
@@ -50,8 +51,10 @@ def main():
 	##evaluate_svm(team1, team2, svm_model)
 	##calc_edge(136,-179)
 	##SVMTrainer.run()	
-	##cross_validate(EnemyPairEvaluator, 5)
-	insert_pro_matches()
+	##cross_validate(SVMEvaluator, 5)
+	##insert_pro_matches()
+	run_tests(PairEvaluator, ProMatch)
+
 
 def insert_pro_matches():
 	pmc = ProMatchCreator()
@@ -125,8 +128,9 @@ def new_tests():
 
 
 ## run test suite using whatever evaluator class is passed in to predict winners
-def run_tests(evaluator_class):
-	ts = TestSuite(evaluator_class)
+def run_tests(evaluator_class, match_class):
+	ts = TestSuite(evaluator_class, match_class, True)
 	ts.run_simple_tests()
+	ts.print_results()
 
 main()
