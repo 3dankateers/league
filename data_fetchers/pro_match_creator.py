@@ -112,7 +112,128 @@ class ProMatchCreator:
 			, ["Bard","Rek'Sai","Fizz","Caitlyn","LeBlanc"], 100, "LPL", "6.10"))
 		match_list.append(MatchInfo("LPL, OMG vs WE, Week 1", ["Kindred","Ekko","Bard","Jhin","Lissandra"]
 			, ["Maokai","Lucian","Twisted Fate","Braum","Rek'Sai"], 200, "LPL", "6.10"))
-		##match_list.append(MatchInfo("LPL, CJ vs ESC, Week 1", ["","","","",""]
-		##	, ["","","","",""], 200, "LPL", "6.10"))
+
+		## LCK WEEK 2
+		match_list.append(MatchInfo("LCK, AFs vs Samsung, Week 2", ["Elise","Maokai","Kalista","Twisted Fate","Blitzcrank"]
+			, ["Ekko","Nami","Graves","Ashe","Fiora"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, Samsung vs AFs, Week 2", ["Viktor","Elise","Nami","Ezreal","Maokai"]
+			, ["Lucian","Kindred","Lulu","Braum","Poppy"], 100, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, ESC vs Jin Air, Week 2", ["Ryze","Kha'Zix","Karma","Tristana","Varus"]
+			, ["Lucian","Elise","Azir","Braum","Ekko"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, Jin Air vs ESC, Week 2", ["Nidalee","Maokai","Viktor","Sivir","Tahm Kench"]
+			, ["Ekko","Ashe","Kindred","Braum","Swain"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, ESC vs Jin Air, Week 2", ["Ryze","Ashe","Braum","Rek'Sai","Karma"]
+			, ["Viktor","Kindred","Ekko","Sivir","Bard"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, LZ vs KT, Week2", ["Rek'Sai","Ekko","Karma","Lucian","Azir"]
+		, ["Maokai","Caitlyn","Braum","Elise","Varus"], 100, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, KT vs LZ, Week2", ["Caitlyn","Elise","Azir","Maokai","Braum"]
+		, ["Ekko","Rek'Sai","Viktor","Bard","Jhin"], 100, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, LZ vs KT, Week2", ["Nidalee","Kalista","Braum","Jayce","Maokai"]
+		, ["Ekko","Kindred","Taric","Ezreal","Zilean"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, ROX vs MVP, Week2", ["Trundle","Braum","Caitlyn","Varus","Elise"]
+		, ["Azir","Rek'Sai","Lucian","Bard","Fizz"], 100, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, MVP vs ROX, Week2", ["Ekko","Alistar","Varus","Ashe","Amumu"]
+		, ["Caitlyn","Rek'Sai","Viktor","Tahm Kench","Rumble"], 100, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, ROX vs MVP, Week2", ["Trundle","Lucian","Azir","Maokai","Graves"]
+		, ["Ekko","Caitlyn","Viktor","Alistar","Rek'Sai"], 100, "LCK", "6.10"))
+		##match_list.append(MatchInfo("LCK, S vs F, Week2", ["","","","",""]
+		##, ["","","","",""], 200, "LCK", "6.10"))
+
+		## EU CS Group1
+		match_list.append(MatchInfo("EUCS, MFT vs Melty, Group A", ["Graves","Trundle","Ezreal","Lissandra","Braum"]
+			, ["Ekko","Caitlyn","Morgana","Elise","Zilean"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, SK vs Tricked, Group A", ["Azir","Elise","Taric","Miss Fortune","Gnar"]
+			, ["Braum","Graves","Maokai","Sivir","Vladimir"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, FNCA vs LP, Group A", ["Trundle","Ezreal","Kindred","Azir","Thresh"]
+			, ["Braum","Lucian","Viktor","Gragas","Gnar"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, MFT vs FNCA, Group A", ["Kindred","Trundle","Lissandra","Ezreal","Maokai"]
+			, ["Braum","Lucian","LeBlanc","Graves","Ekko"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, LP vs Tricked, Group A", ["Ryze","Graves","Trundle","Sivir","Fiora"]
+			, ["Ekko","Braum","Gragas","Ezreal","Lissandra"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Melty vs SK, Group A", ["Azir","Graves","Maokai","Sivir","Janna"]
+			, ["Trundle","Lucian","Gnar","Elise","Viktor"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Tricked vs Melty, Group A", ["Graves","Ezreal","Braum","Viktor","Gnar"]
+			, ["Trundle","Lucian","Morgana","Elise","LeBlanc"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, MFT vs LP, Group A", ["Nidalee","Ezreal","Braum","Ekko","LeBlanc"]
+			, ["Trundle","Lucian","Karma","Graves","Maokai"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, FNCA vs SK, Group A", ["Lissandra","Graves","Ezreal","Kennen","Braum"]
+			, ["Lucian","Trundle","Viktor","Rek'Sai","Poppy"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, FNCA vs Tricked, Group A", ["Lissandra","Graves","Alistar","Sivir","Ekko"]
+			, ["Trundle","Lucian","Lulu","Nidalee","Ryze"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, SK vs MFT, Group A", ["Nidalee","Ekko","Azir","Ezreal","Braum"]
+			, ["Trundle","Lucian","Vladimir","Graves","Poppy"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Melty vs LP, Group A", ["Azir","Kindred","Sivir","Gangplank","Morgana"]
+			, ["Lucian","Braum","Viktor","Gragas","Fiora"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, LP vs SK, Group A", ["Lucian","Graves","Braum","Annie","Gragas"]
+			, ["Taric","Nidalee","Twisted Fate","Miss Fortune","Poppy"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Melty vs FNCA, Group A", ["Nidalee","Trundle","Sivir","LeBlanc","Morgana"]
+			, ["Nami","Lucian","Zed","Lulu","Fiora"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Tricked vs MFT, Group A", ["Lucian","Graves","Braum","Lulu","Swain"]
+			, ["Trundle","Kindred","Maokai","Sivir","Viktor"], 200, "EUCS", "6.10"))
+		
+		##EUCS Group B
+		match_list.append(MatchInfo("EUCS, Kick vs S6, Group B", ["Nidalee","Poppy","Caitlyn","Syndra","Janna"]
+		, ["Maokai","Kindred","LeBlanc","Ezreal","Nami"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Forge vs ESG, Group B", ["Trundle","Lucian","Elise","Morgana","Bard"]
+		, ["Alistar","Graves","Viktor","Ezreal","Swain"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Mouz vs G2V, Group B", ["Trundle","Sivir","Alistar","Elise","LeBlanc"]
+		, ["Gragas","Kalista","Viktor","Braum","Gnar"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Kick vs mouz, Group B", ["Braum","Elise","Ezreal","Poppy","Viktor"]
+		, ["Ekko","Sivir","Alistar","Rek'Sai","Fizz"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, G2V vs ESG, Group B", ["Lucian","Bard","Lissandra","Gnar","Graves"]
+		, ["Trundle","Kindred","Janna","Caitlyn","Viktor"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, S6 vs Forge, Group B", ["Lucian","Maokai","Janna","Gragas","Quinn"]
+		, ["Braum","Elise","Lissandra","Draven","Lulu"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, ESG vs S6, Group B", ["Kindred","Braum","Viktor","Sivir","Gnar"]
+		, ["Lucian","Graves","Zilean","Maokai","Janna"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Kick vs G2V, Group B", ["Braum","Caitlyn","Viktor","Poppy","Gragas"]
+		, ["Trundle","Nidalee","Ryze","Kalista","Thresh"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, mouz vs Forge, Group B", ["Maokai","Braum","Viktor","Kalista","Nunu"]
+		, ["Kindred","Alistar","Ekko","Sivir","Morgana"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, mouz vs ESG, Group B", ["Trundle","Ezreal","Braum","Elise","Aurelion Sol"]
+		, ["Lissandra","Kindred","Bard","Caitlyn","Maokai"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Forge vs Kick, Group B", ["Trundle","Ekko","Sivir","Vladimir","Alistar"]
+		, ["Viktor","Braum","Poppy","Ezreal","Kindred"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, S6 vs G2V, Group B", ["Nidalee","Braum","Ryze","Caitlyn","Poppy"]
+		, ["Alistar","Sivir","Lissandra","Fizz","Gnar"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, G2V vs Forge, Group B", ["Kindred","Janna","Caitlyn","LeBlanc","Irelia"]
+		, ["Trundle","Lucian","Ekko","Viktor","Alistar"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, S6 vs mouz, Group B", ["Kindred","Caitlyn","Braum","Maokai","LeBlanc"]
+		, ["Alistar","Ekko","Elise","Ezreal","Viktor"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, ESG vs Kick, Group B", ["Kindred","Ezreal","Karma","Gnar","Alistar"]
+		, ["Trundle","Sivir","Gragas","Braum","LeBlanc"], 100, "EUCS", "6.10"))
+		## EUCS Finals
+		match_list.append(MatchInfo("EUCS, MFT vs ESG, Finals", ["Lucian","Rek'Sai","Ekko","Kassadin","Bard"]
+		, ["Braum","Vladimir","Graves","Sivir","Gnar"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, ESG vs MFT, Finals", ["Lucian","Rek'Sai","Braum","Gnar","Azir"]
+		, ["Viktor","Trundle","Maokai","Sivir","Graves"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, MFT vs ESG, Finals", ["Azir","Caitlyn","Trundle","Elise","Braum"]
+		, ["Ekko","Rek'Sai","Bard","Ezreal","Gnar"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, ESG vs MFT, Finals", ["Kindred","Sivir","Bard","Ekko","Karma"]
+		, ["Viktor","Caitlyn","Elise","Braum","Trundle"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Forge vs SK, Finals", ["Ryze","Elise","Braum","Draven","Poppy"]
+		, ["Trundle","Viktor","Graves","Sivir","Maokai"], 100, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, SK vs Forge, Finals", ["Viktor","Morgana","Caitlyn","Ekko","Rek'Sai"]
+		, ["Lucian","Elise","Karma","Alistar","Poppy"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, Forge vs SK, Finals", ["Elise","Jhin","Trundle","Morgana","Poppy"]
+		, ["Viktor","Sivir","Taric","Kindred","Fiora"], 200, "EUCS", "6.10"))
+		match_list.append(MatchInfo("EUCS, SK vs Forge, Finals", ["Ryze","Taric","Miss Fortune","Gragas","Poppy"]
+		, ["Sivir","Kindred","Viktor","Braum","Maokai"], 200, "EUCS", "6.10"))
+		
+		##NACS Qualifier
+		match_list.append(MatchInfo("NACS, C9C vs DFGL, Qualifier", ["Kindred","Sivir","Braum","Maokai","Gangplank"]
+		, ["Ezreal","Ekko","Veigar","Elise","Trundle"], 100, "NACS", "6.10"))
+		match_list.append(MatchInfo("NACS, C9C vs DFGL , Qualifier", ["Ryze","Lee Sin","Ezreal","Ekko","Braum"]
+		, ["Trundle","Maokai","Gragas","Caitlyn","Viktor"], 100, "NACS", "6.10"))
+		match_list.append(MatchInfo("NACS, C9C vs DFGL, Qualifier", ["Kindred","Ekko","Ezreal","Gangplank","Zyra"]
+		, ["Lee Sin","Braum","Jhin","Rumble","Zed"], 100, "NACS", "6.10"))
+		match_list.append(MatchInfo("NACS, ASN vs dT , Qualifier", ["Maokai","Azir","Braum","Rek'Sai","Ezreal"]
+		, ["Kindred","Lucian","Trundle","Zilean","Alistar"], 200, "NACS", "6.10"))
+		match_list.append(MatchInfo("NACS, ASN vs dT , Qualifier", ["Maokai","Azir","Kindred","Trundle","Sivir"]
+		, ["Lucian","Braum","Gragas","Zilean","Gangplank"], 200, "NACS", "6.10"))
+		match_list.append(MatchInfo("NACS, ASN vs dT, Qualifier", ["Ekko","Azir","Elise","Thresh","Miss Fortune"]
+			, ["Kindred","Braum","Zilean","Maokai","Sivir"], 200, "NACS", "6.10"))
+		##match_list.append(MatchInfo("NACS, S vs , Qualifier", ["","","","",""]
+		##, ["","","","",""], 200, "NACS", "6.10"))
 		return match_list
 		

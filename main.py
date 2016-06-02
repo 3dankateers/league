@@ -53,8 +53,13 @@ def main():
 	##SVMTrainer.run()	
 	##cross_validate(SVMEvaluator, 5)
 	##insert_pro_matches()
-	run_tests(PairEvaluator, ProMatch)
+	run_tests(OneChampEvaluator, ProMatch)
 
+## run test suite using whatever evaluator class is passed in to predict winners
+def run_tests(evaluator_class, match_class):
+	ts = TestSuite(evaluator_class, match_class, True)
+	ts.run_simple_tests()
+	ts.print_results()
 
 def insert_pro_matches():
 	pmc = ProMatchCreator()
@@ -127,10 +132,5 @@ def new_tests():
 	calc_champ_winrates()
 
 
-## run test suite using whatever evaluator class is passed in to predict winners
-def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, True)
-	ts.run_simple_tests()
-	ts.print_results()
 
 main()

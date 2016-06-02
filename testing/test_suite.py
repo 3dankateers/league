@@ -1,6 +1,7 @@
 from db_client import DbClient
 from match import Match
 from random import randint
+import math
 
 ## out of how many matches should a test be set
 ## num_total_tests = ( 1/NUM_TESTS * num_total_matches)
@@ -53,7 +54,6 @@ class TestSuite:
 	## print results
 	def run_simple_tests(self):
 		cursor = self.match_class.get_test_set()
-		self.total_tests = cursor.count()
 		for t in cursor:
 			test_match = self.match_class.from_dict(t)
 			evaluator = self.evaluator_class(test_match.champs1, test_match.champs2)
@@ -68,12 +68,29 @@ class TestSuite:
 				else:
 					self.tests_failed += 1
 		self.performance = self.tests_passed/float(self.tests_passed + self.tests_failed)
+		self.total_tests = self.tests_passed + self.tests_failed
 		return self.performance
+	
+	def print_confidence_interval(self):
+		mean = self.tests_passed/float(self.total_tests)
+		variance = (self.tests_passed*(1-mean)*(1-mean)+self.tests_failed*mean*mean)/float(self.total_tests-1)
+		standard_deviation = math.sqrt(variance)
+		standard_error = standard_deviation/math.sqrt(self.total_tests)
+		print "variance :" , variance
+		##large sample using Z distribution
+		if (self.total_tests > 1):
+				low_conf = mean - standard_error*1.96
+				high_conf = mean + standard_error*1.96
+				print "Confidence Interval: [", low_conf, " , ", high_conf, "]"
+		else:
+			pass
+
+
 
 	##print results of running tests
 	def print_results(self):
 		print "Tests Passed: ", self.tests_passed
 		print "Tests Failed: ", self.tests_failed
 		print "Performance: ", self.performance 
-
+		self.print_confidence_interval()
 
