@@ -39,7 +39,7 @@ class OneChampEvaluator(Evaluator):
 		self.ti1 = TeamInfo(champs1_ids)
 		self.ti2 = TeamInfo(champs2_ids)
 
-	## return 1 if team1 is favoured, else return 2
+	## return 100 if team1 is favoured, else return 200
 	def predict_winner(self):
 		return self.winner
 

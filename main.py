@@ -22,6 +22,7 @@ from svm_trainer import SVMTrainer
 from pair_evaluator import PairEvaluator
 from pro_match_creator import ProMatchCreator
 from pro_match import ProMatch
+from general_evaluator import GeneralEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -53,11 +54,11 @@ def main():
 	##SVMTrainer.run()	
 	##cross_validate(SVMEvaluator, 5)
 	##insert_pro_matches()
-	run_tests(OneChampEvaluator, ProMatch)
+	run_tests(GeneralEvaluator, ProMatch)
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, True)
+	ts = TestSuite(evaluator_class, match_class, False)
 	ts.run_simple_tests()
 	ts.print_results()
 

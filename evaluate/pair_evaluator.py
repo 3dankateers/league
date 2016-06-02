@@ -31,6 +31,7 @@ class PairEvaluator:
 		self.enemy_evaluator.process()
 		self.team1_winrate = self.w1*self.ally_evaluator.team1_ally_info.aggregate_winrate + self.w2*self.enemy_evaluator.team1_enemy_info.aggregate_winrate
 		self.team2_winrate = self.w1*self.ally_evaluator.team2_ally_info.aggregate_winrate + self.w2*self.enemy_evaluator.team2_enemy_info.aggregate_winrate
+		self.normalize_winrates()
 		if self.team1_winrate > self.team2_winrate:
 			self.winner = 100
 		else:
@@ -38,6 +39,13 @@ class PairEvaluator:
 
 	def predict_winner(self):
 		return self.winner
+
+
+	def normalize_winrates(self):
+		winrate1 = self.team1_winrate
+		winrate2 = self.team2_winrate
+		self.team1_winrate = winrate1/(winrate1 + winrate2)
+		self.team2_winrate = winrate2/(winrate1 + winrate2)
 	
 	
 	def is_confident(self):
