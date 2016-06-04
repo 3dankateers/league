@@ -32,22 +32,15 @@ class SVMEvaluator(Evaluator):
 		
 		##returns array of 1 element which should be 100 or 200
 		##self.winner = svm_model.predict(coordinates)[0]
-		self.probs = svm_model.predict_proba(coordinates)[0]
-		if self.probs[0] > self.probs[1]:
-			self.winner = 100
-		else:
-			self.winner = 200
+		self.winner = svm_model.predict(coordinates)
+		print self.winner
 		
 
 	def predict_winner(self):
 		return self.winner
 
 	def is_confident(self):
-		if abs(self.probs[0] - self.probs[1]) > CONF_THRESHOLD:
 			return True
-		else:
-			return False
-		
 	
 	def print_results(self):
 		print "Winner predicted by svm is : ", str(self.winner) 

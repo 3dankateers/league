@@ -25,6 +25,8 @@ from pro_match_creator import ProMatchCreator
 from pro_match import ProMatch
 from general_evaluator import GeneralEvaluator
 from general_evaluator_trainer import GeneralEvaluatorTrainer
+from tree_evaluator import TreeEvaluator
+from bayes_nets_evaluator import BayesNetsEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -58,16 +60,25 @@ def main():
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
 	##cross_validate(GeneralEvaluator, 10)
-	##insert_pro_matches()
 	##new_tests()
-	##run_tests(GeneralEvaluator, ProMatch)
+	##insert_pro_matches()
+	##calc_hyperpoints()
+	##retrain_all()
+	run_tests(BayesNetsEvaluator, ProMatch)
+	##calc_hyperpoints()
+	##run_tests(SVMEvaluator, ProMatch)
 	##train_general_evaluator()
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, False)
+	ts = TestSuite(evaluator_class, match_class, True)
 	ts.run_simple_tests()
 	ts.print_results()
+
+def retrain_all():
+	calc_hyperpoints()
+	calc_pair_winrates()
+	calc_champ_winrates()
 
 def new_tests():
 	TestSuite.set_new_tests()	
