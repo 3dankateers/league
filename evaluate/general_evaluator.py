@@ -57,9 +57,14 @@ class GeneralEvaluator:
 		self.team2_winrate = winrate2/(winrate1 + winrate2)
 
 	def print_results(self):
-		print "Ally + Enemy aggregate results:"
-		print "Team1 winrate: ", self.team1_winrate
-		print "Team2 winrate: ", self.team2_winrate
+		print "#################################################################################"
+		print "General Evaluator Results: "
+		print "Team1: ", str(self.team1_winrate)
+		print "#########################################################"
+		print "Team2: " , str(self.team2_winrate)
+		print "Difference: ", self.team1_winrate - self.team2_winrate
+		print "WINNER: ", self.winner
+		print "#################################################################################"
 	
 		
 	def process(self):

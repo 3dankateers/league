@@ -24,12 +24,6 @@ class TeamInfo:
 		self.aggregate_winrate = self.total_winrate/self.num_champs_considered
 				
 	def print_result(self):
-		for i,id in enumerate(self.champ_ids):
-			if (self.winrates[i] != -1):
-				print id, " ", str(self.winrates[i])
-			else:
-				print id, " not enough winrate data"
-			
 		print "Normalized win rate = ", str(self.aggregate_winrate)
 
 
@@ -87,11 +81,13 @@ class OneChampEvaluator(Evaluator):
 
 	def print_results(self):
 		print "#################################################################################"
-		print "One Champ Results: "
+		print "One Champ Evaluator Results: "
 		print "Team1"
 		self.ti1.print_result()
 		print "#########################################################"
 		print "Team2"
 		self.ti2.print_result()
+		print "Difference: ", self.ti1.aggregate_winrate - self.ti2.aggregate_winrate
+		print "WINNER: ", self.winner
 		print "#################################################################################"
 

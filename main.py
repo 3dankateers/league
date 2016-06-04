@@ -45,9 +45,11 @@ def main():
 	##pull_summoners("lan", "CHALLENGER")
 	##pull_matches("lan", "CHALLENGER")
 	##pull_champs()
-	team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
-	team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
-	evaluate_comp(team1, team2)
+	##team1 = ["", "", "", "", ""]
+	##team2 = ["", "", "", "", ""]
+	##team1 = ["Lucian", "Maokai", "Karma", "Zilean", "Graves"]
+	##team2 = ["Nami", "Rek'Sai", "Viktor", "Ezreal", "Trundle"]
+	##evaluate_comp(team1, team2)
 	##new_tests()
 	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()

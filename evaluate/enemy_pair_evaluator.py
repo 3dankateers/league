@@ -65,12 +65,12 @@ class EnemyPairEvaluator(Evaluator):
 	def print_results(self):
 		self.process()
 		print "#################################################################################"
-		print "Pair Analysis Results: "
-		print "Team1"
-		print "Enemy Winrate Aggregate: ", str(self.team1_enemy_info.aggregate_winrate)
+		print "Enemy Pair Evaluator Results: "
+		print "Team1", str(self.team1_enemy_info.aggregate_winrate)
 		print "#########################################################"
-		print "Team2"
-		print "Enemy Winrate Aggregate: ", str(self.team2_enemy_info.aggregate_winrate)
+		print "Team2", str(self.team2_enemy_info.aggregate_winrate)
+		print "Difference: ", self.team1_enemy_info.aggregate_winrate - self.team2_enemy_info.aggregate_winrate
+		print "WINNER: ", self.winner
 		print "#################################################################################"
 
 	
