@@ -30,7 +30,10 @@ class ProMatch:
 	
 	## push match into database
 	def save(self):
-		self.id = self.create_pro_match()
+		if self.id != None:
+			self.update_pro_match()
+		else:	
+			self.id = self.create_pro_match()
 	
 	## find match and return it based on id
 	@staticmethod
@@ -38,6 +41,11 @@ class ProMatch:
 		db_client = DbClient.get_client()
 		cursor = db_client.league.pro_matches.find({"_id" : id})
 		return cursor
+	
+	@staticmethod
+	def drop_all():
+		db_client = DbClient.get_client()
+		db_client.league.pro_matches.drop()
 	
 	## return all matches
 	@staticmethod
@@ -75,3 +83,12 @@ class ProMatch:
 			})
 		print "Created pro match"
 		return record.inserted_id
+	
+	def update_pro_match(self):
+		db_client = DbClient.get_client()	
+		db_client.league.pro_matches.update_one(
+				{"_id" : self.id},{
+					"$set": {
+						"is_test" : self.is_test,
+						}
+				})

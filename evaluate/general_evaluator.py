@@ -8,6 +8,8 @@ from enemy_pair_evaluator import EnemyPairEvaluator
 from general_evaluator_trainer import GeneralEvaluatorTrainer 
 from pair_winrate_calculator import PairWinrateCalculator
 from champ_winrate_calculator import ChampWinrateCalculator
+from match import Match
+from pro_match import ProMatch
 CONF_THRESHOLD = 0.04
 
 

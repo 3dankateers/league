@@ -1,5 +1,6 @@
 from db_client import DbClient
 from match import Match
+from pro_match import ProMatch
 from random import randint
 import math
 
@@ -27,9 +28,6 @@ class TestSuite:
 		
 		cursor = Match.get_all_matches()
 		num_matches = cursor.count()
-		##num_tests = 0
-		##num_non_tests = 0
-		##print "Num matches: ", num_matches
 
 		for i in range(num_matches):
 			match = Match.from_dict(cursor[i])
@@ -44,6 +42,25 @@ class TestSuite:
 				##num_non_tests += 1
 				match.is_test = False
 				match.save()
+		
+		##set half of pro matches to tests half training
+		cursor = ProMatch.get_all_matches()
+		num_matches = cursor.count()
+		for i in range(num_matches):
+			rand = randint(1,2)
+			match = ProMatch.from_dict(cursor[i])
+
+			## set match as test
+			if  rand == 1:
+				##num_tests+= 1
+				match.is_test = True
+				match.save()
+			##match is not test
+			elif rand == 2:
+				##num_non_tests += 1
+				match.is_test = False
+				match.save()
+		
 		##print "matches :", str(num_matches)
 		##print "no tests: ", str(num_non_tests)
 		##print "tests: ", str(num_tests)

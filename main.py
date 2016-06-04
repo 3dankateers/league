@@ -45,9 +45,9 @@ def main():
 	##pull_summoners("lan", "CHALLENGER")
 	##pull_matches("lan", "CHALLENGER")
 	##pull_champs()
-	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
-	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
-	##evaluate_comp(team1, team2)
+	team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
+	team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
+	evaluate_comp(team1, team2)
 	##new_tests()
 	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
@@ -57,9 +57,21 @@ def main():
 	##0.2, 0.1, 0.7
 	##cross_validate(GeneralEvaluator, 10)
 	##insert_pro_matches()
-	run_tests(GeneralEvaluator, ProMatch)
+	##new_tests()
+	##run_tests(GeneralEvaluator, ProMatch)
 	##train_general_evaluator()
 
+## run test suite using whatever evaluator class is passed in to predict winners
+def run_tests(evaluator_class, match_class):
+	ts = TestSuite(evaluator_class, match_class, False)
+	ts.run_simple_tests()
+	ts.print_results()
+
+def new_tests():
+	TestSuite.set_new_tests()	
+	calc_hyperpoints()
+	calc_pair_winrates()
+	calc_champ_winrates()
 
 def train_general_evaluator():
 	new_tests()	
@@ -67,15 +79,13 @@ def train_general_evaluator():
 	trainer.run()
 	trainer.print_results()
 
-## run test suite using whatever evaluator class is passed in to predict winners
-def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, True)
-	ts.run_simple_tests()
-	ts.print_results()
-
 def insert_pro_matches():
+	ProMatch.drop_all()
 	pmc = ProMatchCreator()
 	pmc.add_matches()
+	calc_hyperpoints()
+	calc_pair_winrates()
+	calc_champ_winrates()
 
 def cross_validate(evaluator, num_runs):
 	cv = CrossValidator(evaluator, Match, num_runs)
@@ -137,10 +147,5 @@ def evaluate_comp(t1, t2):
 	ca.evaluate_all()
 	##print str(ca.predict_winner())
 
-def new_tests():
-	TestSuite.set_new_tests()	
-	calc_hyperpoints()
-	calc_pair_winrates()
-	calc_champ_winrates()
 
 main()
