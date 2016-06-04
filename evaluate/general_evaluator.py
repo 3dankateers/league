@@ -5,19 +5,23 @@ from evaluator import Evaluator
 from one_champ_evaluator import OneChampEvaluator
 from ally_pair_evaluator import AllyPairEvaluator
 from enemy_pair_evaluator import EnemyPairEvaluator
-
-CONF_THRESHOLD = 0.05
+from general_evaluator_trainer import GeneralEvaluatorTrainer 
+from pair_winrate_calculator import PairWinrateCalculator
+from champ_winrate_calculator import ChampWinrateCalculator
+CONF_THRESHOLD = 0.04
 
 
 class GeneralEvaluator:
 	
 	##weights are optionally passed in for training exercise
-	def __init__(self, champs1_ids, champs2_ids, one_champ_w = 0.4, ally_pair_w = 0.3, enemy_pair_w = 0.3):
-		self.one_champ_w = one_champ_w
-		self.ally_pair_w = ally_pair_w
-		self.enemy_pair_w = enemy_pair_w
+	def __init__(self, champs1_ids, champs2_ids):
+		##self.one_champ_w = one_champ_w
+		##self.ally_pair_w = ally_pair_w
+		##self.enemy_pair_w = enemy_pair_w
+		self.one_champ_w = GeneralEvaluatorTrainer.one_champ_w_global
+		self.ally_pair_w = GeneralEvaluatorTrainer.ally_pair_w_global
+		self.enemy_pair_w = GeneralEvaluatorTrainer.enemy_pair_w_global
 
-		self.number_iterations = 0
 		self.one_champ_evaluator = OneChampEvaluator(champs1_ids, champs2_ids)
 		self.ally_pair_evaluator = AllyPairEvaluator(champs1_ids, champs2_ids)
 		self.enemy_pair_evaluator = EnemyPairEvaluator(champs1_ids, champs2_ids)

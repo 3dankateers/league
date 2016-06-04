@@ -32,6 +32,7 @@ class ChampWinrateCalculator:
 				ChampWinrateCalculator.add_champs_to_dict(self.losses, c1)
 				ChampWinrateCalculator.add_champs_to_dict(self.wins, c2)
 
+
 	
 	@staticmethod
 	def add_champs_to_dict(d, champs):

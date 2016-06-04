@@ -10,7 +10,7 @@ import datetime
 import time
 from retrying import retry
 
-API_KEY = "api_key=eeff2e9b-5f33-4de0-af17-16b98a4c4b3e" 
+API_KEY = "api_key=3b9c233a-9cb0-4516-8c16-f9392aaa31cd" 
 HTTPS = "https://"
 GLOBAL = "global"
 API_PART =  ".api.pvp.net/api/lol/"

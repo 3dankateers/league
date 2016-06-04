@@ -4,7 +4,7 @@
 ############################################################################
 
 from test_suite import TestSuite
-from match import Match
+import random
 
 ## fraction of tests from training data will be 1/NUM_TESTS, ie NUM_TESTS = 10 => 1/10 of data is test data
 NUM_TESTS = 10
@@ -13,7 +13,7 @@ NEED_CONFIDENCE = True
 
 class CrossValidator:
 
-	def __init__(self, evaluator_class, num_runs = NUM_TESTS):
+	def __init__(self, evaluator_class, match_class, num_runs = NUM_TESTS):
 		self.evaluator = evaluator_class
 		## number of times tests were ran
 		self.num_runs = num_runs
@@ -24,6 +24,10 @@ class CrossValidator:
 		self.normalized_performance = 0
 		self.total_tests = 0
 		self.total_confident_tests = 0
+		self.match_class = match_class 
+
+		if num_runs == 1:
+			self.test_checker = random.randint(1, 9)
 
 	def get_performance(self):
 		self.calc_performance()
@@ -40,10 +44,10 @@ class CrossValidator:
 
 	
 	def set_new_tests(self):
-		cursor = Match.get_all_matches()
+		cursor = self.match_class.get_all_matches()
 		num_matches = cursor.count()
 		for i in range(num_matches):
-			match = Match.from_dict(cursor[i])
+			match = self.match_class.from_dict(cursor[i])
 
 			## set match as test
 			if  i%NUM_TESTS == self.test_checker:
@@ -58,13 +62,16 @@ class CrossValidator:
 
 		##set test_checker to be ready for consecutive calls to set_new_tests
 		self.test_checker += 1
-	
+
+	def retrain(self):
+		self.evaluator.retrain()
+
 	## run all tests and aggregate results
 	def run(self):
 		for i in range(self.num_runs):
 			self.set_new_tests()
 			self.evaluator.retrain()
-			ts = TestSuite(self.evaluator, Match, NEED_CONFIDENCE)
+			ts = TestSuite(self.evaluator, self.match_class, NEED_CONFIDENCE)
 			performance = ts.run_simple_tests()
 			self.total_performance += performance
 			self.total_tests += ts.total_tests

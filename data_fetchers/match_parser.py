@@ -15,7 +15,8 @@ TEAM1 = 100
 TEAM2 = 200
 PATCH = "6.10"
 ##date when patch starts in milliseconds
-PATCH_DATE = 1463630400000 
+PATCH_DATE_START = 1463630400000 
+PATCH_DATE_END = 1464753600000 
 
 class MatchParser:
 	##given recent match data, add all new matches to db
@@ -30,7 +31,7 @@ class MatchParser:
 				match = Match.get_match(id)
 				date = g["createDate"]
 				##only proceed if match doesn't already exist and game is played on current patch
-				if match == None and date > PATCH_DATE:
+				if match == None and date > PATCH_DATE_START and date < PATCH_DATE_END:
 					team1 = []
 					team2 = []
 					champs1 = []

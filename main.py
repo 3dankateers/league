@@ -1,4 +1,5 @@
 from summoner import Summoner
+from match import Match
 from league_client import LeagueClient
 from db_client import DbClient
 from summoner_parser import SummonerParser
@@ -23,6 +24,7 @@ from pair_evaluator import PairEvaluator
 from pro_match_creator import ProMatchCreator
 from pro_match import ProMatch
 from general_evaluator import GeneralEvaluator
+from general_evaluator_trainer import GeneralEvaluatorTrainer
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -40,8 +42,8 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	##pull_summoners("BR", "CHALLENGER")
-	##pull_matches("BR", "CHALLENGER")
+	##pull_summoners("lan", "CHALLENGER")
+	##pull_matches("lan", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["Annie", "Alistar", "Ashe", "Braum", "Syndra"]
 	##team2 = ["Maokai", "Graves", "Lee Sin", "Ezreal", "Alistar"]
@@ -51,14 +53,23 @@ def main():
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
 	##calc_edge(136,-179)
-	##SVMTrainer.run()	
-	##cross_validate(SVMEvaluator, 5)
+	##SVMTrainer.run()
+	##0.2, 0.1, 0.7
+	##cross_validate(GeneralEvaluator, 10)
 	##insert_pro_matches()
 	run_tests(GeneralEvaluator, ProMatch)
+	##train_general_evaluator()
+
+
+def train_general_evaluator():
+	new_tests()	
+	trainer = GeneralEvaluatorTrainer(GeneralEvaluator)
+	trainer.run()
+	trainer.print_results()
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, False)
+	ts = TestSuite(evaluator_class, match_class, True)
 	ts.run_simple_tests()
 	ts.print_results()
 
@@ -67,7 +78,7 @@ def insert_pro_matches():
 	pmc.add_matches()
 
 def cross_validate(evaluator, num_runs):
-	cv = CrossValidator(evaluator, num_runs)
+	cv = CrossValidator(evaluator, Match, num_runs)
 	cv.run()
 	cv.print_results()
 
@@ -131,7 +142,5 @@ def new_tests():
 	calc_hyperpoints()
 	calc_pair_winrates()
 	calc_champ_winrates()
-
-
 
 main()

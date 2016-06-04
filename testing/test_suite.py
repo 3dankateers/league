@@ -85,6 +85,9 @@ class TestSuite:
 		else:
 			pass
 
+	def retrain(self):
+		self.evaluator_class.retrain()
+
 
 
 	##print results of running tests
@@ -93,4 +96,7 @@ class TestSuite:
 		print "Tests Failed: ", self.tests_failed
 		print "Performance: ", self.performance 
 		self.print_confidence_interval()
+	
+	def get_performance(self):
+		return self.performance
 
