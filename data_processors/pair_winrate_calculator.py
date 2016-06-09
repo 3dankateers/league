@@ -9,7 +9,8 @@ from pair import Pair
 from match import Match
 from pro_match import ProMatch
 
-PROMATCH_MULTIPLIER = 3
+PROMATCH_MULTIPLIER = 0 
+MATCH_MULTIPLIER = 1 
 
 class PairWinrateCalculator:
 
@@ -82,7 +83,7 @@ class PairWinrateCalculator:
 		
 		##weigh pro matches more than solo q matches
 		if match_class == Match:
-			multiplier = 1
+			multiplier = MATCH_MULTIPLIER 
 		else:
 			multiplier = PROMATCH_MULTIPLIER
 		

@@ -148,9 +148,14 @@ class ProMatchCreator:
 		, ["Varus","Rek'Sai","Braum","Maokai","Lucian"], 100, "LCK", "6.10"))
 		match_list.append(MatchInfo("LCK, MVP vs Samsung, Week2", ["Ekko","Graves","Caitlyn","LeBlanc","Alistar"]
 		, ["Azir","Rek'Sai","Maokai","Ashe","Braum"], 200, "LCK", "6.10"))
-		##match_list.append(MatchInfo("LCK, S vs F, Week2", ["","","","",""]
-		##, ["","","","",""], 200, "LCK", "6.10"))
-
+		match_list.append(MatchInfo("LCK, KT vs SKT, Week2", ["Kindred","Aurelion Sol","Maokai","Jhin","Nami"]
+		, ["Ekko","Azir","Elise","Ezreal","Soraka"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, SKT vs KT, Week2", ["Azir","Rek'Sai","Swain","Ezreal","Karma"]
+		, ["Jhin","Elise","Veigar","Yasuo","Alistar"], 100, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, CJ vs AFs, Week2", ["Ryze","Elise","Ekko","Lucian","Bard"]
+		, ["Braum","Maokai","Viktor","Graves","Kalista"], 200, "LCK", "6.10"))
+		match_list.append(MatchInfo("LCK, AFs vs CJ, Week2", ["Lucian","Rek'Sai","Bard","Maokai","Vladimir"]
+		, ["Ekko","Ezreal","Nami","Gragas","Viktor"], 100, "LCK", "6.10"))
 
 		##LPL Week 2
 		match_list.append(MatchInfo(" LPL, VG vs LGD, Week2", ["Kindred","Karma","Viktor","Ezreal","Trundle"]
@@ -173,8 +178,20 @@ class ProMatchCreator:
 		, ["Sivir","Graves","Ekko","Trundle","Zed"], 100, "LPL", "6.10"))
 		match_list.append(MatchInfo(" LPL, IG vs Saint, Week2", ["Swain","Graves","Sivir","Twisted Fate","Karma"]
 		, ["Azir","Kindred","Bard","Ezreal","Fizz"], 100, "LPL", "6.10"))
-		##match_list.append(MatchInfo(" LPL, V vs L, Week2", ["","","","",""]
-		##, ["","","","",""], 100, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, RNG vs OMG, Week2", ["Ryze","Rek'Sai","Karma","Caitlyn","Vladimir"]
+		, ["Swain","Lucian","Trundle","Graves","Viktor"], 100, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, OMG vs RNG, Week2", ["Rek'Sai","Fizz","Lucian","Azir","Soraka"]
+		, ["Swain","Karma","Gragas","Caitlyn","Trundle"], 200, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, VG vs IMAY, Week2", ["Kindred","Ekko","Lucian","Lissandra","Braum"]
+		, ["Sivir","Rek'Sai","Karma","Viktor","Maokai"], 100, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, IMAY vs VG, Week2", ["Azir","Braum","Lucian","Gragas","Fizz"]
+		, ["Ekko","Bard","Viktor","Rek'Sai","Jhin"], 100, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, VG vs IMAY, Week2", ["Ryze","Rek'Sai","Braum","Twitch","Maokai"]
+		, ["Ekko","Lucian","Azir","Gragas","Alistar"], 100, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, WE vs LGD, Week2", ["Ryze","Braum","Lucian","Lissandra","Graves"]
+		, ["Ekko","Rek'Sai","Alistar","Ezreal","Viktor"], 100, "LPL", "6.10"))
+		match_list.append(MatchInfo(" LPL, LGD vs WE, Week2", ["Vladimir","Elise","Braum","Vayne","Ekko"]
+		, ["Bard","Sivir","Lissandra","Nidalee","Kassadin"], 100, "LPL", "6.10"))
 
 		## EU CS Group1
 		match_list.append(MatchInfo("EUCS, MFT vs Melty, Group A", ["Graves","Trundle","Ezreal","Lissandra","Braum"]
@@ -317,5 +334,47 @@ class ProMatchCreator:
 		, ["Lucian","Kindred","LeBlanc","Thresh","Trundle"], 100, "EULCS", "6.10"))
 		##match_list.append(MatchInfo(" EULCS, V vs L, Week2", ["","","","",""]
 		##, ["","","","",""], 100, "EULCS", "6.10"))
+		
+		##NA LCS week 1
+		match_list.append(MatchInfo(" NALCS, TSM vs CLG, Week1", ["Lucian","Maokai","Karma","Zilean","Graves"]
+		, ["Viktor","Rek'Sai","Nami","Ezreal","Trundle"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, CLG vs TSM, Week1", ["Rek'Sai","Ezreal","Bard","Vladimir","Fiora"]
+		, ["Ekko","Lucian","Elise","Braum","Viktor"], 200, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, nv vs NRG, Week1", ["Nidalee","Karma","Ezreal","Lissandra","Trundle"]
+		, ["Maokai","Sivir","Kindred","Alistar","Ziggs"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, NRG vs nV, Week1", ["Zyra","Gragas","Caitlyn","Maokai","Vladimir"]
+		, ["Lucian","Rek'Sai","Ekko","Karma","Viktor"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, nV vs NRG, Week1", ["Vladimir","Graves","Braum","Caitlyn","Lissandra"]
+		, ["Lucian","Rek'Sai","Maokai","Janna","Gangplank"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, nV vs NRG, Week1", ["Nidalee","Karma","Ezreal","Lissandra","Trundle"]
+		, ["Maokai","Sivir","Kindred","Alistar","Ziggs"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, NRG vs nV, Week1", ["Zyra","Gragas","Caitlyn","Maokai","Vladimir"]
+		, ["Lucian","Rek'Sai","Ekko","Karma","Viktor"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, nV vs NRG, Week1", ["Vladimir","Graves","Braum","Caitlyn","Lissandra"]
+		, ["Lucian","Rek'Sai","Maokai","Janna","Gangplank"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, C9 vs IMT, Week1", ["Rek'Sai","Gragas","Bard","Caitlyn","Azir"]
+		, ["Ekko","Ashe","Karma","Olaf","LeBlanc"], 200, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, IMT vs C9, Week1", ["Ekko","Ezreal","Soraka","Olaf","Varus"]
+		, ["Ekko","Ezreal","Soraka","Olaf","Varus"], 200, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, C9 vs IMT, Week1", ["Lucian","Karma","Gragas","Lissandra","Trundle"]
+		, ["Viktor","Rek'Sai","Zyra","Ashe","Riven"], 200, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, nV vs Liquid, Week1", ["Swain","Graves","Karma","Maokai","Caitlyn"]
+		, ["Ekko","Lucian","Viktor","Rek'Sai","Nami"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, Liquid vs nV, Week1", ["Kindred","Alistar","Ekko","Ezreal","LeBlanc"]
+		, ["Zyra","Lucian","Lissandra","Graves","Kassadin"], 200, "NALCS", "6.10"))
+		##match_list.append(MatchInfo(" NALCS, V vs L, Week1", ["","","","",""]
+		##, ["","","","",""], 100, "NALCS", "6.10"))
+		
+		##Stream 2
+		match_list.append(MatchInfo(" NALCS, EFX vs P1, Week1", ["Swain","Sivir","Karma","Maokai","Kha'Zix"]
+		, ["Azir","Rek'Sai","Zyra","Ezreal","Trundle"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, P1 vs EFX, Week1", ["Swain","Graves","Braum","Sivir","Fizz"]
+		, ["Lucian","Rek'Sai","Viktor","Zyra","Fiora"], 200, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, Apex vs NRG, Week1", ["Vladimir","Caitlyn","Trundle","Elise","Braum"]
+		, ["Sivir","Rek'Sai","Ekko","Bard","Azir"], 100, "NALCS", "6.10"))
+		match_list.append(MatchInfo(" NALCS, NRG vs Apex, Week1", ["Vladimir","Gragas","Zyra","Ashe","Gangplank"]
+		, ["Caitlyn","Swain","Ekko","Braum","Lee Sin"], 200, "NALCS", "6.10"))
+		##match_list.append(MatchInfo(" NALCS, V vs L, Week1", ["","","","",""]
+		##, ["","","","",""], 100, "NALCS", "6.10"))
 		return match_list
 		

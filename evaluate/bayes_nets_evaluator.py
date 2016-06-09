@@ -31,4 +31,4 @@ class BayesNetsEvaluator(Evaluator):
 		return True	
 	
 	def print_results(self):
-		print "Winner predicted by bayes nets is : ", str(self.winner) 
+		print "Winner predicted by Bayes Nets is : ", str(self.winner) 

@@ -6,7 +6,8 @@ from champ import Champ
 from match import Match
 from pro_match import ProMatch
 
-PROMATCH_MULTIPLIER = 3
+PROMATCH_MULTIPLIER = 0 
+MATCH_MULTIPLIER = 1 
 
 class ChampWinrateCalculator:
 	
@@ -43,7 +44,7 @@ class ChampWinrateCalculator:
 		
 		## weigh pro matches more than ordinary matches
 		if match_class == Match:
-			multiplier = 1
+			multiplier = MATCH_MULTIPLIER
 		else:
 			multiplier = PROMATCH_MULTIPLIER
 		
@@ -64,7 +65,10 @@ class ChampWinrateCalculator:
 					cursor = Champ.find_champ(key)
 					champ = Champ.from_dict(cursor[0])
 					sample_size = value + self.losses[key]
-					winrate = value / float(sample_size)
+					if sample_size > 0:
+						winrate = value / float(sample_size)
+					else:
+						winrate = 0.5
 					champ.winrate = winrate
 					champ.winrate_sample_size = sample_size
 					champ.save()

@@ -6,7 +6,7 @@ from evaluator import Evaluator
 from champ_winrate_calculator import ChampWinrateCalculator
 
 CONF_THRESHOLD = 0.02
-ONE_CHAMP_SAMPLE_LIMIT = 20
+ONE_CHAMP_SAMPLE_LIMIT = 10 
 
 ##stores information calculated in process()
 class TeamInfo:
@@ -21,7 +21,8 @@ class TeamInfo:
 		for r in self.winrates:
 			if r != -1:
 				self.total_winrate += r
-		self.aggregate_winrate = self.total_winrate/self.num_champs_considered
+		if self.num_champs_considered > 3:
+			self.aggregate_winrate = self.total_winrate/self.num_champs_considered
 				
 	def print_result(self):
 		print "Normalized win rate = ", str(self.aggregate_winrate)
@@ -65,8 +66,9 @@ class OneChampEvaluator(Evaluator):
 	def normalize_winrates(self):
 		winrate1 = self.ti1.aggregate_winrate
 		winrate2 = self.ti2.aggregate_winrate
-		self.ti1.aggregate_winrate = winrate1/(winrate1 + winrate2)
-		self.ti2.aggregate_winrate = winrate2/(winrate1 + winrate2)
+		if (winrate1+winrate2) > 0:
+			self.ti1.aggregate_winrate = winrate1/(winrate1 + winrate2)
+			self.ti2.aggregate_winrate = winrate2/(winrate1 + winrate2)
 
 
 	##calculates all neccesary team info and updates ti (teaminfo)

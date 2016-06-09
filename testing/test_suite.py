@@ -3,6 +3,7 @@ from match import Match
 from pro_match import ProMatch
 from random import randint
 import math
+import statsmodels.stats.proportion
 
 ## out of how many matches should a test be set
 ## num_total_tests = ( 1/NUM_TESTS * num_total_matches)
@@ -89,15 +90,13 @@ class TestSuite:
 		return self.performance
 	
 	def print_confidence_interval(self):
-		mean = self.tests_passed/float(self.total_tests)
-		variance = (self.tests_passed*(1-mean)*(1-mean)+self.tests_failed*mean*mean)/float(self.total_tests-1)
-		standard_deviation = math.sqrt(variance)
-		standard_error = standard_deviation/math.sqrt(self.total_tests)
-		print "variance :" , variance
+		##mean = self.tests_passed/float(self.total_tests)
+		####standard_error = math.sqrt(mean*(1-mean)/float(self.total_tests))
 		##large sample using Z distribution
 		if (self.total_tests > 1):
-				low_conf = mean - standard_error*1.96
-				high_conf = mean + standard_error*1.96
+				interval = statsmodels.stats.proportion.proportion_confint(self.tests_passed, self.total_tests, alpha=0.05, method='beta')
+				low_conf = interval[0] 
+				high_conf = interval[1] 
 				print "Confidence Interval: [", low_conf, " , ", high_conf, "]"
 		else:
 			pass

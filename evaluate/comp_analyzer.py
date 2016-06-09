@@ -12,7 +12,7 @@ from enemy_pair_evaluator import EnemyPairEvaluator
 from general_evaluator import GeneralEvaluator
 from match_hyperpoint import MatchHyperpoint
 from svm_calculator import SVMCalculator
-
+from bayes_nets_evaluator import BayesNetsEvaluator
 
 
 class CompAnalyzer:
@@ -30,10 +30,11 @@ class CompAnalyzer:
 		self.team2_names = team2
 	
 	def evaluate_all(self):
-		self.evaluate_one_champ()
-		self.evaluate_ally_pairs()
-		self.evaluate_enemy_pairs()
+		##self.evaluate_one_champ()
+		##self.evaluate_ally_pairs()
+		##self.evaluate_enemy_pairs()
 		self.evaluate_general()
+		self.evaluate_bayes_nets()
 		
 	## checks that champions are spelled properly
 	def check_team_champ_names(self, team_names, team_ids):
@@ -64,6 +65,10 @@ class CompAnalyzer:
 		evaluator.process()
 		evaluator.print_results()
 	
+	def evaluate_bayes_nets(self):
+		evaluator = BayesNetsEvaluator(self.team1_ids, self.team2_ids)
+		evaluator.process()
+		evaluator.print_results()
 	##def evaluate_svm(self, svm_model):
 		##coordinates = MatchHyperpoint.get_coordinates(self.team1_ids, self.team2_ids)
 		##print str(svm_model.predict(coordinates))

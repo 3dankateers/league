@@ -49,14 +49,21 @@ def main():
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
-	##team1 = ["Lucian", "Maokai", "Karma", "Zilean", "Graves"]
-	##team2 = ["Nami", "Rek'Sai", "Viktor", "Ezreal", "Trundle"]
-	##evaluate_comp(team1, team2)
+	##team1 = ["Lucian", "Gragas", "Swain", "", ""]
+	##team2 = ["Maokai", "Rek'Sai", "Braum", "Ashe", ""]
+	##team1 = ["Ryze", "Ekko", "Rek'Sai", "Sivir", "Nami"]
+	##team2 = ["Maokai", "Lucian", "Anivia", "Graves", "Soraka"]
+	##team1 = ["Kindred", "Alistar", "Ekko", "Ezreal", "LeBlanc"]
+	##team2 = ["Zyra", "Lucian", "Lissandra", "Graves", "Kassadin"]
+	##team3 = ["Ekko", "Ezreal", "Soraka", "Varus", "Olaf"]
+	##team4 = ["Karma", "Rek'Sai", "Maokai", "Sivir", "Fizz"]
+	evaluate_comp(team1, team2)
+	##evaluate_comp(team3, team4)
 	##new_tests()
 	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
-	##calc_edge(136,-179)
+	calc_edge(183,-246)
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
 	##cross_validate(GeneralEvaluator, 10)
@@ -64,9 +71,11 @@ def main():
 	##insert_pro_matches()
 	##calc_hyperpoints()
 	##retrain_all()
-	run_tests(BayesNetsEvaluator, ProMatch)
+	##for i in range(10):
+		##new_tests()
+		##run_tests(BayesNetsEvaluator, ProMatch)
 	##calc_hyperpoints()
-	##run_tests(SVMEvaluator, ProMatch)
+	##run_tests(BayesNetsEvaluator, Match)
 	##train_general_evaluator()
 
 ## run test suite using whatever evaluator class is passed in to predict winners
