@@ -57,18 +57,18 @@ def main():
 	##team2 = ["Zyra", "Lucian", "Lissandra", "Graves", "Kassadin"]
 	##team3 = ["Ekko", "Ezreal", "Soraka", "Varus", "Olaf"]
 	##team4 = ["Karma", "Rek'Sai", "Maokai", "Sivir", "Fizz"]
-	evaluate_comp(team1, team2)
+	##evaluate_comp(team1, team2)
 	##evaluate_comp(team3, team4)
 	##new_tests()
 	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
-	calc_edge(183,-246)
+	##calc_edge(183,-246)
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
 	##cross_validate(GeneralEvaluator, 10)
 	##new_tests()
-	##insert_pro_matches()
+	insert_pro_matches()
 	##calc_hyperpoints()
 	##retrain_all()
 	##for i in range(10):
