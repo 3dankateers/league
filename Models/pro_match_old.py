@@ -1,6 +1,6 @@
 ## pro_match : id, description, champs1, champs2, win, region, patch, date_created, is_test
 import time
-from db_client import DbClient
+from db_client_nitrogen import DbClientNitrogen
 
 class ProMatch:
 	def __init__(self, description, champs1, champs2, win, region, patch, date_created = int(round(time.time() * 1000)), id =None, is_test = False):
@@ -41,11 +41,6 @@ class ProMatch:
 		db_client = DbClient.get_client()
 		cursor = db_client.league.pro_matches.find({"_id" : id})
 		return cursor
-	
-	@staticmethod
-	def drop_all():
-		db_client = DbClient.get_client()
-		db_client.league.pro_matches.drop()
 	
 	## return all matches
 	@staticmethod

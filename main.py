@@ -102,7 +102,6 @@ def train_general_evaluator():
 	trainer.print_results()
 
 def insert_pro_matches():
-	ProMatch.drop_all()
 	pmc = ProMatchCreator()
 	pmc.add_matches()
 	calc_hyperpoints()
