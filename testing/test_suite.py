@@ -27,7 +27,7 @@ class TestSuite:
 		##used to decide which matches are set as tests	
 		rand = randint(0,NUM_TESTS)
 		
-		cursor = Match.get_all_matches()
+		cursor = Match.get_testabe_set()
 		num_matches = cursor.count()
 
 		for i in range(num_matches):
@@ -45,7 +45,7 @@ class TestSuite:
 				match.save()
 		
 		##set half of pro matches to tests half training
-		cursor = ProMatch.get_all_matches()
+		cursor = ProMatch.get_testable_set()
 		num_matches = cursor.count()
 		for i in range(num_matches):
 			rand = randint(1,2)

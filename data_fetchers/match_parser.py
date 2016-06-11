@@ -13,7 +13,7 @@ from misc_helper import MiscHelper
 
 TEAM1 = 100
 TEAM2 = 200
-PATCH = "6.10"
+PATCH = "6.11"
 ##date when patch starts in milliseconds
 PATCH_DATE_START = 1463630400000 
 PATCH_DATE_END = 1464753600000 
@@ -31,7 +31,7 @@ class MatchParser:
 				match = Match.get_match(id)
 				date = g["createDate"]
 				##only proceed if match doesn't already exist and game is played on current patch
-				if match == None and date > PATCH_DATE_START and date < PATCH_DATE_END:
+				if match == None and date > PATCH_DATE_START:
 					team1 = []
 					team2 = []
 					champs1 = []

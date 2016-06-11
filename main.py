@@ -27,6 +27,8 @@ from general_evaluator import GeneralEvaluator
 from general_evaluator_trainer import GeneralEvaluatorTrainer
 from tree_evaluator import TreeEvaluator
 from bayes_nets_evaluator import BayesNetsEvaluator
+from bet_simulator import BetSimulator
+from odd import Odd
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -41,11 +43,12 @@ from bayes_nets_evaluator import BayesNetsEvaluator
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():
+	Odd.fix_ML()
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	##pull_summoners("lan", "CHALLENGER")
-	##pull_matches("lan", "CHALLENGER")
+	##pull_summoners("euw", "CHALLENGER")
+	##pull_matches("euw", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -68,15 +71,22 @@ def main():
 	##0.2, 0.1, 0.7
 	##cross_validate(GeneralEvaluator, 10)
 	##new_tests()
-	insert_pro_matches()
+	##insert_pro_matches()
 	##calc_hyperpoints()
 	##retrain_all()
+	simulate_bets(BayesNetsEvaluator)
 	##for i in range(10):
 		##new_tests()
 		##run_tests(BayesNetsEvaluator, ProMatch)
 	##calc_hyperpoints()
 	##run_tests(BayesNetsEvaluator, Match)
 	##train_general_evaluator()
+
+##simulate betting
+def simulate_bets(evaluator_class):
+	bs = BetSimulator(evaluator_class, False)
+	bs.run()
+	bs.print_results()
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class, match_class):
@@ -103,7 +113,7 @@ def train_general_evaluator():
 
 def insert_pro_matches():
 	pmc = ProMatchCreator()
-	pmc.add_matches()
+	pmc.run()
 	calc_hyperpoints()
 	calc_pair_winrates()
 	calc_champ_winrates()

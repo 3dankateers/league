@@ -44,7 +44,7 @@ class CrossValidator:
 
 	
 	def set_new_tests(self):
-		cursor = self.match_class.get_all_matches()
+		cursor = self.match_class.get_testable_set()
 		num_matches = cursor.count()
 		for i in range(num_matches):
 			match = self.match_class.from_dict(cursor[i])

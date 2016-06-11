@@ -31,10 +31,16 @@ def champ_names_to_ids(champ_names):
 ## ['team1_name', 'team2_name', 'map_number', 'champs1_names', 'champs2_names', 'win', 'match_day', 'first_blood', 'kills_5']
 
 class ProMatchCreator:
+	
+	def run(self):
+		self.add_matches("EU_LCS_WEEK2.csv")
+		self.add_matches("NA_LCS_WEEK2.csv")
+		self.add_matches("LCK_WEEK3.csv")
+
 	##adds pro matches to db (may contain duplicates)
-	def add_matches(self):
+	def add_matches(self, file):
 		##Possibly populated later by csv file: 				champs1, champs2, win, first_blood, kills_5, status
-		with open("C:/Users/andrei/dev/league/csv_data/EU_LCS_WEEK2.csv", 'r') as csvfile:
+		with open("C:/Users/andrei/dev/league/csv_data/" + file, 'r') as csvfile:
 			contents = csv.reader(csvfile)
 			label_row = []
 			for i, row in enumerate(contents):
@@ -44,25 +50,35 @@ class ProMatchCreator:
 					params_dict = ProMatchCreator.parse_row_params(label_row, row)
 					team1_name = params_dict['team1_name']
 					team2_name = params_dict['team2_name']
-					map_number = params_dict['map_number']
+					map_number = int(params_dict['map_number'])
 					match_day = params_dict['match_day']
 					## if already exists this gets existing match, otherwise create new match with those parameters
-					match = ProMatch.find_match(team1_name, team2_name, map_number, match_day)
+					match = ProMatch.find_match(team1_name, team2_name, map_number, match_day, "csv")
 					
 					##if match already created and status is nitrogen update to "both", else status = "csv"
-					if match.status == "nitrogen":
-						match.status = "both"
-						print "Nitrogen promatch updated"
-					elif match.status == None:
-						match.status = "csv"
-						print "New csv promatch created"
 					
-					match.champs1 = ProMatchCreator.champs_string_to_ids(params_dict['champs1_names'])
-					match.champs2 = ProMatchCreator.champs_string_to_ids(params_dict['champs2_names'])
-					match.win = int(params_dict['win'])
-					match.first_blood = params_dict['first_blood']
-					match.kills_5 = params_dict['kills_5']
-					match.save()
+					##don't update match if both already since it will cause inversion problems
+					if match.status != "both":
+						if match.status == "nitrogen":
+							match.status = "both"
+							print "Nitrogen promatch updated"
+						elif match.status == None:
+							match.status = "csv"
+							print "New csv promatch created"
+						
+						match.champs1 = ProMatchCreator.champs_string_to_ids(params_dict['champs1_names'])
+						match.champs2 = ProMatchCreator.champs_string_to_ids(params_dict['champs2_names'])
+						match.win = int(params_dict['win'])
+						if params_dict["first_blood"] != None:
+							match.first_blood = int(params_dict['first_blood'])
+						if params_dict["kills_5"] != None:
+							match.kills_5 = int(params_dict['kills_5'])
+						match.is_test = True
+						##red side should always be first team(100) in csv file 
+						## this is why inversion is neccesary since nitrogen lists alphabetically(doesn't care about sides)
+						match.red_side = 100
+						## match.save will do inversion if neccesary
+						match.save()
 		
 		csvfile.close()
 
@@ -71,7 +87,6 @@ class ProMatchCreator:
 	@staticmethod
 	def champs_string_to_ids(champ_string):
 		champ_names = champ_string.split(", ")
-		print champ_names
 		return champ_names_to_ids(champ_names)
 
 

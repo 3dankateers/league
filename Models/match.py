@@ -112,6 +112,10 @@ class Match:
 		db_client = DbClient.get_client()
 		cursor = db_client.league.matches.find({"is_test" : False})
 		return cursor
+
+	@staticmethod
+	def get_testable_set():
+		return Match.get_all_matches()
 	
 	## return all matches that are labeled is_test
 	@staticmethod
