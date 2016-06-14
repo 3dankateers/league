@@ -9,9 +9,11 @@ import statsmodels.stats.proportion
 ## num_total_tests = ( 1/NUM_TESTS * num_total_matches)
 NUM_TESTS = 10
 
+
 class TestSuite:
 
-	def __init__(self, evaluator_class, match_class, need_confidence = False):
+	## prediction target is either win or first_blood(this is what evaluator will predict and what you test against)
+	def __init__(self, evaluator_class, match_class, prediction_target, need_confidence = False):
 		self.match_class = match_class
 		self.tests_passed = 0
 		self.tests_failed = 0
@@ -19,15 +21,14 @@ class TestSuite:
 		self.total_confident_tests = 0
 		self.evaluator_class = evaluator_class
 		self.need_confidence = need_confidence
-
-
+		self.prediction_target = prediction_target
 
 	@staticmethod
 	def set_new_tests():
 		##used to decide which matches are set as tests	
 		rand = randint(0,NUM_TESTS)
 		
-		cursor = Match.get_testabe_set()
+		cursor = Match.get_testable_set()
 		num_matches = cursor.count()
 
 		for i in range(num_matches):
@@ -102,7 +103,7 @@ class TestSuite:
 			pass
 
 	def retrain(self):
-		self.evaluator_class.retrain()
+		self.evaluator_class.retrain(self.prediction_target)
 
 
 

@@ -3,6 +3,11 @@
 from db_client import DbClient
 
 class Match:
+
+	##prediction target possibilities
+	WIN = "win"
+	FIRST_BLOOD = "first_blood"
+	
 	def __init__(self, id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test = False):
 		self.id = id
 		self.team1 = team1

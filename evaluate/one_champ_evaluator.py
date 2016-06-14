@@ -46,8 +46,8 @@ class OneChampEvaluator(Evaluator):
 			return False
 
 	@staticmethod
-	def retrain():
-		winrate_calc = ChampWinrateCalculator()
+	def retrain(prediction_target):
+		winrate_calc = ChampWinrateCalculator(prediction_target)
 		winrate_calc.run()
 		
 

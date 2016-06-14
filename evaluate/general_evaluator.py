@@ -33,10 +33,10 @@ class GeneralEvaluator:
 		self.team2_winrate = 0
 	
 	@staticmethod
-	def retrain():
-		winrate_calc = PairWinrateCalculator()
+	def retrain(prediction_target):
+		winrate_calc = PairWinrateCalculator(prediction_target)
 		winrate_calc.run()
-		winrate_calc = ChampWinrateCalculator()
+		winrate_calc = ChampWinrateCalculator(prediction_target)
 		winrate_calc.run()
 	
 	## return 100 if team1 is favoured, else return 200

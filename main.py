@@ -46,8 +46,8 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	pull_summoners("kr", "CHALLENGER")
-	pull_matches("kr", "CHALLENGER")
+	##pull_summoners("na", "CHALLENGER")
+	##pull_matches("na", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -67,11 +67,11 @@ def main():
 	##calc_edge(183,-246)
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
-	##cross_validate(SVMEvaluator, 10)
+	cross_validate(GeneralEvaluator, 10, "first_blood")
 	##new_tests()
 	##insert_pro_matches()
 	##calc_hyperpoints()
-	##retrain_all()
+	##retrain_all("first_blood")
 	##simulate_bets(BayesNetsEvaluator)
 	##ProMatch.print_by_status("nitrogen")
 	
@@ -79,7 +79,7 @@ def main():
 		##new_tests()
 		##run_tests(BayesNetsEvaluator, ProMatch)
 	##calc_hyperpoints()
-	##run_tests(GeneralEvaluator, ProMatch)
+	run_tests(GeneralEvaluator, ProMatch)
 	##train_general_evaluator()
 
 ##simulate betting
@@ -94,19 +94,19 @@ def run_tests(evaluator_class, match_class):
 	ts.run_simple_tests()
 	ts.print_results()
 
-def retrain_all():
-	calc_hyperpoints()
-	calc_pair_winrates()
-	calc_champ_winrates()
+def retrain_all(prediction_target):
+	SVMEvaluator.retrain(prediction_target)
+	PairEvaluator.retrain(prediction_target)
+	OneChampEvaluator.retrain(prediction_target)
 
-def new_tests():
+def new_tests(prediction_target):
 	TestSuite.set_new_tests()	
-	calc_hyperpoints()
-	calc_pair_winrates()
-	calc_champ_winrates()
+	SVMEvaluator.retrain(prediction_target)
+	PairEvaluator.retrain(prediction_target)
+	OneChampEvaluator.retrain(prediction_target)
 
-def train_general_evaluator():
-	new_tests()	
+def train_general_evaluator(prediction_target):
+	new_tests(prediction_target)	
 	trainer = GeneralEvaluatorTrainer(GeneralEvaluator)
 	trainer.run()
 	trainer.print_results()
@@ -114,12 +114,9 @@ def train_general_evaluator():
 def insert_pro_matches():
 	pmc = ProMatchCreator()
 	pmc.run()
-	calc_hyperpoints()
-	calc_pair_winrates()
-	calc_champ_winrates()
 
-def cross_validate(evaluator, num_runs):
-	cv = CrossValidator(evaluator, Match, num_runs)
+def cross_validate(evaluator, num_runs, prediction_target):
+	cv = CrossValidator(evaluator, Match, prediction_target, num_runs)
 	cv.run()
 	cv.print_results()
 
@@ -132,11 +129,6 @@ def evaluate_svm(t1, t2, svm_model):
 
 def calc_svm_model():
 	return SVMCalculator.get_svm_model()
-
-def calc_hyperpoints():
-	hc = HyperpointCalculator()
-	hc.run()
-	
 
 def test_grab(lc):
 	c = Summoner.get_one_summoner()
@@ -161,14 +153,6 @@ def pull_matches(region, tier):
 	lc = LeagueClient(region)
 	MatchParser.grab_matches_by_tier(lc, tier)
 
-def calc_champ_winrates():
-	winrate_calc = ChampWinrateCalculator()
-	winrate_calc.run()
-
-def calc_pair_winrates():
-	winrate_calc = PairWinrateCalculator()
-	winrate_calc.run()
-
 def find_teams():
 	tf = TeamFinder()
 	tf.run()
@@ -177,6 +161,5 @@ def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
 	ca.evaluate_all()
 	##print str(ca.predict_winner())
-
 
 main()

@@ -11,10 +11,11 @@ MATCH_MULTIPLIER = 1
 
 class ChampWinrateCalculator:
 	
-	def __init__(self):
+	def __init__(self, prediction_target):
 		##hash counts wins and losses for each champ
 		self.losses = {}
 		self.wins = {}
+		self.prediction_target = prediction_target
 		
 		##make pro_matches count for more than normal matches
 
@@ -31,7 +32,11 @@ class ChampWinrateCalculator:
 			c1 = match.champs1
 			c2 = match.champs2
 			## 100 means team1 won, 200 means team2 won
-			win = match.win
+			if self.prediction_target == Match.WIN: 
+				win = match.win
+			else:
+				win = match.first_blood
+			
 			if win  == 100:
 				self.add_champs_to_dict(self.wins, match_class, c1)
 				self.add_champs_to_dict(self.losses, match_class, c2)

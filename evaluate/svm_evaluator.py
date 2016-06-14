@@ -20,8 +20,8 @@ class SVMEvaluator(Evaluator):
 		self.team2_ids = team2
 	
 	@staticmethod
-	def retrain():
-		hc = HyperpointCalculator()
+	def retrain(prediction_target):
+		hc = HyperpointCalculator(prediction_target)
 		hc.run()
 		SVMCalculator.get_new_model()
 
@@ -44,6 +44,4 @@ class SVMEvaluator(Evaluator):
 	
 	def print_results(self):
 		print "Winner predicted by svm is : ", str(self.winner) 
-
-
 

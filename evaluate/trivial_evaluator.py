@@ -15,7 +15,7 @@ class TrivialEvaluator(Evaluator):
 		return True
 
 	@staticmethod
-	def retrain():
+	def retrain(prediction_target):
 		pass
 
 	def print_results(self):

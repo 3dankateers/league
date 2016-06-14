@@ -14,13 +14,14 @@ MATCH_MULTIPLIER = 1
 
 class PairWinrateCalculator:
 
-	def __init__(self):
+	def __init__(self, prediction_target):
 		##dicts used to count pair of enemies
 		self.enemy_wins = {}
 		self.enemy_losses = {}
 		##dicts used to count pair of enemies
 		self.ally_wins = {}
 		self.ally_losses = {}
+		self.prediction_target = prediction_target
 	
 	def run(self):
 		## drop everything at the start since everythinf is recalculated and inserted
@@ -62,7 +63,10 @@ class PairWinrateCalculator:
 			c1 = match.champs1
 			c2 = match.champs2
 			## 100 means team1 won, 200 means team2 won
-			win = match.win
+			if self.prediction_target == Match.WIN: 
+				win = match.win
+			else:
+				win = match.first_blood
 			
 			## count ally pairs in match
 			if win  == 100:

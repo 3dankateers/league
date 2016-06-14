@@ -13,7 +13,8 @@ NEED_CONFIDENCE = True
 
 class CrossValidator:
 
-	def __init__(self, evaluator_class, match_class, num_runs = NUM_TESTS):
+	## prediction target is either win or first_blood(this is what evaluator will predict and what you test against)
+	def __init__(self, evaluator_class, match_class, prediction_target, num_runs = NUM_TESTS):
 		self.evaluator = evaluator_class
 		## number of times tests were ran
 		self.num_runs = num_runs
@@ -25,6 +26,7 @@ class CrossValidator:
 		self.total_tests = 0
 		self.total_confident_tests = 0
 		self.match_class = match_class 
+		self.prediction_target = prediction_target
 
 		if num_runs == 1:
 			self.test_checker = random.randint(1, 9)
@@ -64,14 +66,14 @@ class CrossValidator:
 		self.test_checker += 1
 
 	def retrain(self):
-		self.evaluator.retrain()
+		self.evaluator.retrain(self.prediction_target)
 
 	## run all tests and aggregate results
 	def run(self):
 		for i in range(self.num_runs):
 			self.set_new_tests()
-			self.evaluator.retrain()
-			ts = TestSuite(self.evaluator, self.match_class, NEED_CONFIDENCE)
+			self.evaluator.retrain(self.prediction_target)
+			ts = TestSuite(self.evaluator, self.match_class, self.prediction_target, NEED_CONFIDENCE)
 			performance = ts.run_simple_tests()
 			self.total_performance += performance
 			self.total_tests += ts.total_tests

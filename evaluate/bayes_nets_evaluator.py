@@ -11,7 +11,7 @@ class BayesNetsEvaluator(Evaluator):
 		self.team2_ids = team2
 	
 	@staticmethod
-	def retrain():
+	def retrain(prediction_target):
 		hc = HyperpointCalculator()
 		hc.run()
 		BayesNetsCalculator.get_new_model()

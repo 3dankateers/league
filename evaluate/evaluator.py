@@ -1,12 +1,13 @@
 from abc import ABCMeta, abstractmethod
 from champ import Champ
 
+
+
 ## abstract evaluator class that all evaluators inherit from
 class Evaluator:
 	__metaclass__ = ABCMeta
 
 	@abstractmethod
-	
 	## process team comp and update stats calculated
 	def process(self): pass
 

@@ -7,7 +7,8 @@ from champ import Champ
 from match_hyperpoint import MatchHyperpoint
 
 class HyperpointCalculator:
-	def __init__(self):
+	def __init__(self, prediction_target):
+		self.prediction_target = prediction_target
 		pass
 
 	def run(self):
@@ -20,7 +21,10 @@ class HyperpointCalculator:
 			
 			match_id = match.id
 			coordinates = MatchHyperpoint.get_coordinates(match.champs1, match.champs2)
-			winner = match.win
+			if self.prediction_target == Match.WIN: 
+				winner = match.win
+			elif self.prediction_target == Match.FIRST_BLOOD:
+				winner = match.first_blood
 			
 			mhp = MatchHyperpoint(match_id, coordinates, winner)
 			mhp.save()

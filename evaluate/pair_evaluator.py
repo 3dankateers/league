@@ -22,8 +22,8 @@ class PairEvaluator:
 
 	
 	@staticmethod
-	def retrain():
-		winrate_calc = PairWinrateCalculator()
+	def retrain(prediction_target):
+		winrate_calc = PairWinrateCalculator(prediction_target)
 		winrate_calc.run()
 
 	def process(self):
