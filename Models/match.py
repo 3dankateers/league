@@ -1,4 +1,4 @@
-## match : id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test
+## match : id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, num_premade, is_test
 
 from db_client import DbClient
 
@@ -8,7 +8,10 @@ class Match:
 	WIN = "win"
 	FIRST_BLOOD = "first_blood"
 	
-	def __init__(self, id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test = False):
+	##required greater than this number of premades
+	NUM_PREMADE_REQUIRED = 0 
+
+	def __init__(self, id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, num_premade = 0, is_test = False):
 		self.id = id
 		self.team1 = team1
 		self.team2 = team2
@@ -22,6 +25,7 @@ class Match:
 		self.patch = patch
 		self.tier = tier
 		self.date = date
+		self.num_premade = num_premade
 		self.is_test = is_test
 	
 	@classmethod
@@ -39,9 +43,10 @@ class Match:
 		patch = d["patch"]
 		tier = d["tier"]
 		date = d["date"]
+		num_premade = d["num_premade"]
 		is_test = d["is_test"]
 			
-		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test)
+		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, num_premade, is_test)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
@@ -84,6 +89,7 @@ class Match:
 			"patch" : self.patch,
 			"tier" : self.tier,
 			"date" : self.date,
+			"num_premade" : self.num_premade,
 			"is_test" : self.is_test
 			})
 		print "Created match"
@@ -95,6 +101,7 @@ class Match:
 				{"_id" : self.id},{
 					"$set": {
 						"is_test" : self.is_test,
+						"num_premade" : self.num_premade
 						}
 				})
 		##print "Updated match." 
@@ -116,15 +123,33 @@ class Match:
 	
 	## return all matches not marked as is_test
 	@staticmethod
-	def get_training_set():
-		db_client = DbClient.get_client()
-		cursor = db_client.league.matches.find({"is_test" : False})
-		return cursor
+	def get_training_set(premade_only = False):
+		if premade_only:
+			db_client = DbClient.get_client()
+			cursor = db_client.league.matches.find({"num_premade" : {"$gt" : Match.NUM_PREMADE_REQUIRED}, "is_test" : False})
+			print cursor.count()
+			return cursor
+		else:
+			db_client = DbClient.get_client()
+			cursor = db_client.league.matches.find({"is_test" : False})
+			return cursor
 
+	##return set that should be considered when deciding what is part of test set and what is training set
 	@staticmethod
 	def get_testable_set():
 		return Match.get_all_matches()
 	
+	##reset is_test of all matches to false
+	@staticmethod
+	def remove_all_tests():
+		db_client = DbClient.get_client()
+		db_client.league.matches.update_many(
+				{},{
+					"$set": {
+						"is_test" : False
+						}
+				})
+
 	## return all matches that are labeled is_test
 	@staticmethod
 	def get_test_set():

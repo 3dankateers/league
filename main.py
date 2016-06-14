@@ -42,12 +42,9 @@ from odd import Odd
 ##TODO: perhaps try finding smurfs statistically
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
-def main():
-	##calc_pair_winrates()
-	##calc_champ_winrates()
-	##calc_hyperpoints()
-	##pull_summoners("na", "CHALLENGER")
-	##pull_matches("na", "CHALLENGER")
+def main():	
+	##pull_summoners("euw", "CHALLENGER")
+	##pull_matches("euw", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -67,19 +64,16 @@ def main():
 	##calc_edge(183,-246)
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
-	cross_validate(GeneralEvaluator, 10, "first_blood")
+	##cross_validate(GeneralEvaluator, 10, "first_blood")
 	##new_tests()
 	##insert_pro_matches()
 	##calc_hyperpoints()
 	##retrain_all("first_blood")
 	##simulate_bets(BayesNetsEvaluator)
 	##ProMatch.print_by_status("nitrogen")
-	
-	##for i in range(10):
-		##new_tests()
-		##run_tests(BayesNetsEvaluator, ProMatch)
+	##ProMatch.reset_all_tests()
 	##calc_hyperpoints()
-	run_tests(GeneralEvaluator, ProMatch)
+	run_tests(BayesNetsEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##train_general_evaluator()
 
 ##simulate betting
@@ -89,20 +83,25 @@ def simulate_bets(evaluator_class):
 	bs.print_results()
 
 ## run test suite using whatever evaluator class is passed in to predict winners
-def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, False)
+def run_tests(evaluator_class, match_class, prediction_target, need_confidence, premade_only):
+	
+	##set new test set and retrain before running tests
+	retrain_all(prediction_target, premade_only)
+	TestSuite.set_new_tests()
+	
+	ts = TestSuite(evaluator_class, match_class, prediction_target, need_confidence)
 	ts.run_simple_tests()
 	ts.print_results()
 
-def retrain_all(prediction_target):
-	SVMEvaluator.retrain(prediction_target)
-	PairEvaluator.retrain(prediction_target)
-	OneChampEvaluator.retrain(prediction_target)
+def retrain_all(prediction_target, premade_only):
+	SVMEvaluator.retrain(prediction_target, premade_only)
+	PairEvaluator.retrain(prediction_target, premade_only)
+	OneChampEvaluator.retrain(prediction_target, premade_only)
 
-def new_tests(prediction_target):
+def new_tests():
 	TestSuite.set_new_tests()	
-	SVMEvaluator.retrain(prediction_target)
-	PairEvaluator.retrain(prediction_target)
+	SVMEvaluator.retrain()
+	PairEvaluator.retrain()
 	OneChampEvaluator.retrain(prediction_target)
 
 def train_general_evaluator(prediction_target):

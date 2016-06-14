@@ -14,7 +14,7 @@ MATCH_MULTIPLIER = 1
 
 class PairWinrateCalculator:
 
-	def __init__(self, prediction_target):
+	def __init__(self, prediction_target, premade_only):
 		##dicts used to count pair of enemies
 		self.enemy_wins = {}
 		self.enemy_losses = {}
@@ -22,6 +22,7 @@ class PairWinrateCalculator:
 		self.ally_wins = {}
 		self.ally_losses = {}
 		self.prediction_target = prediction_target
+		self.premade_only = premade_only
 	
 	def run(self):
 		## drop everything at the start since everythinf is recalculated and inserted
@@ -57,7 +58,7 @@ class PairWinrateCalculator:
 		Pair.insert_all(all_pairs_dicts)
 
 	def count_matches(self, match_class):
-		cursor = match_class.get_training_set()
+		cursor = match_class.get_training_set(self.premade_only)
 		for d in cursor:
 			match = match_class.from_dict(d)
 			c1 = match.champs1

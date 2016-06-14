@@ -85,3 +85,14 @@ class Champ:
 		db_client = DbClient.get_client()
 		cursor = db_client.league.champs.find().sort("_id", 1)
 		return cursor
+
+	@staticmethod
+	def reset_winrates():
+		db_client = DbClient.get_client()
+		db_client.league.champs.update_many(
+				{},{
+					"$set": {
+						"winrate" : 0,
+						"winrate_sample_size" : 0
+						}
+				})

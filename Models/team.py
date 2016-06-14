@@ -44,7 +44,6 @@ class Team:
 	
 	## push team into database
 	def save(self):
-		db_client.get_client()
 		#if already exists in db
 		if self.id != None:
 			self.update_team()
@@ -80,4 +79,17 @@ class Team:
 		db_client = DbClient.get_client()
 		cursor = db_client.league.teams.find({"summoners" : summoners})
 		return cursor
+
+	@staticmethod
+	def get_all_teams():
+		db_client = DbClient.get_client()
+		cursor = db_client.league.teams.find()
+		return cursor
+
+	##clears team collection
+	## usually ran before teams are recalculated
+	@staticmethod
+	def drop_all():
+		db_client = DbClient.get_client()
+		db_client.league.teams.drop()
 

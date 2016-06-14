@@ -9,12 +9,12 @@ import random
 ## fraction of tests from training data will be 1/NUM_TESTS, ie NUM_TESTS = 10 => 1/10 of data is test data
 NUM_TESTS = 10
 ##if true, only evaluate predictions given with confidence 
-NEED_CONFIDENCE = True
+NEED_CONFIDENCE = False 
 
 class CrossValidator:
 
 	## prediction target is either win or first_blood(this is what evaluator will predict and what you test against)
-	def __init__(self, evaluator_class, match_class, prediction_target, num_runs = NUM_TESTS):
+	def __init__(self, evaluator_class, match_class, prediction_target = "win", num_runs = NUM_TESTS):
 		self.evaluator = evaluator_class
 		## number of times tests were ran
 		self.num_runs = num_runs
@@ -46,6 +46,11 @@ class CrossValidator:
 
 	
 	def set_new_tests(self):
+		
+		##before assigning new tests, remove all previous ones
+		match_class.remove_all_tests()
+		
+		
 		cursor = self.match_class.get_testable_set()
 		num_matches = cursor.count()
 		for i in range(num_matches):
@@ -55,11 +60,6 @@ class CrossValidator:
 			if  i%NUM_TESTS == self.test_checker:
 				##num_tests+= 1
 				match.is_test = True
-				match.save()
-			##match is not test
-			elif match.is_test == True:
-				##num_non_tests += 1
-				match.is_test = False
 				match.save()
 
 		##set test_checker to be ready for consecutive calls to set_new_tests

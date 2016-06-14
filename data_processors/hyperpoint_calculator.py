@@ -7,14 +7,15 @@ from champ import Champ
 from match_hyperpoint import MatchHyperpoint
 
 class HyperpointCalculator:
-	def __init__(self, prediction_target):
+	def __init__(self, prediction_target, premade_only):
 		self.prediction_target = prediction_target
-		pass
+		self.premade_only = premade_only
 
 	def run(self):
 		##delete old hyperpoints
 		MatchHyperpoint.delete_all()
-		cursor = Match.get_training_set()
+		cursor = Match.get_training_set(self.premade_only)
+		print "Training with test cases: ", cursor.count()
 
 		for m in cursor:
 			match = Match.from_dict(m)

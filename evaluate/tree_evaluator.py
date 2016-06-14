@@ -11,8 +11,8 @@ class TreeEvaluator(Evaluator):
 		self.team2_ids = team2
 	
 	@staticmethod
-	def retrain(prediction_target):
-		hc = HyperpointCalculator(prediction_target)
+	def retrain(prediction_target, premade_only):
+		hc = HyperpointCalculator(prediction_target, premade_only)
 		hc.run()
 		TreeCalculator.get_new_model()
 

@@ -13,7 +13,7 @@ NUM_TESTS = 10
 class TestSuite:
 
 	## prediction target is either win or first_blood(this is what evaluator will predict and what you test against)
-	def __init__(self, evaluator_class, match_class, prediction_target, need_confidence = False):
+	def __init__(self, evaluator_class, match_class, prediction_target = "win",  need_confidence = False):
 		self.match_class = match_class
 		self.tests_passed = 0
 		self.tests_failed = 0
@@ -25,6 +25,9 @@ class TestSuite:
 
 	@staticmethod
 	def set_new_tests():
+		##before assigning new tests, remove all previous ones
+		Match.remove_all_tests()
+		
 		##used to decide which matches are set as tests	
 		rand = randint(0,NUM_TESTS)
 		
@@ -39,29 +42,27 @@ class TestSuite:
 				##num_tests+= 1
 				match.is_test = True
 				match.save()
-			##match is not test
-			elif match.is_test == True:
-				##num_non_tests += 1
-				match.is_test = False
-				match.save()
-		
-		##set half of pro matches to tests half training
-		cursor = ProMatch.get_testable_set()
-		num_matches = cursor.count()
-		for i in range(num_matches):
-			rand = randint(1,2)
-			match = ProMatch.from_dict(cursor[i])
 
-			## set match as test
-			if  rand == 1:
-				##num_tests+= 1
-				match.is_test = True
-				match.save()
-			##match is not test
-			elif rand == 2:
-				##num_non_tests += 1
-				match.is_test = False
-				match.save()
+
+		##used to train with pro matches, sketchy as fuck, commented out for now
+
+		##set half of pro matches to tests half training
+#		cursor = ProMatch.get_testable_set()
+#		num_matches = cursor.count()
+#		for i in range(num_matches):
+#			rand = randint(1,2)
+#			match = ProMatch.from_dict(cursor[i])
+#
+#			## set match as test
+#			if  rand == 1:
+#				##num_tests+= 1
+#				match.is_test = True
+#				match.save()
+#			##match is not test
+#			elif rand == 2:
+#				##num_non_tests += 1
+#				match.is_test = False
+#				match.save()
 		
 		##print "matches :", str(num_matches)
 		##print "no tests: ", str(num_non_tests)

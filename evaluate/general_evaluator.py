@@ -33,10 +33,10 @@ class GeneralEvaluator:
 		self.team2_winrate = 0
 	
 	@staticmethod
-	def retrain(prediction_target):
-		winrate_calc = PairWinrateCalculator(prediction_target)
+	def retrain(prediction_target, premade_only):
+		winrate_calc = PairWinrateCalculator(prediction_target, premade_only)
 		winrate_calc.run()
-		winrate_calc = ChampWinrateCalculator(prediction_target)
+		winrate_calc = ChampWinrateCalculator(prediction_target, premade_only)
 		winrate_calc.run()
 	
 	## return 100 if team1 is favoured, else return 200
@@ -53,8 +53,10 @@ class GeneralEvaluator:
 	def normalize_winrates(self):
 		winrate1 = self.team1_winrate
 		winrate2 = self.team2_winrate
-		self.team1_winrate = winrate1/(winrate1 + winrate2)
-		self.team2_winrate = winrate2/(winrate1 + winrate2)
+		##TODO: Return third value idk later for uncertainty
+		if (winrate1 + winrate2) > 0:
+			self.team1_winrate = winrate1/(winrate1 + winrate2)
+			self.team2_winrate = winrate2/(winrate1 + winrate2)
 
 	def print_results(self):
 		print "#################################################################################"

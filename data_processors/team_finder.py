@@ -4,7 +4,6 @@
 ## relevant team: team of 4 or 5 ppl who play more than 2 matches together
 ############################################################################
 from match import Match
-from db_client import DbClient
 from team import Team
 from team_match_occurance import TeamMatchOccurance
 from team_hash import TeamHash
@@ -21,9 +20,12 @@ class TeamFinder:
 	
 	## find all relevant teams
 	## insert all relevant teams into db
+	## update matches to cointain premade information
 	def run(self):
+		Team.drop_all()
 		self.find_all_potential_teams()
 		self.insert_db_relevant_teams()
+		TeamFinder.update_matches_premade()
 	
 	##insert into db all relevant teams(have multiple matches)
 	def insert_db_relevant_teams(self):
@@ -52,7 +54,7 @@ class TeamFinder:
 	## analyze all matches to find reoccuring teams
 	## add relevant teams to db
 	def find_all_potential_teams(self):
-		cursor = Match.get_all_matches()
+		cursor = Match.get_testable_set()
 		for d in cursor:
 			match = Match.from_dict(d)
 			m_id = match.id
@@ -71,9 +73,6 @@ class TeamFinder:
 		##if already exists, add new entry
 		else:
 			self.teams_found[hash_key].append(occ)
-			
-		
-
 
 	## return list of lists of Summoners representing potential teams extracted from the summoners in a match
 	@staticmethod
@@ -93,8 +92,8 @@ class TeamFinder:
 		all_teams = []
 
 		## add the one 5 man team to all_teams
-		big_team = team
-		all_teams.append(team)
+		##big_team = team
+		##all_teams.append(team)
 
 		##add all possible teams of 4 to all_teams
 		for i in range(5):
@@ -102,5 +101,20 @@ class TeamFinder:
 			all_teams.append(t)
 
 		return all_teams
+
+	##loop through all accepted teams
+	##increment num_premade of matches every time a team is found
+	##after running this method, the num_premade of each match will count the number of teams premade present in that match
+	@staticmethod
+	def update_matches_premade():
+		cursor = Team.get_all_teams()
+		for d in cursor:
+			team = Team.from_dict(d)
+			m_ids = team.matches
+			for m_id in m_ids:
+				cursor = Match.find_match(m_id)	
+				match = Match.from_dict(cursor[0])
+				match.num_premade += 1
+				match.save()
 
 

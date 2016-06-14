@@ -28,8 +28,8 @@ class AllyPairEvaluator(Evaluator):
 		self.team2_ally_info = TeamWinrateInfo(team2)
 
 	@staticmethod
-	def retrain(prediction_target):
-		winrate_calc = PairWinrateCalculator(prediction_target)
+	def retrain(prediction_target, premade_only):
+		winrate_calc = PairWinrateCalculator(prediction_target, premade_only)
 		winrate_calc.run()
 		
 

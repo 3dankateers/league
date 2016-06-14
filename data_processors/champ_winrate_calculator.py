@@ -11,22 +11,25 @@ MATCH_MULTIPLIER = 1
 
 class ChampWinrateCalculator:
 	
-	def __init__(self, prediction_target):
+	def __init__(self, prediction_target, premade_only):
 		##hash counts wins and losses for each champ
 		self.losses = {}
 		self.wins = {}
 		self.prediction_target = prediction_target
+		self.premade_only = premade_only
 		
 		##make pro_matches count for more than normal matches
 
 	def run(self):
+		##reset winrates and then recalculate
+		Champ.reset_winrates()
 		self.count_all_matches(Match)
 		self.count_all_matches(ProMatch)
 		self.update_winrates()
 	
 	##populate losses and wins with the information from each match in db
 	def count_all_matches(self, match_class):
-		cursor = match_class.get_training_set()
+		cursor = match_class.get_training_set(self.premade_only)
 		for d in cursor:
 			match = match_class.from_dict(d)
 			c1 = match.champs1
