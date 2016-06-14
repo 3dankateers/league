@@ -46,8 +46,8 @@ def main():
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	##pull_summoners("eune", "CHALLENGER")
-	##pull_matches("eune", "CHALLENGER")
+	pull_summoners("kr", "CHALLENGER")
+	pull_matches("kr", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -62,7 +62,6 @@ def main():
 	##evaluate_comp(team1, team2)
 	##evaluate_comp(team3, team4)
 	##new_tests()
-	##run_tests(SVMEvaluator)
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
 	##calc_edge(183,-246)
@@ -70,17 +69,17 @@ def main():
 	##0.2, 0.1, 0.7
 	##cross_validate(SVMEvaluator, 10)
 	##new_tests()
-	insert_pro_matches()
+	##insert_pro_matches()
 	##calc_hyperpoints()
 	##retrain_all()
-	##simulate_bets(OneChampEvaluator)
+	##simulate_bets(BayesNetsEvaluator)
 	##ProMatch.print_by_status("nitrogen")
 	
 	##for i in range(10):
 		##new_tests()
 		##run_tests(BayesNetsEvaluator, ProMatch)
 	##calc_hyperpoints()
-	##run_tests(BayesNetsEvaluator, Match)
+	##run_tests(GeneralEvaluator, ProMatch)
 	##train_general_evaluator()
 
 ##simulate betting
@@ -91,7 +90,7 @@ def simulate_bets(evaluator_class):
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class, match_class):
-	ts = TestSuite(evaluator_class, match_class, True)
+	ts = TestSuite(evaluator_class, match_class, False)
 	ts.run_simple_tests()
 	ts.print_results()
 

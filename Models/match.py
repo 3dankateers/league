@@ -1,14 +1,15 @@
-## match : id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test
+## match : id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test
 
 from db_client import DbClient
 
 class Match:
-	def __init__(self, id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test = False):
+	def __init__(self, id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test = False):
 		self.id = id
 		self.team1 = team1
 		self.team2 = team2
 		self.champs1 = champs1
 		self.champs2 = champs2
+		self.first_blood = first_blood
 		self.duration = duration
 		self.win = win
 		self.gametype = gametype
@@ -25,6 +26,7 @@ class Match:
 		team2 = d["team2"]
 		champs1 = d["champs1"]
 		champs2 = d["champs2"]
+		first_blood = d["first_blood"]
 		duration = d["duration"]
 		win = d["win"]
 		gametype = d["gametype"]
@@ -34,7 +36,7 @@ class Match:
 		date = d["date"]
 		is_test = d["is_test"]
 			
-		return cls(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date, is_test)
+		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
@@ -69,6 +71,7 @@ class Match:
 			"team2" : self.team2,
 			"champs1" : self.champs1,
 			"champs2" : self.champs2,
+			"first_blood" : self.first_blood,
 			"duration" : self.duration,
 			"win" : self.win,
 			"gametype" : self.gametype,

@@ -19,6 +19,7 @@ MASTER_ENDPOINT = "/v2.5/league/master?type=RANKED_SOLO_5x5"
 GAME_ENDPOINT = "/v1.3/game/by-summoner/"	
 LEAGUE_ENDPOINT = "/v2.5/league/by-summoner/"
 STATIC_ENDPOINT = ".api.pvp.net/api/lol/static-data/na/v1.2/champion"
+MATCH_ENDPOINT = "/v2.2/match/"
 
 WAIT_TIME = 1500
 
@@ -63,6 +64,12 @@ class LeagueClient:
 		data = self.getJSONReply(url)
 		return data
 
+	##get all champions
+	def get_match_data(self, m_id):
+		url = HTTPS + self.region + API_PART + self.region + MATCH_ENDPOINT + str(m_id) + "?" + API_KEY 
+		data = self.getJSONReply(url)
+		return data
+	
 	##get challenger summoners
 	def get_challanger_data(self):
 		url = HTTPS + self.region + API_PART + self.region + CHALLENGER_ENDPOINT + "&" + API_KEY 

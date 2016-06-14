@@ -65,8 +65,21 @@ class MatchParser:
 					region = lc.region
 					patch = PATCH
 					tier = s.tier
-					match = Match(id, team1, team2, champs1, champs2, duration, win, gametype, region, patch, tier, date)
+					first_blood = MatchParser.get_first_blood(lc, id)
+					match = Match(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date)
 					match.save()				
+
+	##passed in league client, and match id, returns 100 or 200 depending on what team got first blood
+	@staticmethod
+	def get_first_blood(lc, m_id):
+		match_data = lc.get_match_data(m_id)
+		participants = match_data["participants"]
+		##loops through players until it finds the player who got first blood and then returns his team_id
+		for p in participants:
+			team_id = p["teamId"]
+			if p["stats"]["firstBloodKill"] == True:
+				return team_id
+
 
 
 	##helper to parse match stats
