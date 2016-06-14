@@ -1,3 +1,21 @@
 team1_name,team2_name,map_number,champs1_names,champs2_names,win,match_day,first_blood,kills_5
 GIA,H2K,1,"Trundle, Ashe, Elise, Twisted Fate, Zyra","Viktor, Kindred, Karma, Sivir, Maokai",200,2016-06-09,,
-GIA,GIA,2,"Nidalee, Nami, Twisted Fate, Jhin, Irelia","Viktor, Lee Sin, Zyra, Ashe, Gragas",200,2016-06-09,,
+GIA,H2K,2,"Nidalee, Nami, Twisted Fate, Jhin, Irelia","Viktor, Lee Sin, Zyra, Ashe, Gragas",200,2016-06-09,,
+Vitality,OG,1,"Olaf, Elise, Viktor, Nami, Vayne","Poppy, Gragas, Vladimir, Sivir, Alistar",100,2016-06-09,100,200
+OG,Vitality,2,"Poppy, Rek'Sai, Vladimir, Lucian, Nami","Olaf, Elise, Viktor, Ezreal, Karma",100,2016-06-09,200,100
+Fnatic,UOL,1,"Gragas, Kha'Zix, Vladimir, Sivir, Nami","Trundle, Rek'Sai, Yasuo, Caitlyn, Karma",100,2016-06-09,200,100
+UOL,Fnatic,2,"Illaoi, Nidalee, LeBlanc, Jinx, Karma","Maokai, Kha'Zix, Lissandra, Sivir, Nami",200,2016-06-09,200,200
+ROC,G2,1,"Trundle, Kindred, Lissandra, Sivir, Zyra","Irelia, Nidalee, Zilean, Nami, Caitlyn",200,2016-06-09,100,100
+G2,ROC,2,"Irelia, Rek'Sai, Azir, Ezreal, Bard","Trundle, Gragas, Viktor, Caitlyn, Janna",100,2016-06-09,100,100
+SPY,S04,1,"Fizz, Rek'Sai, Viktor, Caitlyn, Bard","Poppy, Gragas, Ezreal, Azir, Karma",100,2016-06-09,200,200
+S04,SPY,2,"Irelia, Kindred, Vladimir, Alistar, Sivir","Fizz, Gragas, Anivia, Caitlyn, Zyra",200,2016-06-09,200,200
+SPY,G2,1,"Illaoi, Nidalee, Ryze, Ashe, Thresh","Irelia, Elise, Zilean, Tahm Kench, Caitlyn",200,2016-06-09,100,200
+G2,SPY,2,"Irelia, Gragas, Vladimir, Soraka, Sivir","Fizz, Rek'Sai, Cassiopeia, Lucian, Zyra",100,2016-06-09,100,100
+Vitality,ROC,1,"Gragas, Ashe, Lissandra, Graves, Karma","Ekko, Viktor, Caitlyn, Janna, Kindred",200,2016-06-09,100,100
+ROC,Vitality,2,"Ekko, Gragas, Caitlyn, Janna, Viktor","Maokai, Kindred, Lissandra, Bard, Ezreal",100,2016-06-09,200,200
+H2K,FNC,1,"Gragas, Lee Sin, Draven, Viktor, Karma","Maokai, Kha'Zix, LeBlanc, Sivir, Nami",100,2016-06-09,100,100
+FNC,H2K,2,"Gragas, Kha'Zix, Azir, Nami, Kalista","Gnar, Elise, Draven, Karma, Fizz",200,2016-06-09,200,200
+GIA,UOL,1,"Gragas, Nidalee, Vladimir, Ashe, Nami","Maokai, Rek'Sai, Yasuo, Karma, Caitlyn",100,2016-06-09,100,100
+UOL,GIA,2,"Nautilus, Elise, Viktor, Braum, Sivir","Maokai, Nidalee, Azir, Ezreal, Karma",200,2016-06-09,200,200
+S04,OG,1,"Elise, Poppy, Azir, Miss Fortune, Karma","Olaf, Gragas, Zed, Nami, Sivir",100,2016-06-10,100,100
+OG,S04,2,"Jax, Rek'Sai, Viktor, Braum, Lucian","Fizz, Gragas, Lissandra, Sivir, Karma",100,2016-06-10,200,200

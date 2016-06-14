@@ -46,8 +46,13 @@ class ProMatchCreator:
 			for i, row in enumerate(contents):
 				if i == 0:
 					label_row = row
+				
 				else:
 					params_dict = ProMatchCreator.parse_row_params(label_row, row)
+					
+					if params_dict['map_number'] == None:
+						continue
+
 					team1_name = params_dict['team1_name']
 					team2_name = params_dict['team2_name']
 					map_number = int(params_dict['map_number'])

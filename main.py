@@ -43,12 +43,11 @@ from odd import Odd
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():
-	Odd.fix_ML()
 	##calc_pair_winrates()
 	##calc_champ_winrates()
 	##calc_hyperpoints()
-	##pull_summoners("euw", "CHALLENGER")
-	##pull_matches("euw", "CHALLENGER")
+	##pull_summoners("eune", "CHALLENGER")
+	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -69,12 +68,14 @@ def main():
 	##calc_edge(183,-246)
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
-	##cross_validate(GeneralEvaluator, 10)
+	##cross_validate(SVMEvaluator, 10)
 	##new_tests()
-	##insert_pro_matches()
+	insert_pro_matches()
 	##calc_hyperpoints()
 	##retrain_all()
-	simulate_bets(BayesNetsEvaluator)
+	##simulate_bets(OneChampEvaluator)
+	##ProMatch.print_by_status("nitrogen")
+	
 	##for i in range(10):
 		##new_tests()
 		##run_tests(BayesNetsEvaluator, ProMatch)

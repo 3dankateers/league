@@ -24,7 +24,6 @@ class BetSimulator:
 		self.total_bets = cursor.count()
 
 		for m in cursor:
-			print "wtf"
 			match = ProMatch.from_dict(m)
 			team1_ml = float(match.get_latest_ML_T1())
 			team2_ml = float(match.get_latest_ML_T2())

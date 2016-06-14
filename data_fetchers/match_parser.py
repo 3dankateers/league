@@ -15,7 +15,7 @@ TEAM1 = 100
 TEAM2 = 200
 PATCH = "6.11"
 ##date when patch starts in milliseconds
-PATCH_DATE_START = 1463630400000 
+PATCH_DATE_START = 1464753600000 
 PATCH_DATE_END = 1464753600000 
 
 class MatchParser:
