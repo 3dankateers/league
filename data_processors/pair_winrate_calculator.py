@@ -59,6 +59,7 @@ class PairWinrateCalculator:
 
 	def count_matches(self, match_class):
 		cursor = match_class.get_training_set(self.premade_only)
+		print "Training pairs with training cases: ", cursor.count()
 		for d in cursor:
 			match = match_class.from_dict(d)
 			c1 = match.champs1

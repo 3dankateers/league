@@ -1,0 +1,10 @@
+team1_name,team2_name,map_number,champs1_names,champs2_names,win,match_day,first_blood,kills_5
+TLA,C9C,1,"Maokai, Lee Sin, Viktor, Lucian, Zyra","Trundle, Rek'Sai, Twitch, Braum, Twisted Fate",200,2016-06-08,100,
+C9C,TLA,2,"Trundle, Elise, Ryze, Sivir, Karma","Maokai, Rek'Sai, LeBlanc, Caitlyn, Braum",200,2016-06-08,200,
+ENX,DT,1,"Trundle, Kindred, Azir, Lucian, Nami","Graves, Lissandra, Ashe, Karma, Gnar",200,2016-06-08,200,
+DT,ENX,2,"Maokai, Graves, Viktor, Ashe, Karma","Gnar, Gragas, LeBlanc, Lucian, Nami",100,2016-06-08,100,
+NVA,APP,1,"Illaoi, Elise, Vladimir, Sivir, Nami","Fizz, Rek'Sai, Swain, Caitlyn, Karma",100,2016-06-08,100,
+APP,NVA,2,"Fizz, Elise, Zed, Sivir, Bard","Maokai, Gragas, Azir, Ezreal, Nami",200,2016-06-08,200,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,

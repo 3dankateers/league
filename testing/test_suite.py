@@ -82,7 +82,19 @@ class TestSuite:
 			if((not self.need_confidence) or evaluator.is_confident()):
 				self.total_confident_tests += 1
 				winner_predicted = evaluator.predict_winner()
-				actual_winner = test_match.win
+				
+				
+				## test against win or first blood
+				if self.prediction_target == Match.WIN:
+					actual_winner = test_match.win
+				else:
+					##make sure test_match actually has first blood info
+					if test_match.first_blood != None:
+						actual_winner = test_match.first_blood
+					else:
+						continue
+				
+				
 				if(winner_predicted == actual_winner):
 					self.tests_passed += 1
 				else:

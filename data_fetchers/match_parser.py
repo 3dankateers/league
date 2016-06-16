@@ -77,8 +77,13 @@ class MatchParser:
 		##loops through players until it finds the player who got first blood and then returns his team_id
 		for p in participants:
 			team_id = p["teamId"]
-			if p["stats"]["firstBloodKill"] == True:
-				return team_id
+			if "firstBloodKill" in p["stats"]:
+				if p["stats"]["firstBloodKill"] == True:
+					return team_id
+			else:
+				##TODO Investigate
+				print "REALLYREALLY WEIRD SHIT WITH KEY MISSING, INVESTIGATE"
+				return 100
 
 
 

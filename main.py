@@ -43,8 +43,8 @@ from odd import Odd
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():	
-	##pull_summoners("euw", "CHALLENGER")
-	##pull_matches("euw", "CHALLENGER")
+	##pull_summoners("na", "MASTER")
+	##pull_matches("na", "MASTER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -68,13 +68,18 @@ def main():
 	##new_tests()
 	##insert_pro_matches()
 	##calc_hyperpoints()
-	##retrain_all("first_blood")
-	##simulate_bets(BayesNetsEvaluator)
+	##retrain_all("win", premade_only = False)
+	##simulate_bets(TreeEvaluator)
 	##ProMatch.print_by_status("nitrogen")
+	ProMatch.print_by_status_tournament("nitrogen", "Korea")
 	##ProMatch.reset_all_tests()
 	##calc_hyperpoints()
-	run_tests(BayesNetsEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
+	##run_tests(EnemyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
+	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
+	##run_tests(EnemyPairEvaluator, ProMatch, "frst_blood", need_confidence = False, premade_only = False)
+	##run_tests(OneChampEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
 	##train_general_evaluator()
+	##find_teams()
 
 ##simulate betting
 def simulate_bets(evaluator_class):
@@ -86,8 +91,9 @@ def simulate_bets(evaluator_class):
 def run_tests(evaluator_class, match_class, prediction_target, need_confidence, premade_only):
 	
 	##set new test set and retrain before running tests
-	retrain_all(prediction_target, premade_only)
 	TestSuite.set_new_tests()
+	evaluator_class.retrain(prediction_target, premade_only)
+	##retrain_all(prediction_target, premade_only)
 	
 	ts = TestSuite(evaluator_class, match_class, prediction_target, need_confidence)
 	ts.run_simple_tests()

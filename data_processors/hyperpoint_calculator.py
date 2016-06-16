@@ -15,7 +15,7 @@ class HyperpointCalculator:
 		##delete old hyperpoints
 		MatchHyperpoint.delete_all()
 		cursor = Match.get_training_set(self.premade_only)
-		print "Training with test cases: ", cursor.count()
+		print "Training hyperpoints with training cases: ", cursor.count()
 
 		for m in cursor:
 			match = Match.from_dict(m)
