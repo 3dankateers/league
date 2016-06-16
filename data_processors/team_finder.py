@@ -7,17 +7,33 @@ from match import Match
 from team import Team
 from team_match_occurance import TeamMatchOccurance
 from team_hash import TeamHash
+from collections import namedtuple
 
 ##min requirement of matches played together to be considered a relevant "team"
 NUM_MATCH_REQUIREMENT = 3
 
+##holds information about a team
+## player ids is an array of the player ids (uniquely defines teaminfo)
+## match_ids is an array of all the matches team played in
+## sides is an array corresponding to match_ids array that holds 100 or 200 depending on what side team is on
+class TeamInfo:
+	def __init__(self, player_ids, match_id, side):
+		self.player_ids = player_ids
+		self.match_ids = [match_id]
+		self.sides = [side]
+	
+	## adds another instance of a match this team has played in
+	def add_match(self, match_id, side):
+		self.match_ids.append(match_id)
+		self.sides.append(side)
+
+
 class TeamFinder:
 	
 	def __init__(self):
-		##dict will store all potential teams found
-		##will eventually be processed such that any relevant teams it cointains are inserted into db
-		self.teams_found = {}
-	
+		## dictionary holds all team infos found, uniquely defined by key which is a tuple
+		self.potential_team_infos = {}
+
 	## find all relevant teams
 	## insert all relevant teams into db
 	## update matches to cointain premade information
@@ -25,31 +41,15 @@ class TeamFinder:
 		Team.drop_all()
 		self.find_all_potential_teams()
 		self.insert_db_relevant_teams()
-		TeamFinder.update_matches_premade()
+		self.update_matches_premade()
 	
 	##insert into db all relevant teams(have multiple matches)
 	def insert_db_relevant_teams(self):
-		for key, value in self.teams_found.iteritems():
-			if len(value) >= NUM_MATCH_REQUIREMENT:
-
-				## gets all unique teams at that hash key(unique teams can be greater than one if unwanted collisions happened)
-				unique_teams = []
-				for occ in value:
-					if occ.summoners not in unique_teams:
-						unique_teams.append(occ.summoners)
-
-				for t in unique_teams:
-					match_list = []
-					for occ in value:
-						if occ.summoners == t:
-							match_list.append(occ.match_id)
-
-					##we have relevant team
-					if len(match_list) >= NUM_MATCH_REQUIREMENT:
-						relevant_team = Team.get_team(t)
-						relevant_team.update_matches(match_list)
-						relevant_team.save()
-
+		for key, value in self.potential_team_infos.iteritems():
+			## ensure each team has a sufficient number of matches
+			if len(value.match_ids) >= NUM_MATCH_REQUIREMENT:
+				team = Team.get_team(value.player_ids, value.match_ids, value.sides)
+				team.save()
 
 	## analyze all matches to find reoccuring teams
 	## add relevant teams to db
@@ -57,64 +57,66 @@ class TeamFinder:
 		cursor = Match.get_testable_set()
 		for d in cursor:
 			match = Match.from_dict(d)
-			m_id = match.id
-			potential_teams = TeamFinder.potential_teams_from_match(match)
-			for p_team in potential_teams:
-				self.add_to_teams_found(p_team, m_id)
+			
+			##this will populate team infos with teams extracted from the match
+			self.populate_team_infos_from_match(match)
+
+	## takes in a match and adds all potential teams to potential_team_infos
+	def populate_team_infos_from_match(self, match):
+		potential_big_team1 = match.team1
+		potential_big_team2 = match.team2
+		m_id = match.id
+		self.populate_team_infos_from_team(potential_big_team1, m_id, 100)
+		self.populate_team_infos_from_team(potential_big_team2, m_id, 200)
 	
-	## creates team_match_occurance and adds it to teams_found dict
-	def add_to_teams_found(self, p_team, m_id):
-		occ = TeamMatchOccurance(p_team, m_id)
-		hash_key = TeamHash.calc_hash_key(p_team)
+	## given a team of 5 players, generate 6 possible teams and add them to potential_team_infos
+	def populate_team_infos_from_team(self, player_ids, m_id, side):
 		
-		##if hash_key doesn't exit already
-		if hash_key not in self.teams_found: 
-			self.teams_found[hash_key] = [occ]
-		##if already exists, add new entry
+		##sort player_ids first to ensure no duplicates
+		player_ids = sorted(player_ids)
+		
+
+		## tuple used to index dictionary	
+		tup = (player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4])  
+		
+		##if team already in potential_team_infos, update with new match info
+		if tup in self.potential_team_infos:
+			self.potential_team_infos[tup].add_match(m_id, side)
 		else:
-			self.teams_found[hash_key].append(occ)
-
-	## return list of lists of Summoners representing potential teams extracted from the summoners in a match
-	@staticmethod
-	def potential_teams_from_match(match):
-		all_teams = []
+			big_team_info = TeamInfo(player_ids, m_id, side)
+			self.potential_team_infos[tup] = big_team_info
 		
-		big_team1 = match.team1
-		big_team2 = match.team2
-
-		all_teams = TeamFinder.potential_teams_from_team(big_team1) + TeamFinder.potential_teams_from_team(big_team2)
-		return all_teams
-	
-	## return list of lists of Summoners representing potential teams extracted from a large 5 person team
-	## returns 6 unique teams 5 of 4 members and one of 5 members
-	@staticmethod	
-	def potential_teams_from_team(team):
-		all_teams = []
-
-		## add the one 5 man team to all_teams
-		##big_team = team
-		##all_teams.append(team)
-
 		##add all possible teams of 4 to all_teams
 		for i in range(5):
-			t = team[0:i] + team[i+1:5] 
-			all_teams.append(t)
+			player_ids_4 = player_ids[0:i] + player_ids[i+1:5] 
+		
 
-		return all_teams
+			## tuple used to index dictionary	
+			tup = (player_ids_4[0], player_ids_4[1], player_ids_4[2], player_ids_4[3])  
+			##if team already in potential_team_infos, update with new match info
+			if tup in self.potential_team_infos:
+				self.potential_team_infos[tup].add_match(m_id, side)
+			else:
+				new_team_info = TeamInfo(player_ids_4, m_id, side)
+				self.potential_team_infos[tup] = new_team_info
+
 
 	##loop through all accepted teams
-	##increment num_premade of matches every time a team is found
-	##after running this method, the num_premade of each match will count the number of teams premade present in that match
-	@staticmethod
-	def update_matches_premade():
-		cursor = Team.get_all_teams()
-		for d in cursor:
-			team = Team.from_dict(d)
-			m_ids = team.matches
-			for m_id in m_ids:
-				cursor = Match.find_match(m_id)	
-				match = Match.from_dict(cursor[0])
-				match.num_premade += 1
-				match.save()
+	##update is_team1 or is_team2 to hold information about whether there is a premade team on side1 or side2
+	def update_matches_premade(self):
+		for key, ti in self.potential_team_infos.iteritems():
+			## ensure each team has a sufficient number of matches
+			if len(ti.match_ids) >= NUM_MATCH_REQUIREMENT:
+				for i in range(len(ti.match_ids)):
+					m_id = ti.match_ids[i]
+					side = ti.sides[i]
+					match = Match.get_match(m_id)
+					##update whether there is a team on side 1 or 2 of that match
+					if side == 100:
+						match.is_team1 = True
+					elif side == 200:
+						match.is_team2 = True
+					match.save()
 
+					
 

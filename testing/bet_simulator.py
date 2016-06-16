@@ -20,7 +20,6 @@ class BetSimulator:
 	
 	def run(self):
 		self.make_bets()
-		self.print_results()
 	
 	def make_bets(self):
 		cursor = ProMatch.get_bettable_set()

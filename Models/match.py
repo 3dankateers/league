@@ -1,4 +1,4 @@
-## match : id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, num_premade, is_test
+## match : id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_team1, is_team2, is_test
 
 from db_client import DbClient
 
@@ -8,10 +8,7 @@ class Match:
 	WIN = "win"
 	FIRST_BLOOD = "first_blood"
 	
-	##required greater than this number of premades
-	NUM_PREMADE_REQUIRED = 0 
-
-	def __init__(self, id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, num_premade = 0, is_test = False):
+	def __init__(self, id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_team1 = False, is_team2 = False, is_test = False):
 		self.id = id
 		self.team1 = team1
 		self.team2 = team2
@@ -25,7 +22,8 @@ class Match:
 		self.patch = patch
 		self.tier = tier
 		self.date = date
-		self.num_premade = num_premade
+		self.is_team1 = is_team1
+		self.is_team2 = is_team2
 		self.is_test = is_test
 	
 	@classmethod
@@ -43,10 +41,11 @@ class Match:
 		patch = d["patch"]
 		tier = d["tier"]
 		date = d["date"]
-		num_premade = d["num_premade"]
+		is_team1 = d["is_team1"]
+		is_team2 = d["is_team2"]
 		is_test = d["is_test"]
 			
-		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, num_premade, is_test)
+		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_team1, is_team2, is_test)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod
@@ -89,7 +88,8 @@ class Match:
 			"patch" : self.patch,
 			"tier" : self.tier,
 			"date" : self.date,
-			"num_premade" : self.num_premade,
+			"is_team1" : self.is_team1,
+			"is_team2" : self.is_team2,
 			"is_test" : self.is_test
 			})
 		print "Created match"
@@ -101,7 +101,8 @@ class Match:
 				{"_id" : self.id},{
 					"$set": {
 						"is_test" : self.is_test,
-						"num_premade" : self.num_premade
+						"is_team1" : self.is_team1,
+						"is_team2" : self.is_team2
 						}
 				})
 		##print "Updated match." 
@@ -121,12 +122,12 @@ class Match:
 		cursor = db_client.league.matches.find()
 		return cursor
 	
-	## return all matches not marked as is_test
+	## return all matches to be used for training models
 	@staticmethod
 	def get_training_set(premade_only = False):
 		if premade_only:
 			db_client = DbClient.get_client()
-			cursor = db_client.league.matches.find({"num_premade" : {"$gt" : Match.NUM_PREMADE_REQUIRED}, "is_test" : False})
+			cursor = db_client.league.matches.find({"$or" : [{"is_team1" : True}, {"is_team2" : True}], "is_test" : False})
 			print cursor.count()
 			return cursor
 		else:

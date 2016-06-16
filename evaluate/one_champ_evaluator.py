@@ -6,7 +6,8 @@ from evaluator import Evaluator
 from champ_winrate_calculator import ChampWinrateCalculator
 
 CONF_THRESHOLD = 0.02
-ONE_CHAMP_SAMPLE_LIMIT = 10 
+ONE_CHAMP_SAMPLE_LIMIT = 10
+CHAMPS_CONSIDERED_REQUIRED = 4
 
 ##stores information calculated in process()
 class TeamInfo:
@@ -41,7 +42,8 @@ class OneChampEvaluator(Evaluator):
 	##return true if confident in predicted winner, otherwise false
 	def is_confident(self):
 		if abs(self.ti1.aggregate_winrate - self.ti2.aggregate_winrate) > CONF_THRESHOLD:
-			return True
+			if(self.ti1.num_champs_considered > CHAMPS_CONSIDERED_REQUIRED and self.ti2.num_champs_considered > CHAMPS_CONSIDERED_REQUIRED):
+				return True
 		else:
 			return False
 

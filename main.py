@@ -44,8 +44,8 @@ from underdog_evaluator import UnderdogEvaluator
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():	
-	pull_summoners("kr", "MASTER")
-	pull_matches("kr", "MASTER")
+	##pull_summoners("kr", "MASTER")
+	##pull_matches("kr", "MASTER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -74,22 +74,26 @@ def main():
 	##ProMatch.reset_all_tests()
 	##calc_hyperpoints()
 	##retrain_all("win", premade_only = False)
-	simulate_bets(OneChampEvaluator)
-	simulate_bets(GeneralEvaluator)
-	simulate_bets(AllyPairEvaluator)
-	simulate_bets(EnemyPairEvaluator)
-	simulate_bets(BayesNetsEvaluator)
+	##find_teams()
+	simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
+	simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
+	simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
+	simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
+	simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(GeneralEvaluator)
+	##simulate_bets(AllyPairEvaluator)
+	##simulate_bets(EnemyPairEvaluator)
+	##simulate_bets(BayesNetsEvaluator)
 	##run_tests(EnemyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(EnemyPairEvaluator, ProMatch, "frst_blood", need_confidence = False, premade_only = False)
 	##run_tests(OneChampEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
 	##train_general_evaluator()
-	##find_teams()
 
 ##simulate betting
-def simulate_bets(evaluator_class):
-	retrain_all("win", premade_only = False)
-	bs = BetSimulator(evaluator_class, False)
+def simulate_bets(evaluator_class, need_confidence = False, premade_only = False):
+	retrain_all("win", premade_only)
+	bs = BetSimulator(evaluator_class, need_confidence)
 	bs.run()
 	bs.print_results()
 
