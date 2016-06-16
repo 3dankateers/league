@@ -33,7 +33,6 @@ class SVMEvaluator(Evaluator):
 		##returns array of 1 element which should be 100 or 200
 		##self.winner = svm_model.predict(coordinates)[0]
 		self.winner = svm_model.predict(coordinates)
-		print self.winner
 		
 
 	def predict_winner(self):

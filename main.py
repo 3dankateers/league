@@ -30,6 +30,7 @@ from bayes_nets_evaluator import BayesNetsEvaluator
 from bet_simulator import BetSimulator
 from odd import Odd
 from underdog_evaluator import UnderdogEvaluator
+from aggregate_evaluator import AggregateEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -70,20 +71,22 @@ def main():
 	##insert_pro_matches()
 	##calc_hyperpoints()
 	##ProMatch.print_by_status("nitrogen")
-	##ProMatch.print_by_status_tournament("nitrogen", "LSPL")
+	##ProMatch.print_by_status_tournament("nitrogen", "Korea")
 	##ProMatch.reset_all_tests()
 	##calc_hyperpoints()
 	##retrain_all("win", premade_only = False)
 	##find_teams()
-	simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
+	simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(GeneralEvaluator)
 	##simulate_bets(AllyPairEvaluator)
 	##simulate_bets(EnemyPairEvaluator)
 	##simulate_bets(BayesNetsEvaluator)
+	##run_tests(TreeEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
+	##run_tests(SVMEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
+	##run_tests(GeneralEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
+	##run_tests(GeneralEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
+	##run_tests(GeneralEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
+	##run_tests(GeneralEvaluator, ProMatch, "win", need_confidence = True, premade_only = False)
 	##run_tests(EnemyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(EnemyPairEvaluator, ProMatch, "frst_blood", need_confidence = False, premade_only = False)

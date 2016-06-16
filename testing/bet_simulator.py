@@ -5,6 +5,7 @@
 
 from pro_match import ProMatch
 from underdog_evaluator import UnderdogEvaluator
+from aggregate_evaluator import AggregateEvaluator
 
 BET_AMOUNT = 100
 
@@ -31,6 +32,8 @@ class BetSimulator:
 			##underdog evaluator takes in different input so need special case
 			if self.evaluator_class == UnderdogEvaluator:	
 				evaluator = self.evaluator_class(match)
+			elif self.evaluator_class == AggregateEvaluator:
+				evaluator = self.evaluator_class(match.champs1, match.champs2, match)
 			else:
 				evaluator = self.evaluator_class(match.champs1, match.champs2)
 			

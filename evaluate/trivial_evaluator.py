@@ -3,7 +3,7 @@ from evaluator import Evaluator
 
 class TrivialEvaluator(Evaluator):
 	def __init__(self, champs1_ids, champs2_ids):
-		self.winner = 200
+		self.winner = 100
 
 	def process(self):
 		pass
