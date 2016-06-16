@@ -36,6 +36,7 @@ class ProMatchCreator:
 		self.add_matches("EU_LCS_WEEK2.csv")
 		self.add_matches("NA_LCS_WEEK2.csv")
 		self.add_matches("LCK_WEEK3.csv")
+		self.add_matches("LCK_WEEK4.csv")
 		self.add_matches("NACS_WEEK2.csv")
 		self.add_matches("LPL_WEEK3.csv")
 		self.add_matches("LSPL_6.11.csv")

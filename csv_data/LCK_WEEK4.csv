@@ -1,9 +1,9 @@
 team1_name,team2_name,map_number,champs1_names,champs2_names,win,match_day,first_blood,kills_5
-MVP,ESC Ever,1,"Maokai, Nidalee, Azir, Lucian, Karma","Trundle, Kindred, Viktor, Ezreal, Braum",100,2016-06-12,200,200
-ESC Ever,MVP,2,"Trundle, Elise, Azir, Sivir, Bard","Ekko, Gragas, Varus, Ashe, Karma",200,2016-06-11,100,200
-SK Telecom T1,Samsung Galaxy,1,"Maokai, Kindred, Karma, Jhin, Nami","Ekko, Elise, Varus, Ezreal, Braum",100,2016-06-11,200,100
-Samsung Galaxy,SK Telecom T1,2,"Fiora, Elise, Viktor, Ezreal, Braum","Ekko, Rek'Sai, Karma, Ashe, Nami",200,2016-06-11,100,200
-SK Telecom T1,MVP,1,"Trundle, Elise, Karma, Alistar, Sivir","Irelia, Graves, Varus, Ashe, Nami",100,2016-06-13,100,100
-MVP,SK Telecom T1,2,"Ekko, Gragas, Vladimir, Braum, Sivir","Irelia, Elise, Anivia, Kalista, Nami",200,2016-06-13,100,200
-Jin Air Green Wings,Afreeca Freecs,1,"Shen, Graves, LeBlanc, Ezreal, Karma","Gragas, Rek'Sai, Viktor, Sivir, Bard",100,2016-06-14,100,100
-Afreeca Freecs,Jin Air Green Wings,2,"Trundle, Lee Sin, Twisted Fate, Ashe, Karma","Ekko, Elise, Sivir, Nami, Azir",200,2016-06-14,100,200
+ROX Tigers,CJ Entus,1,"Vladimir, Kindred, Sivir, Bard, Rumble","Shen, Hecarim, Cassiopeia, Jhin, Nami",200,2016-06-15,200,
+CJ Entus,ROX Tigers,2,"Trundle, Elise, Cassiopeia, Jhin, Karma","Rumble, Rek'Sai, Ryze, Ashe, Thresh",200,2016-06-15,200,
+ROX Tigers,CJ Entus,3,"Trundle, Rek'Sai, LeBlanc, Jhin, Nami","Gnar, Lucian, Karma, Elise, Varus",100,2016-06-15,200,
+Samsung Galaxy,Longzhu,1,"Ekko, Rek'Sai, Ashe, Braum, Viktor","Irelia, Gragas, Ryze, Sivir, Karma",200,2016-06-15,200,
+Longzhu,Samsung Galaxy,2,"Irelia, Elise, Vladimir, Sivir, Nami","Trundle, Graves, Anivia, Ashe, Karma",100,2016-06-15,100,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,

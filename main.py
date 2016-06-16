@@ -29,6 +29,7 @@ from tree_evaluator import TreeEvaluator
 from bayes_nets_evaluator import BayesNetsEvaluator
 from bet_simulator import BetSimulator
 from odd import Odd
+from underdog_evaluator import UnderdogEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -43,8 +44,8 @@ from odd import Odd
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():	
-	##pull_summoners("na", "MASTER")
-	##pull_matches("na", "MASTER")
+	pull_summoners("kr", "MASTER")
+	pull_matches("kr", "MASTER")
 	##pull_champs()
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
@@ -68,12 +69,16 @@ def main():
 	##new_tests()
 	##insert_pro_matches()
 	##calc_hyperpoints()
-	##retrain_all("win", premade_only = False)
-	##simulate_bets(TreeEvaluator)
 	##ProMatch.print_by_status("nitrogen")
-	ProMatch.print_by_status_tournament("nitrogen", "Korea")
+	##ProMatch.print_by_status_tournament("nitrogen", "LSPL")
 	##ProMatch.reset_all_tests()
 	##calc_hyperpoints()
+	##retrain_all("win", premade_only = False)
+	simulate_bets(OneChampEvaluator)
+	simulate_bets(GeneralEvaluator)
+	simulate_bets(AllyPairEvaluator)
+	simulate_bets(EnemyPairEvaluator)
+	simulate_bets(BayesNetsEvaluator)
 	##run_tests(EnemyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(EnemyPairEvaluator, ProMatch, "frst_blood", need_confidence = False, premade_only = False)
@@ -83,6 +88,7 @@ def main():
 
 ##simulate betting
 def simulate_bets(evaluator_class):
+	retrain_all("win", premade_only = False)
 	bs = BetSimulator(evaluator_class, False)
 	bs.run()
 	bs.print_results()
