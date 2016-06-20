@@ -7,7 +7,7 @@ from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
 
 PAIR_SAMPLE_LIMIT = 20
-CONF_THRESHOLD = 0.05
+CONF_THRESHOLD = 0.03
 RELEVANT_PAIRS_REQUIRED = 4
 
 ##helper class to store results for each team comp
@@ -51,7 +51,7 @@ class EnemyPairEvaluator(Evaluator):
 	def is_confident(self):
 		if abs(self.team1_enemy_info.aggregate_winrate - self.team2_enemy_info.aggregate_winrate) > CONF_THRESHOLD:
 			##if not enough relevantpairs return not confident	
-			if(self.team1_ally_info.num_relevant_pairs > RELEVANT_PAIRS_REQUIRED and self.team2_ally_info.num_relevant_pairs > RELEVANT_PAIRS_REQUIRED):
+			if(self.team1_enemy_info.num_relevant_pairs > RELEVANT_PAIRS_REQUIRED and self.team2_enemy_info.num_relevant_pairs > RELEVANT_PAIRS_REQUIRED):
 				return True
 		else:
 			return False
@@ -72,7 +72,7 @@ class EnemyPairEvaluator(Evaluator):
 		print "Team1", str(self.team1_enemy_info.aggregate_winrate)
 		print "#########################################################"
 		print "Team2", str(self.team2_enemy_info.aggregate_winrate)
-		print "Difference: ", self.team1_enemy_info.aggregate_winrate - self.team2_enemy_info.aggregate_winrate
+		print "Difference: ", self.team2_enemy_info.aggregate_winrate - self.team1_enemy_info.aggregate_winrate
 		print "WINNER: ", self.winner
 		print "#################################################################################"
 

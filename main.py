@@ -31,6 +31,8 @@ from bet_simulator import BetSimulator
 from odd import Odd
 from underdog_evaluator import UnderdogEvaluator
 from aggregate_evaluator import AggregateEvaluator
+from random_evaluator import RandomEvaluator
+from first_blood_evaluator import FirstBloodEvaluator
 
 ##TODO: Try finding 5v5 games and mark them accordingly
 ##TODO: Parallel region processing?
@@ -45,25 +47,20 @@ from aggregate_evaluator import AggregateEvaluator
 ##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():	
-	##pull_summoners("kr", "MASTER")
-	##pull_matches("kr", "MASTER")
+	##pull_summoners("euw", "MASTER")
+	##pull_matches("euw", "MASTER")
 	##pull_champs()
+	## NEVER EVER FUCKING EVER BET ON TSM
+	team1 = ["Trundle", "Kindred", "Twisted Fate", "Caitlyn", "Bard"]
+	team2 = ["Rumble", "Elise", "Karma", "Lucian", "Braum"]
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
-	##team1 = ["Lucian", "Gragas", "Swain", "", ""]
-	##team2 = ["Maokai", "Rek'Sai", "Braum", "Ashe", ""]
-	##team1 = ["Ryze", "Ekko", "Rek'Sai", "Sivir", "Nami"]
-	##team2 = ["Maokai", "Lucian", "Anivia", "Graves", "Soraka"]
-	##team1 = ["Kindred", "Alistar", "Ekko", "Ezreal", "LeBlanc"]
-	##team2 = ["Zyra", "Lucian", "Lissandra", "Graves", "Kassadin"]
-	##team3 = ["Ekko", "Ezreal", "Soraka", "Varus", "Olaf"]
-	##team4 = ["Karma", "Rek'Sai", "Maokai", "Sivir", "Fizz"]
-	##evaluate_comp(team1, team2)
+	evaluate_comp(team1, team2)
 	##evaluate_comp(team3, team4)
 	##new_tests()
 	##svm_model = calc_svm_model()
 	##evaluate_svm(team1, team2, svm_model)
-	##calc_edge(183,-246)
+	##calc_edge(-122,-106)
 	##SVMTrainer.run()
 	##0.2, 0.1, 0.7
 	##cross_validate(GeneralEvaluator, 10, "first_blood")
@@ -71,34 +68,46 @@ def main():
 	##insert_pro_matches()
 	##calc_hyperpoints()
 	##ProMatch.print_by_status("nitrogen")
-	##ProMatch.print_by_status_tournament("nitrogen", "Korea")
+	##ProMatch.print_by_status_tournament("nitrogen", "Continental")
 	##ProMatch.reset_all_tests()
 	##calc_hyperpoints()
 	##retrain_all("win", premade_only = False)
 	##find_teams()
-	simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
+	##total = 0
+	##for i in range(10):
+	##	total += simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
+	##print total/10
+	##simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(TreeEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(TreeEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(GeneralEvaluator)
 	##simulate_bets(AllyPairEvaluator)
 	##simulate_bets(EnemyPairEvaluator)
 	##simulate_bets(BayesNetsEvaluator)
+	##run_tests(BayesNetsEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
+	##run_tests(OneChampEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
+	##run_tests(EnemyPairEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
+	##run_tests(AllyPairEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
 	##run_tests(TreeEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
-	##run_tests(SVMEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
-	##run_tests(GeneralEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
-	##run_tests(GeneralEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
-	##run_tests(GeneralEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
-	##run_tests(GeneralEvaluator, ProMatch, "win", need_confidence = True, premade_only = False)
-	##run_tests(EnemyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
-	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
-	##run_tests(EnemyPairEvaluator, ProMatch, "frst_blood", need_confidence = False, premade_only = False)
-	##run_tests(OneChampEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
+	
 	##train_general_evaluator()
 
 ##simulate betting
 def simulate_bets(evaluator_class, need_confidence = False, premade_only = False):
-	retrain_all("win", premade_only)
+	evaluator_class.retrain("win", premade_only)
 	bs = BetSimulator(evaluator_class, need_confidence)
 	bs.run()
-	bs.print_results()
+	return bs.print_results()
 
 ## run test suite using whatever evaluator class is passed in to predict winners
 def run_tests(evaluator_class, match_class, prediction_target, need_confidence, premade_only):

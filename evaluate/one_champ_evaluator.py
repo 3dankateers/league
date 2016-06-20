@@ -5,7 +5,7 @@ from champ import Champ
 from evaluator import Evaluator
 from champ_winrate_calculator import ChampWinrateCalculator
 
-CONF_THRESHOLD = 0.02
+CONF_THRESHOLD = 0.01
 ONE_CHAMP_SAMPLE_LIMIT = 10
 CHAMPS_CONSIDERED_REQUIRED = 4
 
@@ -91,7 +91,7 @@ class OneChampEvaluator(Evaluator):
 		print "#########################################################"
 		print "Team2"
 		self.ti2.print_result()
-		print "Difference: ", self.ti1.aggregate_winrate - self.ti2.aggregate_winrate
+		print "Difference: ", self.ti2.aggregate_winrate - self.ti1.aggregate_winrate
 		print "WINNER: ", self.winner
 		print "#################################################################################"
 

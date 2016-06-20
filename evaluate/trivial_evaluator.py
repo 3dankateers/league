@@ -2,11 +2,14 @@
 from evaluator import Evaluator
 
 class TrivialEvaluator(Evaluator):
-	def __init__(self, champs1_ids, champs2_ids):
-		self.winner = 100
+	def __init__(self, champs1_ids, champs2_ids, match = None):
+		self.match = match
 
 	def process(self):
-		pass
+		if self.match != None:
+			self.winner = self.match.red_side
+		else:
+			self.winner = 100
 
 	def predict_winner(self):
 		return self.winner

@@ -22,9 +22,9 @@ class TestResults:
 class GeneralEvaluatorTrainer:
 	## 0.2, 0.1, 0.7 ~ 57% on cross validation *10
 	## 0.4, 0.3, 0.3 ~ 56% on cross validation *10
-	one_champ_w_global = 0.45
-	ally_pair_w_global = 0.1
-	enemy_pair_w_global = 0.45
+	one_champ_w_global = 0.4
+	ally_pair_w_global = 0.3
+	enemy_pair_w_global = 0.3
 	def __init__(self, general_evaluator_class):
 		self.general_evaluator_class = general_evaluator_class
 		self.number_iterations = 0

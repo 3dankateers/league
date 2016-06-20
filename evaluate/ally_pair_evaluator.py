@@ -7,7 +7,7 @@ from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
 
 PAIR_SAMPLE_LIMIT = 20
-CONF_THRESHOLD = 0.05
+CONF_THRESHOLD = 0.03
 RELEVANT_PAIRS_REQUIRED = 4
 
 ##helper class to store results for each team comp
@@ -72,7 +72,7 @@ class AllyPairEvaluator(Evaluator):
 		print "Team1: " , str(self.team1_ally_info.aggregate_winrate)
 		print "#########################################################"
 		print "Team2:", str(self.team2_ally_info.aggregate_winrate)
-		print "Difference: ", self.team1_ally_info.aggregate_winrate - self.team2_ally_info.aggregate_winrate
+		print "Difference: ", self.team2_ally_info.aggregate_winrate - self.team1_ally_info.aggregate_winrate
 		print "WINNER: ", self.winner
 		print "#################################################################################"
 

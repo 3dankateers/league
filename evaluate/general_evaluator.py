@@ -64,8 +64,12 @@ class GeneralEvaluator:
 		print "Team1: ", str(self.team1_winrate)
 		print "#########################################################"
 		print "Team2: " , str(self.team2_winrate)
-		print "Difference: ", self.team1_winrate - self.team2_winrate
+		print "Difference: ", self.team2_winrate - self.team1_winrate
 		print "WINNER: ", self.winner
+		if self.team1_winrate <= self.team2_winrate:
+			print "Bet on TEAM2"
+		else:
+			print "Bet on TEAM1"
 		print "#################################################################################"
 	
 		

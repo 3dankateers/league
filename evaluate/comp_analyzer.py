@@ -33,8 +33,10 @@ class CompAnalyzer:
 		##self.evaluate_one_champ()
 		##self.evaluate_ally_pairs()
 		##self.evaluate_enemy_pairs()
+		print "Predicting Win"
 		self.evaluate_general()
 		self.evaluate_bayes_nets()
+		GeneralEvaluator.retrain("win", False)
 		
 	## checks that champions are spelled properly
 	def check_team_champ_names(self, team_names, team_ids):
