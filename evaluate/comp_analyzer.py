@@ -13,7 +13,7 @@ from general_evaluator import GeneralEvaluator
 from match_hyperpoint import MatchHyperpoint
 from svm_calculator import SVMCalculator
 from bayes_nets_evaluator import BayesNetsEvaluator
-
+from kneighbours_evaluator import KNeighboursEvaluator
 
 class CompAnalyzer:
 	
@@ -35,6 +35,7 @@ class CompAnalyzer:
 		##self.evaluate_enemy_pairs()
 		print "Predicting Win"
 		self.evaluate_general()
+		##self.evaluate_kneighbours()
 		self.evaluate_bayes_nets()
 		GeneralEvaluator.retrain("win", False)
 		
@@ -69,6 +70,11 @@ class CompAnalyzer:
 	
 	def evaluate_bayes_nets(self):
 		evaluator = BayesNetsEvaluator(self.team1_ids, self.team2_ids)
+		evaluator.process()
+		evaluator.print_results()
+	
+	def evaluate_kneighbours(self):
+		evaluator = KNeighboursEvaluator(self.team1_ids, self.team2_ids)
 		evaluator.process()
 		evaluator.print_results()
 	##def evaluate_svm(self, svm_model):

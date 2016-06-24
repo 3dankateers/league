@@ -34,12 +34,13 @@ class ProMatchCreator:
 	
 	def run(self):
 		##self.add_matches("EU_LCS_WEEK2.csv")
-		##self.add_matches("EU_LCS_WEEK3.csv")
-		self.add_matches("NA_LCS_WEEK3.csv")
+		self.add_matches("EU_LCS_WEEK3.csv")
+		##self.add_matches("NA_LCS_WEEK3.csv")
 		##self.add_matches("LCK_WEEK4.csv")
+		##self.add_matches("CONT_6.11.csv")
 		##self.add_matches("NACS_WEEK2.csv")
 		##self.add_matches("LPL_WEEK3.csv")
-		self.add_matches("LPL_WEEK4.csv")
+		##self.add_matches("LPL_WEEK4.csv")
 		##self.add_matches("LSPL_6.11.csv")
 		##self.add_matches("LMS_WEEK2.csv")
 
