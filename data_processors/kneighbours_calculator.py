@@ -36,7 +36,7 @@ class KNeighboursCalculator:
 		
 		X = np.array(X)
 		y = np.array(y)
-		new_neigh_model = KNeighborsClassifier(n_neighbors = 10, weights = "uniform", algorithm = "ball_tree", p = 2)
+		new_neigh_model = KNeighborsClassifier(n_neighbors = 4, weights = "uniform", algorithm = "ball_tree", p = 2)
 		new_neigh_model.fit(X,y)
 		print "New K-Neighbours model created: "
 		KNeighboursCalculator.neigh_model = new_neigh_model

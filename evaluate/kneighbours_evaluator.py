@@ -25,7 +25,6 @@ class KNeighboursEvaluator(Evaluator):
 		self.winner = neigh_model.predict(coordinates)
 
 	def predict_winner(self):
-		print self.winner
 		return self.winner
 
 	def is_confident(self):

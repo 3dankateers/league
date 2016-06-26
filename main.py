@@ -34,29 +34,21 @@ from aggregate_evaluator import AggregateEvaluator
 from random_evaluator import RandomEvaluator
 from kneighbours_evaluator import KNeighboursEvaluator
 from first_blood_evaluator import FirstBloodEvaluator
+from loser_evaluator import LoserEvaluator
 ##from neural_network_evaluator import NeuralNetworkEvaluator
 
-##TODO: Try finding 5v5 games and mark them accordingly
-##TODO: Parallel region processing?
-##TODO: Add champions to collection
-##TODO: Add teams to collection
-##TODO: Firstblood idea
-##TODO: standardize date to either time.time() or datetime.datetime
-##TODO: deal with unicode errors insteadme.encode(encoding='UTF-8',errors='replace') of ignoring
-##TODO: Add limits to amount of data pulled and come up with system to pull more efficiently
-##TODO: Set patch limits on recent_matches
-##TODO: perhaps try finding smurfs statistically
-##TODO: get better test data(lcs) or test against 5v5 team games
 
 def main():	
-	##pull_summoners("kr", "CHALLENGER")
-	##pull_matches("kr", "CHALLENGER")
+	pull_summoners("kr", "CHALLENGER")
+	pull_matches("kr", "CHALLENGER")
 	##pull_champs()
 	## NEVER EVER FUCKING EVER BET ON TSM
 	##team1 = ["", "", "", "", ""]
 	##team2 = ["", "", "", "", ""]
-	##team1 = ["Vladimir", "Ashe", "Trundle", "Kindred", "Zyra"]
-	##team2 = ["Braum", "Gragas", "Swain", "Ezreal", "Gnar"]
+	##team1 = ["Trundle", "Hecarim", "Bard", "Lucian", "Cassiopeia"]
+	##team2 = ["Ryze", "Rek'Sai", "Braum", "Twitch", "Illaoi"]
+	##team1 = ["Bard", "Trundle", "Elise", "Syndra", "Lucian"]
+	##team2 = ["Thresh", "Rek'Sai", "Gnar", "Ezreal", "Zilean"]
 	##evaluate_comp(team1, team2)
 	##evaluate_comp(team3, team4)
 	##new_tests()
@@ -70,7 +62,7 @@ def main():
 	##insert_pro_matches()
 	##calc_hyperpoints()
 	##ProMatch.print_by_status("nitrogen")
-	##ProMatch.print_by_status_tournament("nitrogen", "Europe")
+	##ProMatch.print_by_status_tournament("nitrogen", "Korea")
 	#ProMatch.reset_all_tests()
 	##calc_hyperpoints()
 	##retrain_all("win", premade_only = False)
@@ -81,17 +73,21 @@ def main():
 	##for i in range(10):
 	##	total += simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
 	##print total/10
+	
+	##simulate_bets(LoserEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(KNeighboursEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AggregateEvaluator, need_confidence = False, premade_only = False)
-	#3simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(TreeEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
-	simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(AllyPairEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(EnemyPairEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(TreeEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
 	##run_tests(BayesNetsEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
 	##run_tests(OneChampEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
 	##run_tests(EnemyPairEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
