@@ -7,7 +7,7 @@
 from one_champ_evaluator import OneChampEvaluator
 from enemy_pair_evaluator import EnemyPairEvaluator
 from evaluator import Evaluator
-
+from trainer import Trainer
 
 class FirstBloodEvaluator(Evaluator):
 
@@ -42,9 +42,8 @@ class FirstBloodEvaluator(Evaluator):
 			self.team2_num_win += 1
 
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		OneChampEvaluator.retrain(prediction_target, premade_only)
-		EnemyPairEvaluator.retrain(prediction_target, premade_only)
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.ALL)
 
 	def is_confident(self):
 		if (self.one_champ_evaluator.predict_winner() == self.enemy_pair_evaluator.predict_winner()):
@@ -59,3 +58,7 @@ class FirstBloodEvaluator(Evaluator):
 		print "EnemyPair Evaluator Winner: ", self.enemy_pair_evaluator.predict_winner()
 		print "WINNER: ", self.winner
 		print "#################################################################################"
+	
+	@staticmethod
+	def print_class():
+		print "First Blood Evaluator"

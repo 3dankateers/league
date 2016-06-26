@@ -24,3 +24,6 @@ class RandomEvaluator(Evaluator):
 	def print_results(self):
 		pass
 
+	@staticmethod
+	def print_class():
+		print "Random Evaluator"

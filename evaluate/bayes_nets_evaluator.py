@@ -2,6 +2,7 @@ from match_hyperpoint import MatchHyperpoint
 from hyperpoint_calculator import HyperpointCalculator
 from evaluator import Evaluator
 from bayes_nets_calculator import BayesNetsCalculator
+from trainer import Trainer
 
 
 class BayesNetsEvaluator(Evaluator):
@@ -11,9 +12,8 @@ class BayesNetsEvaluator(Evaluator):
 		self.team2_ids = team2
 	
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		hc = HyperpointCalculator(prediction_target, premade_only)
-		hc.run()
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.HYPERPOINTS)
 		BayesNetsCalculator.get_new_model()
 
 	def process(self):
@@ -32,3 +32,7 @@ class BayesNetsEvaluator(Evaluator):
 	
 	def print_results(self):
 		print "Winner predicted by Bayes Nets is : ", str(self.winner) 
+	
+	@staticmethod
+	def print_class():
+		print "Bayes Nets Evaluator"

@@ -19,17 +19,23 @@ class BetSimulator:
 		self.bets_won = 0
 		self.bets_lost = 0
 		self.need_confidence = need_confidence
+		##array of all matches to bet on
+		self.bettable_matches = []
 	
 	def run(self):
 		self.make_bets()
 	
 	def make_bets(self):
+		
+		##populate bettable matches with all matches from db
 		cursor = ProMatch.get_bettable_set()
-		self.total_bets = cursor.count()
-
 		for m in cursor:
 			match = ProMatch.from_dict(m)
-			
+			self.bettable_matches.append(match)
+		
+		self.total_bets = len(self.bettable_matches)
+		
+		for match in self.bettable_matches: 
 			##underdog evaluator takes in different input so need special case
 			if self.evaluator_class == UnderdogEvaluator or self.evaluator_class == LoserEvaluator:	
 				evaluator = self.evaluator_class(match)

@@ -4,36 +4,31 @@
 ############################################################################
 from champ import Champ
 from match import Match
-from pro_match import ProMatch
-
-PROMATCH_MULTIPLIER = 0 
-MATCH_MULTIPLIER = 1 
 
 class ChampWinrateCalculator:
 	
-	def __init__(self, prediction_target, premade_only):
+	def __init__(self, match_class, prediction_target = Match.WIN):
 		##hash counts wins and losses for each champ
 		self.losses = {}
 		self.wins = {}
 		self.prediction_target = prediction_target
-		self.premade_only = premade_only
-		
+		self.match_class = match_class 
+
 		##make pro_matches count for more than normal matches
 
 	def run(self):
 		##reset winrates and then recalculate
 		Champ.reset_winrates()
-		self.count_all_matches(Match)
-		self.count_all_matches(ProMatch)
+		self.count_all_matches()
 		self.update_winrates()
 	
 	##populate losses and wins with the information from each match in db
-	def count_all_matches(self, match_class):
-		cursor = match_class.get_training_set(self.premade_only)
+	def count_all_matches(self):
+		cursor = self.match_class.get_training_set()
 		print "Training champ winrates with training cases: ", cursor.count()
 		
 		for d in cursor:
-			match = match_class.from_dict(d)
+			match = self.match_class.from_dict(d)
 			c1 = match.champs1
 			c2 = match.champs2
 			## 100 means team1 won, 200 means team2 won
@@ -43,29 +38,25 @@ class ChampWinrateCalculator:
 				win = match.first_blood
 			
 			if win  == 100:
-				self.add_champs_to_dict(self.wins, match_class, c1)
-				self.add_champs_to_dict(self.losses, match_class, c2)
+				self.add_champs_to_dict(self.wins, c1)
+				self.add_champs_to_dict(self.losses, c2)
 			elif win == 200:
-				self.add_champs_to_dict(self.losses, match_class, c1)
-				self.add_champs_to_dict(self.wins, match_class, c2)
+				self.add_champs_to_dict(self.losses, c1)
+				self.add_champs_to_dict(self.wins, c2)
 
 	
-	def add_champs_to_dict(self, d, match_class, champs):
+	def add_champs_to_dict(self, d, champs):
 		
 		## weigh pro matches more than ordinary matches
-		if match_class == Match:
-			multiplier = MATCH_MULTIPLIER
-		else:
-			multiplier = PROMATCH_MULTIPLIER
 		
 		
 		for c in champs:
 			if c in d:
 				##count another win/loss for that champ
-				d[c]+= (1*multiplier)
+				d[c]+= 1 
 			else:
 				##first occurance of that champ
-				d[c] = (1*multiplier)
+				d[c] = 1 
 
 	##update db champ with a new winrate and sample size fot that winrate
 	def update_winrates(self):

@@ -45,3 +45,7 @@ class UnderdogEvaluator(Evaluator):
 	## nothing to print
 	def print_results(self):
 		pass
+	
+	@staticmethod
+	def print_class():
+		print "Underdog Evaluator"

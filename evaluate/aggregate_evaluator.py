@@ -9,12 +9,12 @@ from general_evaluator import GeneralEvaluator
 from trivial_evaluator import TrivialEvaluator
 from underdog_evaluator import UnderdogEvaluator
 from evaluator import Evaluator
-
+from trainer import Trainer
 
 class AggregateEvaluator(Evaluator):
 
 	def __init__(self, champ1_ids, champ2_ids, match):
-		self.one_champ_evaluator = OneChampEvaluator(champ1_ids, champ2_ids)
+		self.general_evaluator = GeneralEvaluator(champ1_ids, champ2_ids)
 		self.trivial_evaluator = TrivialEvaluator(champ1_ids, champ2_ids, match)
 		self.underdog_evaluator = UnderdogEvaluator(match)
 
@@ -23,11 +23,11 @@ class AggregateEvaluator(Evaluator):
 		self.team2_num_win = 0
 	
 	def process(self):
-		self.one_champ_evaluator.process()
+		self.general_evaluator.process()
 		self.trivial_evaluator.process()
 		self.underdog_evaluator.process()
 		
-		self.count_winner_predicted(self.one_champ_evaluator)
+		self.count_winner_predicted(self.general_evaluator)
 		self.count_winner_predicted(self.underdog_evaluator)
 		self.count_winner_predicted(self.trivial_evaluator)
 
@@ -47,12 +47,12 @@ class AggregateEvaluator(Evaluator):
 			self.team2_num_win += 1
 
 	@staticmethod
-	def retrain(prediction_target, premade_only):
+	def retrain(prediction_target, train_set_type):
 		##retrain general evaluator, trivial and underdog do not require retraining
-		OneChampEvaluator.retrain(prediction_target, premade_only)
+		Trainer.train(train_set_type, Trainer.ALL)
 
 	def is_confident(self):
-		if (self.one_champ_evaluator.predict_winner() == self.trivial_evaluator.predict_winner()) and (self.trivial_evaluator.predict_winner() == self.underdog_evaluator.predict_winner()):
+		if (self.general_evaluator.predict_winner() == self.trivial_evaluator.predict_winner()) and (self.trivial_evaluator.predict_winner() == self.underdog_evaluator.predict_winner()):
 			return True
 		else:
 			return False
@@ -60,14 +60,15 @@ class AggregateEvaluator(Evaluator):
 	def print_results(self):
 		print "#################################################################################"
 		print "Aggregate Evaluator Results: "
-		print "OneChamp Evaluator Winner: ", self.one_champ_evaluator.predict_winner()
+		print "OneChamp Evaluator Winner: ", self.general_evaluator.predict_winner()
 		print "Trivial Evaluator Winner: ", self.trivial_evaluator.predict_winner()
 		print "Underdog Evaluator Winner: ", self.underdog_evaluator.predict_winner()
 		print "WINNER: ", self.winner
 		print "#################################################################################"
 
-			
-
+	@staticmethod
+	def print_class():
+		print "Aggregator Evaluator"
 
 
 

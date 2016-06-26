@@ -81,4 +81,3 @@ class CompAnalyzer:
 		##coordinates = MatchHyperpoint.get_coordinates(self.team1_ids, self.team2_ids)
 		##print str(svm_model.predict(coordinates))
 
-

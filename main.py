@@ -35,12 +35,13 @@ from random_evaluator import RandomEvaluator
 from kneighbours_evaluator import KNeighboursEvaluator
 from first_blood_evaluator import FirstBloodEvaluator
 from loser_evaluator import LoserEvaluator
+from trainer import Trainer
 ##from neural_network_evaluator import NeuralNetworkEvaluator
 
 
 def main():	
-	pull_summoners("kr", "CHALLENGER")
-	pull_matches("kr", "CHALLENGER")
+	##pull_summoners("eune", "CHALLENGER")
+	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
 	## NEVER EVER FUCKING EVER BET ON TSM
 	##team1 = ["", "", "", "", ""]
@@ -65,18 +66,19 @@ def main():
 	##ProMatch.print_by_status_tournament("nitrogen", "Korea")
 	#ProMatch.reset_all_tests()
 	##calc_hyperpoints()
-	##retrain_all("win", premade_only = False)
 	##find_teams()
 	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
 	##total = 0
-	##for i in range(10):
-	##	total += simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
-	##print total/10
+	for i in range(10):
+		retrain_all(Trainer.PRO_MATCHES)
+		total += simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
+	print total/10
 	
 	##simulate_bets(LoserEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
-	##simulate_bets(KNeighboursEvaluator, need_confidence = False, premade_only = False)
+	#3simulate_bets(KNeighboursEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AggregateEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
@@ -85,20 +87,24 @@ def main():
 	##simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AllyPairEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(EnemyPairEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(OneChampEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(AllyPairEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(EnemyPairEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(TreeEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
 	##run_tests(BayesNetsEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
-	##run_tests(OneChampEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
-	##run_tests(EnemyPairEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
-	##run_tests(AllyPairEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
+	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
+	##run_tests(EnemyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
+	##run_tests(AllyPairEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)
 	##run_tests(TreeEvaluator, ProMatch, "first_blood", need_confidence = False, premade_only = False)
 	
 	##train_general_evaluator()
 
 ##simulate betting
 def simulate_bets(evaluator_class, need_confidence = False, premade_only = False):
-	evaluator_class.retrain("win", premade_only)
+	evaluator_class.print_class()
+	##evaluator_class.retrain("win", premade_only)
 	bs = BetSimulator(evaluator_class, need_confidence)
 	bs.run()
 	return bs.print_results()
@@ -107,24 +113,17 @@ def simulate_bets(evaluator_class, need_confidence = False, premade_only = False
 def run_tests(evaluator_class, match_class, prediction_target, need_confidence, premade_only):
 	
 	##set new test set and retrain before running tests
-	TestSuite.set_new_tests()
-	evaluator_class.retrain(prediction_target, premade_only)
+	##TestSuite.set_new_tests()
+	##evaluator_class.retrain(prediction_target, premade_only)
 	##retrain_all(prediction_target, premade_only)
 	
 	ts = TestSuite(evaluator_class, match_class, prediction_target, need_confidence)
 	ts.run_simple_tests()
 	ts.print_results()
+	print ""
 
-def retrain_all(prediction_target, premade_only):
-	SVMEvaluator.retrain(prediction_target, premade_only)
-	PairEvaluator.retrain(prediction_target, premade_only)
-	OneChampEvaluator.retrain(prediction_target, premade_only)
-
-def new_tests():
-	TestSuite.set_new_tests()	
-	SVMEvaluator.retrain()
-	PairEvaluator.retrain()
-	OneChampEvaluator.retrain(prediction_target)
+def retrain_all(train_set_type):
+		Trainer.train(train_set_type, Trainer.ALL)
 
 def train_general_evaluator(prediction_target):
 	new_tests(prediction_target)	

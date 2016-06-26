@@ -2,7 +2,7 @@ from match_hyperpoint import MatchHyperpoint
 from hyperpoint_calculator import HyperpointCalculator
 from evaluator import Evaluator
 from tree_calculator import TreeCalculator
-
+from trainer import Trainer
 
 class TreeEvaluator(Evaluator):
 
@@ -11,9 +11,8 @@ class TreeEvaluator(Evaluator):
 		self.team2_ids = team2
 	
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		hc = HyperpointCalculator(prediction_target, premade_only)
-		hc.run()
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.HYPERPOINTS)
 		TreeCalculator.get_new_model()
 
 	def process(self):
@@ -32,3 +31,7 @@ class TreeEvaluator(Evaluator):
 	
 	def print_results(self):
 		print "Winner predicted by decison tree is : ", str(self.winner) 
+
+	@staticmethod
+	def print_class():
+		print "Tree Evaluator"

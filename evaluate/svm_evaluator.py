@@ -7,6 +7,7 @@ from db_client import DbClient
 from svm_calculator import SVMCalculator
 from match_hyperpoint import MatchHyperpoint
 from hyperpoint_calculator import HyperpointCalculator
+from trainer import Trainer
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -20,9 +21,8 @@ class SVMEvaluator(Evaluator):
 		self.team2_ids = team2
 	
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		hc = HyperpointCalculator(prediction_target, premade_only)
-		hc.run()
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.HYPERPOINTS)
 		SVMCalculator.get_new_model()
 
 	def process(self):
@@ -44,3 +44,6 @@ class SVMEvaluator(Evaluator):
 	def print_results(self):
 		print "Winner predicted by svm is : ", str(self.winner) 
 
+	@staticmethod
+	def print_class():
+		print "SVM Evaluator"

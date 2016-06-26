@@ -10,6 +10,7 @@ from pair_winrate_calculator import PairWinrateCalculator
 from champ_winrate_calculator import ChampWinrateCalculator
 from match import Match
 from pro_match import ProMatch
+from trainer import Trainer
 CONF_THRESHOLD = 0.02
 
 
@@ -33,11 +34,8 @@ class GeneralEvaluator:
 		self.team2_winrate = 0
 	
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		winrate_calc = PairWinrateCalculator(prediction_target, premade_only)
-		winrate_calc.run()
-		winrate_calc = ChampWinrateCalculator(prediction_target, premade_only)
-		winrate_calc.run()
+	def retrain(prediction_target, train_set_type):
+		Trainer.retrain(train_set_type, Trainer.ALL)
 	
 	## return 100 if team1 is favoured, else return 200
 	def predict_winner(self):
@@ -85,3 +83,6 @@ class GeneralEvaluator:
 			self.winner = 100
 		else:
 			self.winner = 200
+	@staticmethod	
+	def print_class():
+		print "General Evaluator"

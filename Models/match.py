@@ -124,30 +124,24 @@ class Match:
 	
 	## return all matches to be used for training models
 	@staticmethod
-	def get_training_set(premade_only = False):
-		if premade_only:
-			db_client = DbClient.get_client()
-			cursor = db_client.league.matches.find({"$or" : [{"is_team1" : True}, {"is_team2" : True}], "is_test" : False})
-			print cursor.count()
-			return cursor
-		else:
-			db_client = DbClient.get_client()
-			cursor = db_client.league.matches.find({"is_test" : False})
-			return cursor
+	def get_training_set():
+		db_client = DbClient.get_client()
+		cursor = db_client.league.matches.find({"is_test" : False})
+		return cursor
 
 	##return set that should be considered when deciding what is part of test set and what is training set
 	@staticmethod
 	def get_testable_set():
 		return Match.get_all_matches()
 	
-	##reset is_test of all matches to false
+	##reset is_test of all matches to w/e is passed in
 	@staticmethod
-	def remove_all_tests():
+	def reset_all_tests(is_test = True):
 		db_client = DbClient.get_client()
 		db_client.league.matches.update_many(
 				{},{
 					"$set": {
-						"is_test" : False
+						"is_test" : is_test
 						}
 				})
 

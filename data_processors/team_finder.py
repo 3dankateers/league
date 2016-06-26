@@ -10,7 +10,7 @@ from team_hash import TeamHash
 from collections import namedtuple
 
 ##min requirement of matches played together to be considered a relevant "team"
-NUM_MATCH_REQUIREMENT = 3
+NUM_MATCH_REQUIREMENT = 2 
 
 ##holds information about a team
 ## player ids is an array of the player ids (uniquely defines teaminfo)

@@ -5,6 +5,7 @@
 from pair import Pair
 from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
+from trainer import Trainer
 
 PAIR_SAMPLE_LIMIT = 20
 CONF_THRESHOLD = 0.03
@@ -29,10 +30,13 @@ class EnemyPairEvaluator(Evaluator):
 		self.team2_enemy_info = TeamWinrateInfo(team2)
 	
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		winrate_calc = PairWinrateCalculator(prediction_target, premade_only)
-		winrate_calc.run()
+	def print_class():
+		print "Enemy Pair Evaluator"
 
+	@staticmethod
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.PAIR)
+	
 	##processes each team comp in turn
 	def process(self):
 		##print "Processing pairs in team comp ..."

@@ -4,6 +4,7 @@
 from ally_pair_evaluator import AllyPairEvaluator
 from enemy_pair_evaluator import EnemyPairEvaluator
 from pair_winrate_calculator import PairWinrateCalculator
+from trainer import Trainer
 
 CONF_THRESHOLD = 0.05
 
@@ -22,7 +23,8 @@ class PairEvaluator:
 
 	
 	@staticmethod
-	def retrain(prediction_target, premade_only):
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.PAIR)
 		winrate_calc = PairWinrateCalculator(prediction_target, premade_only)
 		winrate_calc.run()
 
@@ -58,3 +60,7 @@ class PairEvaluator:
 		print "Ally + Enemy aggregate results:"
 		print "Team1 winrate: ", self.team1_winrate
 		print "Team2 winrate: ", self.team2_winrate
+	
+	@staticmethod
+	def print_class():
+		print "Pair Evaluator"

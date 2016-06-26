@@ -5,6 +5,7 @@
 from pair import Pair
 from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
+from trainer import Trainer
 
 PAIR_SAMPLE_LIMIT = 20
 CONF_THRESHOLD = 0.03
@@ -29,9 +30,8 @@ class AllyPairEvaluator(Evaluator):
 		self.team2_ally_info = TeamWinrateInfo(team2)
 
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		winrate_calc = PairWinrateCalculator(prediction_target, premade_only)
-		winrate_calc.run()
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.PAIR)
 		
 
 	##processes each team comp in turn
@@ -95,4 +95,7 @@ class AllyPairEvaluator(Evaluator):
 		
 		if twi.num_relevant_pairs > 0:
 			twi.update_aggregate_winrate()	
-
+	
+	@staticmethod
+	def print_class():
+		print "Ally Pair Evaluator"

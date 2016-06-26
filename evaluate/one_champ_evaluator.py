@@ -4,6 +4,7 @@
 from champ import Champ
 from evaluator import Evaluator
 from champ_winrate_calculator import ChampWinrateCalculator
+from trainer import Trainer
 
 CONF_THRESHOLD = 0.01
 ONE_CHAMP_SAMPLE_LIMIT = 10
@@ -48,9 +49,8 @@ class OneChampEvaluator(Evaluator):
 			return False
 
 	@staticmethod
-	def retrain(prediction_target, premade_only):
-		winrate_calc = ChampWinrateCalculator(prediction_target, premade_only)
-		winrate_calc.run()
+	def retrain(prediction_target, train_set_type):
+		Trainer.train(train_set_type, Trainer.ONE_CHAMP)
 		
 
 	## calculate winrates needed
@@ -95,3 +95,6 @@ class OneChampEvaluator(Evaluator):
 		print "WINNER: ", self.winner
 		print "#################################################################################"
 
+	@staticmethod
+	def print_class():
+		print "One Champ Evaluator"
