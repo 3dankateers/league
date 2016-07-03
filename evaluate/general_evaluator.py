@@ -35,7 +35,7 @@ class GeneralEvaluator:
 	
 	@staticmethod
 	def retrain(prediction_target, train_set_type):
-		Trainer.retrain(train_set_type, Trainer.ALL)
+		Trainer.train(train_set_type, Trainer.ALL)
 	
 	## return 100 if team1 is favoured, else return 200
 	def predict_winner(self):

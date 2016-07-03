@@ -39,18 +39,21 @@ from trainer import Trainer
 ##from neural_network_evaluator import NeuralNetworkEvaluator
 
 
+##TODO: Fix loser evaluator
+##TODO: Make neural networks evaluator
+##TODO: Get higher resolution betting info + other betting info about fb/ties etc
+##TODO: Start grabbing 5v5 data
+
 def main():	
 	##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
 	## NEVER EVER FUCKING EVER BET ON TSM
-	##team1 = ["", "", "", "", ""]
-	##team2 = ["", "", "", "", ""]
-	##team1 = ["Trundle", "Hecarim", "Bard", "Lucian", "Cassiopeia"]
-	##team2 = ["Ryze", "Rek'Sai", "Braum", "Twitch", "Illaoi"]
-	##team1 = ["Bard", "Trundle", "Elise", "Syndra", "Lucian"]
-	##team2 = ["Thresh", "Rek'Sai", "Gnar", "Ezreal", "Zilean"]
-	##evaluate_comp(team1, team2)
+	team1 = ["Rek'Sai", "Morgana", "Viktor", "Shen", "Ashe"]
+	team2 = ["Jhin", "Braum", "Cassiopeia", "Graves", "Irelia"]
+	##team1 = ["Karma", "Rek'Sai", "Sivir", "Gnar", "Zilean"]
+	##team2 = ["Nidalee", "Karma", "Fiora", "Ezreal", "Braum"]
+	evaluate_comp(team1, team2)
 	##evaluate_comp(team3, team4)
 	##new_tests()
 	##svm_model = calc_svm_model()
@@ -63,22 +66,27 @@ def main():
 	##insert_pro_matches()
 	##calc_hyperpoints()
 	##ProMatch.print_by_status("nitrogen")
-	##ProMatch.print_by_status_tournament("nitrogen", "Korea")
+	##ProMatch.print_by_status_tournament("nitrogen", "Europe")
 	#ProMatch.reset_all_tests()
 	##calc_hyperpoints()
 	##find_teams()
 	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
 	##total = 0
-	for i in range(10):
-		retrain_all(Trainer.PRO_MATCHES)
-		total += simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
-	print total/10
+	##wpt = 0
+	##for i in range(10):
+		##GeneralEvaluator.retrain("win", Trainer.PRO_MATCHES)
+		##(wp,profit)= simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
+		##total += profit
+		##wpt += wp
+	##print total/10
+	##print wpt/10
 	
+	##retrain_all(Trainer.SOLOQ)
 	##simulate_bets(LoserEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
-	#3simulate_bets(KNeighboursEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(KNeighboursEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AggregateEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
@@ -87,11 +95,14 @@ def main():
 	##simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AllyPairEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(EnemyPairEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(GeneralEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(OneChampEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(AllyPairEvaluator, need_confidence = True, premade_only = False)
+	##simulate_bets(EnemyPairEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(OneChampEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(AllyPairEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(EnemyPairEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(TreeEvaluator, need_confidence = False, premade_only = False)
-	##simulate_bets(SVMEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
 	##run_tests(BayesNetsEvaluator, ProMatch, "first_blood", need_confidence = True, premade_only = False)
 	##run_tests(OneChampEvaluator, ProMatch, "win", need_confidence = False, premade_only = False)

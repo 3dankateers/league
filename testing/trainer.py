@@ -34,16 +34,15 @@ class Trainer():
 		Match.reset_all_tests(is_test = False)
 		
 		##used to decide which matches are set as tests	
-		rand = randint(0,NUM_TESTS)
 		
 		cursor = Match.get_testable_set()
 		num_matches = cursor.count()
 
 		for i in range(num_matches):
 			match = Match.from_dict(cursor[i])
-
 			## set match as test
-			if  i%NUM_TESTS == rand:
+			rand = randint(0,NUM_TESTS)
+			if rand == 1:
 				match.is_test = True
 				match.save()
 	
@@ -64,17 +63,17 @@ class Trainer():
 		ProMatch.reset_all_tests(is_test = False)
 		
 		##used to decide which matches are set as tests	
-		rand = randint(0,NUM_PRO_TESTS)
 		
 		cursor = ProMatch.get_testable_set()
 		num_matches = cursor.count()
 
 		for i in range(num_matches):
 			match = ProMatch.from_dict(cursor[i])
-
+			
 			## set match as test
-			if  i%NUM_TESTS == rand:
-				##num_tests+= 1
+			rand = randint(0,NUM_PRO_TESTS)
+			##num_tests+= 1
+			if  rand == 1:
 				match.is_test = True
 				match.save()
 
@@ -83,10 +82,10 @@ class Trainer():
 	
 	@staticmethod
 	def train(train_set_type, data_type_needed):
+		match_class = None
 		if train_set_type == Trainer.SOLOQ:
-			print "here"
-			##ProMatch.reset_all_tests(is_test = True)
-			##Trainer.set_new_soloq_tests()
+			ProMatch.reset_all_tests(is_test = True)
+			Trainer.set_new_soloq_tests()
 			match_class = Match
 		elif train_set_type == Trainer.PREMADE:
 			ProMatch.reset_all_tests(is_test = True)
@@ -96,7 +95,7 @@ class Trainer():
 			##Match.reset_all_tests(is_test = True)
 			Trainer.set_promatch_training_set()
 			match_class = ProMatch
-		
+			
 		if data_type_needed == Trainer.ALL:
 			print "Training all"
 			champ_calculator = ChampWinrateCalculator(match_class, "win")

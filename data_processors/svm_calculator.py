@@ -38,7 +38,7 @@ class SVMCalculator:
 		X = np.array(X)
 		y = np.array(y)
 		##C=0.5 gamma = 0.05 => 58%
-		new_svm_model = svm.LinearSVC()
+		new_svm_model = svm.LinearSVC(C = 1,  class_weight = 'balanced')
 		##new_svm_model = svm.LinearSVC(kernel = "linear", C = 0.5, degree = 1, probability = True, gamma = 0.01, decision_function_shape = "ovr",  verbose = False)
 		##svm_model = svm.SVC(kernel = "poly", C = 1, degree = 3, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
 		new_svm_model.fit(X,y)

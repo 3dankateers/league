@@ -14,6 +14,7 @@ from match_hyperpoint import MatchHyperpoint
 from svm_calculator import SVMCalculator
 from bayes_nets_evaluator import BayesNetsEvaluator
 from kneighbours_evaluator import KNeighboursEvaluator
+from trainer import Trainer
 
 class CompAnalyzer:
 	
@@ -34,10 +35,10 @@ class CompAnalyzer:
 		##self.evaluate_ally_pairs()
 		##self.evaluate_enemy_pairs()
 		print "Predicting Win"
-		self.evaluate_general()
+		self.evaluate_enemy_pairs()
 		##self.evaluate_kneighbours()
 		self.evaluate_bayes_nets()
-		GeneralEvaluator.retrain("win", False)
+		##GeneralEvaluator.retrain("win", Trainer.SOLOQ)
 		
 	## checks that champions are spelled properly
 	def check_team_champ_names(self, team_names, team_ids):

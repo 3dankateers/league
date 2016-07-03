@@ -36,6 +36,7 @@ class SVMEvaluator(Evaluator):
 		
 
 	def predict_winner(self):
+		print self.winner
 		return self.winner
 
 	def is_confident(self):
