@@ -27,9 +27,10 @@ class BetSimulator:
 	
 	def run(self):
 		self.make_bets()
-	
-	def make_bets(self):
+
 		
+
+	def make_bets(self):
 		##populate bettable matches with all matches from db
 		cursor = ProMatch.get_bettable_set()
 		for m in cursor:

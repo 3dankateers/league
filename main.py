@@ -64,6 +64,8 @@ def main():
 	##cross_validate(GeneralEvaluator, 10, "first_blood")
 	##new_tests()
 	##insert_pro_matches()
+	##ProMatchCreator.fix_corrupted_matches2()
+	##ProMatchCreator.identify_corrupted()
 	##calc_hyperpoints()
 	##ProMatch.print_by_status("nitrogen")
 	##ProMatch.print_by_status_tournament("nitrogen", "Europe")
@@ -82,6 +84,11 @@ def main():
 	##print total/10
 	##print wpt/10
 	
+	##for i in range(10):
+	##	retrain_all(Trainer.PRO_MATCHES)
+	##	total += simulate_bets(BayesNetsEvaluator, need_confidence = False, premade_only = False)
+	##print total/10
+
 	##retrain_all(Trainer.SOLOQ)
 	##simulate_bets(LoserEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
@@ -90,6 +97,12 @@ def main():
 	##simulate_bets(AggregateEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(AggregateEvaluator, need_confidence = True, premade_only = False)
 	##simulate_bets(TrivialEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
+	##simulate_bets(RandomEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(UnderdogEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(GeneralEvaluator, need_confidence = False, premade_only = False)
 	##simulate_bets(OneChampEvaluator, need_confidence = False, premade_only = False)
@@ -116,7 +129,7 @@ def main():
 def simulate_bets(evaluator_class, need_confidence = False, premade_only = False):
 	evaluator_class.print_class()
 	##evaluator_class.retrain("win", premade_only)
-	bs = BetSimulator(evaluator_class, need_confidence)
+	bs = BetSimulator(evaluator_class,  need_confidence)
 	bs.run()
 	return bs.print_results()
 

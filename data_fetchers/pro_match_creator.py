@@ -25,6 +25,7 @@ def champ_names_to_ids(champ_names):
 		champ = Champ.from_dict(cursor[0])
 		team_ids.append(champ.id)
 	return team_ids
+	
 
 
 ## csv label column:
@@ -43,6 +44,159 @@ class ProMatchCreator:
 		##self.add_matches("LPL_WEEK4.csv")
 		##self.add_matches("LSPL_6.11.csv")
 		##self.add_matches("LMS_WEEK2.csv")
+
+	@staticmethod
+	def fix_corrupted_matches2():
+		cursor = ProMatch.get_by_status("corrupted")
+		for m in cursor:
+			match = ProMatch.from_dict(m)
+			temp = match.champs1
+			match.champs1 = match.champs2
+			match.champs2 = temp
+			match.save()
+			t1 = match.team1_name
+			t2 = match.team2_name
+			day = match.match_day 
+			ProMatchCreator.invert_match_mls(t1, t2, match.map_number, day)
+
+
+	
+	@staticmethod
+	def fix_corrupted_matches():
+		cursor = ProMatch.get_by_status("corrupted")
+		for m in cursor:
+			match1 = ProMatch.from_dict(m)
+			if match1.map_number != 1:
+				continue
+			
+			t1_m1 = match1.team1_name
+			t2_m1 = match1.team2_name
+			day_m1 = match1.match_day 
+			ml1_m1 = match1.get_latest_ML_T1()	
+			ml2_m1 = match1.get_latest_ML_T2()
+			win_m1 = match1.win
+			c2 = ProMatch.lookup_match(t2_m1, t1_m1, 2, day_m1)
+			print t1_m1, t2_m1, day_m1
+			if c2.count() == 0:
+				print "corrupted match"
+				match1.status = "corrupted"
+				match1.save()
+				continue
+			match2 = ProMatch.from_dict(c2[0])
+			t1_m2 = match2.team1_name
+			t2_m2 = match2.team2_name
+			day_m2 = match2.match_day 
+			ml1_m2 = match2.get_latest_ML_T1()	
+			ml2_m2 = match2.get_latest_ML_T2()	
+			win_m2 = match2.win
+
+			dif1 =  abs(ml1_m1 + ml2_m1) 
+			dif2 =  abs(ml1_m2 + ml2_m2) 
+			if ((ml1_m1 < 0) and (ml2_m1 < 0)): 
+				print "uncertain, do nothing"
+				match1.status = "uncertain"
+				match2.status = "uncertain"
+				match1.save()
+				match2.save()
+				ProMatchCreator.set_third_match_status(t1_m1, t2_m1, day_m1, "uncertain")
+				continue
+			
+			
+			if ml1_m1 > 0:
+				if win_m1 == 100:
+					if dif2 < dif1:
+						##match2 is corrupted
+						ProMatchCreator.invert_match_mls(t1_m2, t2_m2, 2, day_m1)
+					else:
+						##match1 and 3 is corrupted
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 1, day_m1)
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 3, day_m1)
+				elif win_m1 == 200:
+					if dif2 < dif1:
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 1, day_m1)
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 3, day_m1)
+					else:
+						ProMatchCreator.invert_match_mls(t1_m2, t2_m2, 2, day_m1)
+			elif ml1_m1 < 0:
+				if win_m1 == 100:
+					if dif2 < dif1:
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 1, day_m1)
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 3, day_m1)
+					else:
+						ProMatchCreator.invert_match_mls(t1_m2, t2_m2, 2, day_m1)
+
+				elif win_m1 == 200:
+					if dif2 < dif1:
+						ProMatchCreator.invert_match_mls(t1_m2, t2_m2, 2, day_m1)
+					else:
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 1, day_m1)
+						ProMatchCreator.invert_match_mls(t1_m1, t2_m1, 3, day_m1)
+
+	@staticmethod
+	def invert_match_mls(t1, t2, map_number, date):
+			c = ProMatch.lookup_match(t1, t2, map_number, date)
+			if c.count() != 0:
+				print "inverted"
+				match = ProMatch.from_dict(c[0])
+				for odd in match.odds:
+					temp =odd["ML_T1"]
+					odd["ML_T1"] = odd["ML_T2"]
+					odd["ML_T2"] = temp
+				##match.status = "inverted"
+				match.save()
+			else:
+				return
+			
+
+
+	@staticmethod
+	def set_third_match_status(t1, t2, date, status):
+			cursor = ProMatch.lookup_match(t1, t2, 3, date)
+			if cursor.count() != 0:
+				match = ProMatch.from_dict(cursor[0])
+				match.status = status
+				match.save()
+			c = ProMatch.lookup_match(t2, t1, 3, date)
+			if cursor.count() != 0:
+				match = ProMatch.from_dict(cursor[0])
+				match.status = status
+				match.save()
+		
+
+
+
+
+
+	@staticmethod
+	def identify_corrupted():
+		with open("C:/Users/andrei/dev/league/csv_data/" + "NACS_WEEK2.csv", 'r') as csvfile:
+			contents = csv.reader(csvfile)
+			label_row = []
+			for i, row in enumerate(contents):
+				if i == 0:
+					label_row = row
+				
+				else:
+					params_dict = ProMatchCreator.parse_row_params(label_row, row)
+					
+					if params_dict['map_number'] == None:
+						continue
+
+					team1_name = params_dict['team1_name']
+					team2_name = params_dict['team2_name']
+					map_number = int(params_dict['map_number'])
+					match_day = params_dict['match_day']
+					champs1 = ProMatchCreator.champs_string_to_ids(params_dict['champs1_names'])
+					## if already exists this gets existing match, otherwise create new match with those parameters
+					is_corrupted = ProMatch.find_corrupted_match(team1_name, team2_name, map_number, match_day, champs1)
+					if is_corrupted:
+						c = ProMatch.lookup_match(team1_name, team2_name, map_number, match_day)
+						if c.count() > 0:
+							match = ProMatch.from_dict(c[0])
+							match.status = "corrupted"
+							match.save()
+		
+		csvfile.close()
 
 	##adds pro matches to db (may contain duplicates)
 	def add_matches(self, file):
