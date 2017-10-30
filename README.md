@@ -1,6 +1,23 @@
 # league
 
-Purpose/Structure
+
+Purpose:
+Make reliable money betting on the outcome of professional league of legends matches. 
+
+Assumption:
+Flipping a coin and placing a two sided bet with 50/50 probabilty to bet on either side will
+Concept:
+
+
+Details:
+
+
+
+
+
+Concept:
+
+Assumptions:
 
 
 Instructions:
