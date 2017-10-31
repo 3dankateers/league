@@ -45,7 +45,7 @@ class Match:
 		is_team2 = d["is_team2"]
 		is_test = d["is_test"]
 			
-		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_team1, is_team2, is_test)
+		return cls(id, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test)
 
 	## if match already exists in db return it, otherwise return None(caller will have to create game himself)
 	@classmethod

@@ -46,9 +46,9 @@ from trainer import Trainer
 ##TODO: Start grabbing 5v5 data
 
 def main():
-    DbClient.create_tables()
+    ##DbClient.create_tables()
     lc = LeagueClient()
-    lc.get_challengers("NA1")
+    lc.get_challengers("na1")
 	##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()

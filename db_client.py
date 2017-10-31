@@ -15,9 +15,14 @@ import sqlite3
 
 class DbClient:
 
+    conn = None
+
     @staticmethod
     def get_conn():
-        return sqlite3.connect('data/league.sqlite')
+        if DbClient.conn == None:
+            DbClient.conn = sqlite3.connect('data/league.sqlite')
+        return DbClient.conn
+            
         
 
     @staticmethod

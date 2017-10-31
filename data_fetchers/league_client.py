@@ -11,7 +11,7 @@ import time
 from retrying import retry
 from summoner import Summoner
 
-API_KEY = "?api_key=RGAPI-18bbcef2-b154-4f92-8333-3b4ca58951da" 
+API_KEY = "?api_key=RGAPI-701617e2-5a7b-460d-b196-4c444150b7e6" 
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
@@ -25,26 +25,30 @@ def retry_if_url_error(exception):
 
 
 class LeagueClient:
-    '''
+
+    last_request = None
+
     ##may sleep to delay consecutive requests and make sure there is at most 1 request every 1.5 seconds
     def stagger_response(self):
-            if self.last_request == None:
-                    self.last_request = time.time()
-            else:
-                    t_delta = time.time() - self.last_request
-                    if t_delta < WAIT_TIME:
-                            print "waiting"
-                            time.sleep((WAIT_TIME - t_delta)/1000)
-                            self.last_request = time.time()
+        print "stagger"
+        if self.last_request == None:
+            self.last_request = time.time()
+        else:
+            print "here"
+            t_delta = time.time() - self.last_request
+            if t_delta < WAIT_TIME:
+                print "waiting"
+                time.sleep((WAIT_TIME - t_delta)/1000)
+                self.last_request = time.time()
     
-    ''' 
+     
     @retry(retry_on_exception=retry_if_url_error)
     def urlopen_with_retry(self, url):
         return urllib2.urlopen(url)
     
 
     def getJSONReply(self, url):
-            ##self.stagger_response()
+            self.stagger_response()
             response = self.urlopen_with_retry(url)
             html = response.read();
             data = json.loads(html);
@@ -59,15 +63,15 @@ class LeagueClient:
             accountID = self.summonerID_to_accountID(region, summonerID)
             date_scraped_matches = datetime.datetime.now()
             summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
+            print "save summoner", summonerID
             summoner.save()
 
     def summonerID_to_accountID(self, region, summonerID):
         print region
         print summonerID
 	try:
-            response = urllib2.urlopen(HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + API_KEY)
-            ##dontgetbanned(response)
-            data = json.loads(response.read())
+            url = HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + API_KEY
+            data = self.getJSONReply(url)
             summonerdata = data
             accountID = summonerdata["accountId"]
             ##time.sleep(1)
