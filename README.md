@@ -17,6 +17,12 @@ From Ass 1 + 2 + 3, 2 possibilities follow. Either champion lockins are not a ma
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 Details:
 In practice, it is quite difficult to take into account champion lockins(team comp). Most likely we will create specific "indicators" that use the champion lockin information partially. For example, an ally-pair indicator could aggregate the win% of pairs of champs on the same team and learn which champs work well together. Another indicator could look at ally-enemy matchups and do something similar. These indicators could be combined(tricky since there is internal correlation) to get a prediction rate that is as high as possible. Linear regression might be helpful here.
+
+TODO:
+1. Find and store predictive training set(could be challenger soloq, could be actual tourny matches, etc)
+2. Test different strategies(indicators) to find something that is predicting wins
+3. Test against historical tournament matches while taking into account odds(nitrogenspider data).
+4. If backtesting is a great success, test live.
                                                                                                                                                                                                                                                                                                                                                                 
                                                                                                                               
 Instructions:                                                                                                                 
