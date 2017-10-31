@@ -9,18 +9,28 @@
 ## Champ: id, name, winrate, winrate_sample_size
 ## pair: id, champ1, champ2, type, winrate, winrate_sample_size, date_created
 #################################################################################################
+import sqlite3
 
-from pymongo import MongoClient
+
 
 class DbClient:
-	##MONGO_USERNAME = 'root'
-	##MONGO_PASSWORD = 'm6E7K1GLwcz58q'
-	
-	client = None
 
-	@staticmethod
-	def get_client():
-		if DbClient.client == None:
-			DbClient.client = MongoClient("mongodb://localhost:27017/")
-		return DbClient.client
-			##self.db.authenticate(self.MONGO_USERNAME, self.MONGO_PASSWORD, source='admin')
+    @staticmethod
+    def get_conn():
+        return sqlite3.connect('data/league.sqlite')
+        
+
+    @staticmethod
+    def get_cursor():
+        return DbClient.get_conn().cursor()
+        
+
+
+    @staticmethod
+    def create_tables():
+        c = DbClient.get_cursor()
+        c.execute("CREATE TABLE IF NOT EXISTS Matches (gameID, season, champ1, champ2, champ3, champ4, champ5, champ6, champ7, champ8, champ9, champ10, winner, gameVersion);")
+        c.execute("CREATE TABLE IF NOT EXISTS Summoners (summonerID, accountID, tier, region, date_scraped_matches);")
+        DbClient.get_conn().commit()
+            
+                

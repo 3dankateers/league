@@ -2,6 +2,7 @@ from summoner import Summoner
 from match import Match
 from league_client import LeagueClient
 from db_client import DbClient
+'''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
 from team_finder import TeamFinder
@@ -37,23 +38,26 @@ from first_blood_evaluator import FirstBloodEvaluator
 from loser_evaluator import LoserEvaluator
 from trainer import Trainer
 ##from neural_network_evaluator import NeuralNetworkEvaluator
-
+'''
 
 ##TODO: Fix loser evaluator
 ##TODO: Make neural networks evaluator
 ##TODO: Get higher resolution betting info + other betting info about fb/ties etc
 ##TODO: Start grabbing 5v5 data
 
-def main():	
+def main():
+    DbClient.create_tables()
+    lc = LeagueClient()
+    lc.get_challengers("NA1")
 	##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
 	## NEVER EVER FUCKING EVER BET ON TSM
-	team1 = ["Rek'Sai", "Morgana", "Viktor", "Shen", "Ashe"]
-	team2 = ["Jhin", "Braum", "Cassiopeia", "Graves", "Irelia"]
+	##team1 = ["Rek'Sai", "Morgana", "Viktor", "Shen", "Ashe"]
+	##team2 = ["Jhin", "Braum", "Cassiopeia", "Graves", "Irelia"]
 	##team1 = ["Karma", "Rek'Sai", "Sivir", "Gnar", "Zilean"]
 	##team2 = ["Nidalee", "Karma", "Fiora", "Ezreal", "Braum"]
-	evaluate_comp(team1, team2)
+	##evaluate_comp(team1, team2)
 	##evaluate_comp(team3, team4)
 	##new_tests()
 	##svm_model = calc_svm_model()
