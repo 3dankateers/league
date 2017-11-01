@@ -10,11 +10,14 @@ import datetime
 import time
 from retrying import retry
 from summoner import Summoner
+from match import Match
 
 API_KEY = "?api_key=RGAPI-701617e2-5a7b-460d-b196-4c444150b7e6" 
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
+MATCH_LISTS = "match/v3/matchlists/by-account/"
+MATCHES = "match/v3/matches/"
 SUMMONER = "summoner/v3/summoners/"
 RANKED_SOLO = "by-queue/RANKED_SOLO_5x5"
 
@@ -82,6 +85,52 @@ class LeagueClient:
             print summonerdata
             print "Keyerror " + str(e)
             return -1
+
+    ##inserts into db recent matches of the summoner array passed in
+    def get_matches(self, region, tier):
+        summoners = Summoner.get_summoners(region, tier)
+        gameIDs = []
+        for s in summoners:
+            data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + API_KEY)
+            for e in data["matches"]:
+                gameIDs.append(e["gameId"])
+            for gameID in gameIDs:
+                match = self.gameID_to_match(region, tier, gameID)
+                match.save()
+
+    ##returns match object from gameid+region
+    def gameID_to_match(self, region, tier, gameID):
+        data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCHES + str(gameID) + API_KEY)
+        patch = data["gameVersion"]
+        gameType = data["gameType"]
+        duration = data["gameDuration"]
+        date = data["gameCreation"]
+        ##TODO: fix this later
+        team1 = "SOLOQ"
+        team2 = "SOLOQ"
+        
+
+        if data["teams"][0]["firstBlood"]:
+            first_blood = 100
+        else:
+            first_blood = 200
+        
+        if data["teams"][0]["win"]:
+            win = 100
+        else:
+            win = 200
+        
+        ##get champion pick info
+        champs1 = []
+        champs2 = []
+        for p in data["participants"]:
+            if p["teamId"] == 100:
+                champs1.append(p["championId"])
+            else:
+                champs2.append(p["championId"])
+        m = Match(gameID, team1, team2, champs1, champs2, first_blood, duration, win, gameType, region, patch, tier, date)
+        return m 
+
         
 
 #Rate limiter, pauses the program if a rate goes above the league rate

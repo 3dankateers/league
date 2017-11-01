@@ -34,7 +34,7 @@ class DbClient:
     @staticmethod
     def create_tables():
         c = DbClient.get_cursor()
-        c.execute("CREATE TABLE IF NOT EXISTS Matches (gameID, season, champ1, champ2, champ3, champ4, champ5, champ6, champ7, champ8, champ9, champ10, winner, gameVersion);")
+        c.execute("CREATE TABLE IF NOT EXISTS Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date);")
         c.execute("CREATE TABLE IF NOT EXISTS Summoners (summonerID, accountID, tier, region, date_scraped_matches);")
         DbClient.get_conn().commit()
             
