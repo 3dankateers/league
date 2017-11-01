@@ -48,8 +48,9 @@ class LeagueClient:
     
 
     def getJSONReply(self, url):
-            self.stagger_response()
+            #self.stagger_response()
             response = self.urlopen_with_retry(url)
+            Rate_Limiter(response)
             html = response.read();
             data = json.loads(html);
             return data;
@@ -83,5 +84,23 @@ class LeagueClient:
             return -1
         
 
+#Rate limiter, pauses the program if a rate goes above the league rate
+def Rate_Limiter(response):
+    #Gets data from league API headers, contains limit and how much youve used
+    curAppCount = response.info().getheader('X-App-Rate-Limit-Count')
+    curAppLimit = response.info().getheader('X-App-Rate-Limit')
+    x = curAppCount.split(',')
+    RequestsPerSecond = x[1].split(':')
+    RequestsPerMinute = x[0].split(':')
+    x = curAppLimit.split(',')
+    MaxRequestsPerSecond = x[1].split(':')
+    MaxRequestsPerMinute = x[0].split(':')
 
+    if(int(RequestsPerMinute[0])>(int(MaxRequestsPerMinute[0])-2)):
+        print "Rate too high, pausing for 30 secs"
+        time.sleep(30)
+
+    if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-2)):
+        print "Rate too high, pausing for 5 secs"
+        time.sleep(5)
 
