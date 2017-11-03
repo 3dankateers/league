@@ -6,7 +6,7 @@ import json
 class Match:
 
 	
-    def __init__(self, gameID, team1, team2, champs1, champs2, first_blood, duration, win, gameType, region, patch, tier, date):
+    def __init__(self, gameID, team1, team2, champs1, champs2, first_blood, duration, win, gameType, region, patch, tier, date, is_test = False):
         self.gameID = gameID
         self.team1 = team1
         self.team2 = team2
@@ -20,6 +20,7 @@ class Match:
         self.patch = patch
         self.tier = tier
         self.date = date
+        self.is_test = is_test ## when set to true, used for testing, when false used for training 
     
 
     ## push match into database
@@ -28,7 +29,7 @@ class Match:
         ##json.dumps to encode arrays of champs1, champs2 into JSON
         json_champs1 = json.dumps(self.champs1)
         json_champs2 = json.dumps(self.champs2)
-        c.execute("INSERT INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date))
+        c.execute("INSERT INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date, self.is_test))
         DbClient.get_conn().commit()
 
         
@@ -37,6 +38,6 @@ class Match:
     @staticmethod
     def from_tuple(tup):
         ##json loads to decode json back into arrays for champs1, champs2
-        m = Match(tup[0], tup[1], tup[2], json.loads(tup[3]), json.loads(tup[4]), tup[5], tup[6], tup[7], tup[8], tup[9], tup[10], tup[11], tup[12])
+        m = Match(tup[0], tup[1], tup[2], json.loads(tup[3]), json.loads(tup[4]), tup[5], tup[6], tup[7], tup[8], tup[9], tup[10], tup[11], tup[12], tup[13])
 	return m
 	

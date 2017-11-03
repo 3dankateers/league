@@ -50,8 +50,9 @@ def main():
     lc = LeagueClient()
     ##lc.get_challengers("na1")
     ##Summoner.get_summoners_by_tier("CHALLENGER")
-    lc.get_matches("na1","CHALLENGER")
-	##pull_summoners("eune", "CHALLENGER")
+    ##lc.get_matches("na1","CHALLENGER")
+    lc.get_champs("na1")
+    ##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
 	## NEVER EVER FUCKING EVER BET ON TSM
