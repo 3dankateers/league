@@ -2,12 +2,13 @@ from summoner import Summoner
 from match import Match
 from league_client import LeagueClient
 from db_client import DbClient
+from champ import Champ
+from champ_winrate_calculator import ChampWinrateCalculator
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
 from team_finder import TeamFinder
 from champ_parser import ChampParser
-from champ_winrate_calculator import ChampWinrateCalculator
 from pair_winrate_calculator import PairWinrateCalculator
 from comp_analyzer import CompAnalyzer
 from test_suite import TestSuite
@@ -46,12 +47,15 @@ from trainer import Trainer
 ##TODO: Start grabbing 5v5 data
 
 def main():
-    DbClient.create_tables()
-    lc = LeagueClient()
+    ##DbClient.create_tables()
+    ##lc = LeagueClient()
     ##lc.get_challengers("na1")
     ##Summoner.get_summoners_by_tier("CHALLENGER")
     ##lc.get_matches("na1","CHALLENGER")
-    lc.get_champs("na1")
+    ##lc.get_champs("na1")
+    ##Champ.reset_winrates()
+    cwc = ChampWinrateCalculator()
+    cwc.run()
     ##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()

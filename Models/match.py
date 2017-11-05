@@ -5,7 +5,7 @@ import json
 
 class Match:
 
-	
+    WIN = "win"	
     def __init__(self, gameID, team1, team2, champs1, champs2, first_blood, duration, win, gameType, region, patch, tier, date, is_test = False):
         self.gameID = gameID
         self.team1 = team1
@@ -40,4 +40,16 @@ class Match:
         ##json loads to decode json back into arrays for champs1, champs2
         m = Match(tup[0], tup[1], tup[2], json.loads(tup[3]), json.loads(tup[4]), tup[5], tup[6], tup[7], tup[8], tup[9], tup[10], tup[11], tup[12], tup[13])
 	return m
+    
+    @staticmethod
+    def get_training_set():
+        matches = []
+        c = DbClient.get_cursor()
+        c.execute("SELECT * FROM Matches WHERE is_test = (?);", (False,))
+        rows = c.fetchall()
+        for r in rows:
+            m = Match.from_tuple(r)
+            matches.append(m)
+        return matches
+        
 	

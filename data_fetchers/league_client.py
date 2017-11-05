@@ -13,7 +13,7 @@ from summoner import Summoner
 from match import Match
 from champ import Champ
 
-API_KEY = "api_key=RGAPI-0cf0781d-7377-4e4b-bb0f-b97d0f4c930f" 
+API_KEY = "api_key=RGAPI-275944cc-4bea-4d58-84f4-6aa7c36c540f" 
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
@@ -26,7 +26,8 @@ RANKED_SOLO = "by-queue/RANKED_SOLO_5x5"
 WAIT_TIME = 1500
 
 def retry_if_url_error(exception):
-	return isinstance(exception, URLError)
+    print URLError 
+    return isinstance(exception, URLError)
 
 
 class LeagueClient:
@@ -73,7 +74,7 @@ class LeagueClient:
 
     ##inserts summoners from challenger league
     def get_challengers(self, region):
-        data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + API_KEY)
+        data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + "?" + API_KEY)
         tier = data["tier"]
         for e in data["entries"]:
             summonerID = e["playerOrTeamId"]
@@ -128,7 +129,7 @@ class LeagueClient:
         else:
             first_blood = 200
         
-        if data["teams"][0]["win"]:
+        if data["teams"][0]["win"] == "Win":
             win = 100
         else:
             win = 200
