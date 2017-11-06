@@ -166,8 +166,8 @@ def Rate_Limiter(response):
     MaxRequestsPerMinute = x[0].split(':')
 
     if(int(RequestsPerMinute[0])>(int(MaxRequestsPerMinute[0])-2)):
-        print "Rate too high, pausing for 30 secs"
-        time.sleep(30)
+        print "Rate too high, pausing for 120 secs"
+        time.sleep(120)
 
     if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-2)):
         print "Rate too high, pausing for 5 secs"
