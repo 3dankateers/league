@@ -19,11 +19,15 @@ Details:
 In practice, it is quite difficult to take into account champion lockins(team comp). Most likely we will create specific "indicators" that use the champion lockin information partially. For example, an ally-pair indicator could aggregate the win% of pairs of champs on the same team and learn which champs work well together. Another indicator could look at ally-enemy matchups and do something similar. These indicators could be combined(tricky since there is internal correlation) to get a prediction rate that is as high as possible. Linear regression might be helpful here.
 
 TODO:
-1. Find and store predictive training set(could be challenger soloq, could be actual tourny matches, etc)
-2. Test different strategies(indicators) to find something that is predicting wins
-3. Test against historical tournament matches while taking into account odds(nitrogenspider data).
-4. If backtesting is a great success, test live.
-                                                                                                                                                                                                                                                                                                                                                                
+  Data Gathering: <br />
+    1. Setup a server where a shared database can be accessed. Periodically run scripts for nitrogen spider, league spider, league api training set grabbing. Store all this in the shared db.<br />
+    2. Nitrogen spider info + league spider info needs to be sql joined into something matching the "match" object. <br />
+    3.Must add optional fields storing odd+ tournament information and a field that helps differentiate between promatches and regular matches.<br />
+    
+  Data Processing: <br />
+    1. Once we have a collection of matches in db, we can assign a portion to be used for training and a portion to be used for testing. The training set can be used to train a model(evaluator) and then performance can be tested usign test set. Promatches are especially good for testing since odd information allows us to simulate bets being placed.
+    2. Evaluators may create intermediary data structures such as pair.py to store processed information from the training set.
+   
                                                                                                                               
 Instructions:                                                                                                                 
 1. Get WSL working so you can use linux bash : https://msdn.microsoft.com/en-us/commandline/wsl/install-win10                 
