@@ -1,7 +1,6 @@
 from db_client import DbClient
 from match import Match
 import math
-import statsmodels.stats.proportion
 
 ## out of how many matches should a test be set
 ## num_total_tests = ( 1/NUM_TESTS * num_total_matches)

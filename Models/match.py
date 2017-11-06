@@ -29,7 +29,7 @@ class Match:
         ##json.dumps to encode arrays of champs1, champs2 into JSON
         json_champs1 = json.dumps(self.champs1)
         json_champs2 = json.dumps(self.champs2)
-        c.execute("INSERT INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date, self.is_test))
+        c.execute("INSERT OR IGNORE INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date, self.is_test))
         DbClient.get_conn().commit()
 
     ##update existing match

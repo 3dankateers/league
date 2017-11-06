@@ -54,7 +54,7 @@ class LeagueClient:
                 self.last_request = time.time()
     
      
-    @retry(retry_on_exception=retry_if_url_error)
+    @retry(retry_on_exception=retry_if_url_error, wait_fixed = 3000)
     def urlopen_with_retry(self, url):
         return urllib2.urlopen(url)
     

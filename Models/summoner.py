@@ -14,7 +14,7 @@ class Summoner:
     ##saves Summoner to db
     def save(self):
         c = DbClient.get_cursor()
-        c.execute("INSERT INTO Summoners VALUES (?,?,?,?,?);", (self.summonerID, self.accountID, self.tier, self.region, self.date_scraped_matches))
+        c.execute("INSERT OR IGNORE INTO Summoners VALUES (?,?,?,?,?);", (self.summonerID, self.accountID, self.tier, self.region, self.date_scraped_matches))
         DbClient.get_conn().commit()
 
     ##returns array of summoners objects matching the tier and region; constructed from db
