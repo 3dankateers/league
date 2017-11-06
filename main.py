@@ -48,10 +48,10 @@ from trainer import Trainer
 
 def main():
     ##DbClient.create_tables()
-    ##lc = LeagueClient()
+    lc = LeagueClient()
     ##lc.get_challengers("na1")
     ##Summoner.get_summoners_by_tier("CHALLENGER")
-    ##lc.get_matches("na1","CHALLENGER")
+    lc.get_matches("na1","CHALLENGER")
     ##lc.get_champs("na1")
     ##Champ.reset_winrates()
     cwc = ChampWinrateCalculator()

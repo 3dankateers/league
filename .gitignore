@@ -4,4 +4,5 @@
 *.pem
 *.swn
 *.swm
+*.txt
 data/

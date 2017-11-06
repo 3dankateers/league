@@ -49,8 +49,10 @@ class OneChampEvaluator(Evaluator):
 			return False
 
 	@staticmethod
-	def retrain(prediction_target, train_set_type):
-		Trainer.train(train_set_type, Trainer.ONE_CHAMP)
+	def retrain():
+            
+            cwc = ChampWinrateCalculator()
+            cwc.run()
 		
 
 	## calculate winrates needed

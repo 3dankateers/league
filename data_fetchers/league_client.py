@@ -13,7 +13,6 @@ from summoner import Summoner
 from match import Match
 from champ import Champ
 
-API_KEY = "api_key=RGAPI-275944cc-4bea-4d58-84f4-6aa7c36c540f" 
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
@@ -33,6 +32,13 @@ def retry_if_url_error(exception):
 class LeagueClient:
 
     last_request = None
+    API_KEY = "api_key=" 
+
+    def __init__(self):
+       f  = open("./data_fetchers/apikey.txt", "r")
+       key = f.readline()
+       self.API_KEY += key
+        
 
     ##may sleep to delay consecutive requests and make sure there is at most 1 request every 1.5 seconds
     def stagger_response(self):
@@ -64,7 +70,7 @@ class LeagueClient:
 
     
     def get_champs(self, region):
-        data = self.getJSONReply(HTTPS_PART + region + API_PART + CHAMPS + "&" + API_KEY, rate_limit = False)
+        data = self.getJSONReply(HTTPS_PART + region + API_PART + CHAMPS + "&" + self.API_KEY, rate_limit = False)
         for key in data["data"]:
             champID = data["data"][key]["id"]
             name = key
@@ -74,7 +80,7 @@ class LeagueClient:
 
     ##inserts summoners from challenger league
     def get_challengers(self, region):
-        data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + "?" + API_KEY)
+        data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + "?" + self.API_KEY)
         tier = data["tier"]
         for e in data["entries"]:
             summonerID = e["playerOrTeamId"]
@@ -88,7 +94,7 @@ class LeagueClient:
         print region
         print summonerID
 	try:
-            url = HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + "?" + API_KEY
+            url = HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + "?" + self.API_KEY
             data = self.getJSONReply(url)
             summonerdata = data
             accountID = summonerdata["accountId"]
@@ -105,7 +111,7 @@ class LeagueClient:
         summoners = Summoner.get_summoners(region, tier)
         gameIDs = []
         for s in summoners:
-            data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + "?" + API_KEY)
+            data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + "?" + self.API_KEY)
             for e in data["matches"]:
                 gameIDs.append(e["gameId"])
             for gameID in gameIDs:
@@ -114,7 +120,7 @@ class LeagueClient:
 
     ##returns match object from gameid+region
     def gameID_to_match(self, region, tier, gameID):
-        data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCHES + str(gameID) + "?" + API_KEY)
+        data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCHES + str(gameID) + "?" + self.API_KEY)
         patch = data["gameVersion"]
         gameType = data["gameType"]
         duration = data["gameDuration"]
