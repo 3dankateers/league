@@ -32,6 +32,12 @@ class Match:
         c.execute("INSERT INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date, self.is_test))
         DbClient.get_conn().commit()
 
+    ##update existing match
+    def update(self):
+        c = DbClient.get_cursor()
+        c.execute("UPDATE Matches SET is_test = (?) WHERE gameID = (?);", (self.is_test, self.gameID,))
+        DbClient.get_conn().commit()
+
         
 	
     ## returns a match object from a tuple fetched from sqllite db
@@ -40,7 +46,8 @@ class Match:
         ##json loads to decode json back into arrays for champs1, champs2
         m = Match(tup[0], tup[1], tup[2], json.loads(tup[3]), json.loads(tup[4]), tup[5], tup[6], tup[7], tup[8], tup[9], tup[10], tup[11], tup[12], tup[13])
 	return m
-    
+   
+    ## gets training set of matches(where is_test = false)
     @staticmethod
     def get_training_set():
         matches = []
@@ -51,5 +58,24 @@ class Match:
             m = Match.from_tuple(r)
             matches.append(m)
         return matches
+    
+    ## gets test set of matches(where is_test = true)
+    @staticmethod
+    def get_test_set():
+        matches = []
+        c = DbClient.get_cursor()
+        c.execute("SELECT * FROM Matches WHERE is_test = (?);", (True,))
+        rows = c.fetchall()
+        for r in rows:
+            m = Match.from_tuple(r)
+            matches.append(m)
+        return matches
+
+    ## sets is_test = False for all matches in db
+    @staticmethod
+    def remove_all_tests():
+        c = DbClient.get_cursor()
+        c.execute("UPDATE Matches SET is_test = (?);", (False,)) 
+        DbClient.get_conn().commit()
         
 	

@@ -52,7 +52,6 @@ class ChampWinrateCalculator:
     def update_winrates(self):
         champs = Champ.get_all_champs()
         for c in champs:
-            print self.wins[c.champID], self.losses[c.champID]
             sample_size = self.wins[c.champID] + self.losses[c.champID]
             if sample_size > 0:
                 winrate = float(self.wins[c.champID]) / sample_size

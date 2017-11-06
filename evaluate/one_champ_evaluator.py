@@ -49,9 +49,8 @@ class OneChampEvaluator(Evaluator):
 
     @staticmethod
     def retrain():
-        pass
-        ##cwc = ChampWinrateCalculator()
-        ##cwc.run()
+        cwc = ChampWinrateCalculator()
+        cwc.run()
 
 
     ## calculate winrates needed

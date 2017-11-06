@@ -5,6 +5,7 @@ from db_client import DbClient
 from champ import Champ
 from champ_winrate_calculator import ChampWinrateCalculator
 from one_champ_evaluator import OneChampEvaluator
+from cross_validator import CrossValidator
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
@@ -20,7 +21,6 @@ from hyperpoint_calculator import HyperpointCalculator
 from svm_calculator import SVMCalculator
 from svm_evaluator import SVMEvaluator
 from edge_calculator import EdgeCalculator
-from cross_validator import CrossValidator
 from svm_trainer import SVMTrainer
 from pair_evaluator import PairEvaluator
 from pro_match_creator import ProMatchCreator
@@ -56,9 +56,8 @@ def main():
     ##Champ.reset_winrates()
     ##cwc = ChampWinrateCalculator()
     ##cwc.run()
-    oce = OneChampEvaluator([101, 48, 51, 76, 16],[117, 421, 96, 238, 84])
-    oce.process()
-    oce.print_results()
+    cv = CrossValidator(OneChampEvaluator)
+    cv.run()
     ##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
