@@ -4,6 +4,7 @@ from league_client import LeagueClient
 from db_client import DbClient
 from champ import Champ
 from champ_winrate_calculator import ChampWinrateCalculator
+from one_champ_evaluator import OneChampEvaluator
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
@@ -12,7 +13,6 @@ from champ_parser import ChampParser
 from pair_winrate_calculator import PairWinrateCalculator
 from comp_analyzer import CompAnalyzer
 from test_suite import TestSuite
-from one_champ_evaluator import OneChampEvaluator
 from ally_pair_evaluator import AllyPairEvaluator
 from enemy_pair_evaluator import EnemyPairEvaluator
 from trivial_evaluator import TrivialEvaluator
@@ -48,14 +48,17 @@ from trainer import Trainer
 
 def main():
     ##DbClient.create_tables()
-    lc = LeagueClient()
+    ##lc = LeagueClient()
     ##lc.get_challengers("na1")
     ##Summoner.get_summoners_by_tier("CHALLENGER")
-    lc.get_matches("na1","CHALLENGER")
+    ##lc.get_matches("na1","CHALLENGER")
     ##lc.get_champs("na1")
     ##Champ.reset_winrates()
-    cwc = ChampWinrateCalculator()
-    cwc.run()
+    ##cwc = ChampWinrateCalculator()
+    ##cwc.run()
+    oce = OneChampEvaluator([101, 48, 51, 76, 16],[117, 421, 96, 238, 84])
+    oce.process()
+    oce.print_results()
     ##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()

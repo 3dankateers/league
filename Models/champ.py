@@ -27,7 +27,7 @@ class Champ:
     @staticmethod
     def get_champ_by_id(c_id):
         c = DbClient.get_cursor()
-        c.execute("SELECT FROM Champs WHERE champID = (?)", (c_id))
+        c.execute("SELECT * FROM Champs WHERE champID = (?);", (c_id,))
         champ = Champ.from_tuple(c.fetchone())
         return champ 
         
