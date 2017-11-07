@@ -57,7 +57,7 @@ class Match:
         ##if cur_patch flag is set only return matches from cur_patch
         if cur_patch:
             p = Match.get_latest_patch()
-            c.execute("SELECT * FROM Matches WHERE is_test = (?), patch = (?);", (False, p,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (False, p,))
         else:
             c.execute("SELECT * FROM Matches WHERE is_test = (?);", (False,))
         rows = c.fetchall()
@@ -74,7 +74,7 @@ class Match:
         ##if cur_patch flag is set only return matches from cur_patch
         if cur_patch:
             p = Match.get_latest_patch()
-            c.execute("SELECT * FROM Matches WHERE is_test = (?), patch = (?);", (True, p,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (True, p,))
         else:
             c.execute("SELECT * FROM Matches WHERE is_test = (?);", (True,))
         rows = c.fetchall()

@@ -49,16 +49,16 @@ from trainer import Trainer
 
 def main():
     ##DbClient.create_tables()
-    lc = LeagueClient()
+    ##lc = LeagueClient()
     ##lc.get_challengers("kr")
     ##lc.get_champs("na1")
-    lc.get_matches("kr","CHALLENGER")
+    ##lc.get_matches("kr","CHALLENGER")
     ##Summoner.get_summoners_by_tier("CHALLENGER")
     ##Champ.reset_winrates()
     ##cwc = ChampWinrateCalculator()
     ##cwc.run()
-    ##cv = CrossValidator(OneChampEvaluator)
-    ##cv.run()
+    cv = CrossValidator(OneChampEvaluator)
+    cv.run()
     ##startTime = datetime.now()
 
     ##lc = LeagueClient()
