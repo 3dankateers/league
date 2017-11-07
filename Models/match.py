@@ -1,4 +1,4 @@
-## match : id, team1, team2, champs1, champs2, first_blood, duration, win, patch, region, gameVersion, tier, date
+## match : id, team1, team2, champs1, champs2, first_blood, duration, win, patch, region, gameVersion, tier, date, is_test
 
 from db_client import DbClient
 import json
@@ -31,12 +31,14 @@ class Match:
         json_champs2 = json.dumps(self.champs2)
         c.execute("INSERT OR IGNORE INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date, self.is_test))
         DbClient.get_conn().commit()
+        print "Saved match"
 
     ##update existing match
     def update(self):
         c = DbClient.get_cursor()
         c.execute("UPDATE Matches SET is_test = (?) WHERE gameID = (?);", (self.is_test, self.gameID,))
         DbClient.get_conn().commit()
+        print "Updated match"
 
         
 	
@@ -49,10 +51,15 @@ class Match:
    
     ## gets training set of matches(where is_test = false)
     @staticmethod
-    def get_training_set():
+    def get_training_set(cur_patch = True):
         matches = []
         c = DbClient.get_cursor()
-        c.execute("SELECT * FROM Matches WHERE is_test = (?);", (False,))
+        ##if cur_patch flag is set only return matches from cur_patch
+        if cur_patch:
+            p = Match.get_latest_patch()
+            c.execute("SELECT * FROM Matches WHERE is_test = (?), patch = (?);", (False, p,))
+        else:
+            c.execute("SELECT * FROM Matches WHERE is_test = (?);", (False,))
         rows = c.fetchall()
         for r in rows:
             m = Match.from_tuple(r)
@@ -61,10 +68,15 @@ class Match:
     
     ## gets test set of matches(where is_test = true)
     @staticmethod
-    def get_test_set():
+    def get_test_set(cur_patch = True):
         matches = []
         c = DbClient.get_cursor()
-        c.execute("SELECT * FROM Matches WHERE is_test = (?);", (True,))
+        ##if cur_patch flag is set only return matches from cur_patch
+        if cur_patch:
+            p = Match.get_latest_patch()
+            c.execute("SELECT * FROM Matches WHERE is_test = (?), patch = (?);", (True, p,))
+        else:
+            c.execute("SELECT * FROM Matches WHERE is_test = (?);", (True,))
         rows = c.fetchall()
         for r in rows:
             m = Match.from_tuple(r)
@@ -77,5 +89,22 @@ class Match:
         c = DbClient.get_cursor()
         c.execute("UPDATE Matches SET is_test = (?);", (False,)) 
         DbClient.get_conn().commit()
-        
+   
+    ## returns most recent patch from matches in db
+    @staticmethod
+    def get_latest_patch():
+        c = DbClient.get_cursor()
+        c.execute("SELECT MAX(patch) FROM Matches")
+        return c.fetchone()[0]
+        DbClient.get_conn().commit()
+
+    ##looks for matchid inside db, returns true if match exists, else false
+    @staticmethod
+    def exists_match(gameID):
+        c = DbClient.get_cursor()
+        c.execute("SELECT * FROM Matches WHERE gameID = (?);", (gameID,))
+        if len(c.fetchall()) == 0:
+            return False
+        else:
+            return True
 	

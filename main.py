@@ -6,6 +6,7 @@ from champ import Champ
 from champ_winrate_calculator import ChampWinrateCalculator
 from one_champ_evaluator import OneChampEvaluator
 from cross_validator import CrossValidator
+from datetime import datetime
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
@@ -49,15 +50,33 @@ from trainer import Trainer
 def main():
     ##DbClient.create_tables()
     lc = LeagueClient()
-    ##lc.get_challengers("na1")
-    ##Summoner.get_summoners_by_tier("CHALLENGER")
-    lc.get_matches("na1","CHALLENGER")
+    ##lc.get_challengers("kr")
     ##lc.get_champs("na1")
+    lc.get_matches("kr","CHALLENGER")
+    ##Summoner.get_summoners_by_tier("CHALLENGER")
     ##Champ.reset_winrates()
     ##cwc = ChampWinrateCalculator()
     ##cwc.run()
-    #cv = CrossValidator(OneChampEvaluator)
-    #cv.run()
+    ##cv = CrossValidator(OneChampEvaluator)
+    ##cv.run()
+    ##startTime = datetime.now()
+
+    ##lc = LeagueClient()
+    ##lc.get_challengers("ru")
+    ##lc.get_challengers("br1")
+    ##lc.get_challengers("oc1")
+    ##lc.get_challengers("jp1")
+    ##lc.get_challengers("eun1")
+    ##lc.get_challengers("euw1")
+    ##lc.get_challengers("tr1")
+    ##lc.get_challengers("la1")
+    ##lc.get_challengers("la2")
+
+    ##endTime = datetime.now()
+
+    ##print "Time:" 
+    ##print endTime - startTime
+
     ##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()

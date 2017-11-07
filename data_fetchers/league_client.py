@@ -17,6 +17,7 @@ HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
 MATCH_LISTS = "match/v3/matchlists/by-account/"
+
 MATCHES = "match/v3/matches/"
 CHAMPS = "static-data/v3/champions?locale=en_US&dataById=false"
 SUMMONER = "summoner/v3/summoners/"
@@ -63,7 +64,7 @@ class LeagueClient:
             #self.stagger_response()
             response = self.urlopen_with_retry(url)
             if rate_limit:
-                Rate_Limiter(response)
+                rate_limiter(response)
             html = response.read();
             data = json.loads(html);
             return data;
@@ -107,19 +108,24 @@ class LeagueClient:
             return -1
 
     ##inserts into db recent matches of the summoner array passed in
+    ## currently uses recent matches endpoint (if need be modify later to get older matches)
     def get_matches(self, region, tier):
         summoners = Summoner.get_summoners(region, tier)
         gameIDs = []
         for s in summoners:
-            data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + "?" + self.API_KEY)
+            data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + "/recent" + "?" + self.API_KEY)
             for e in data["matches"]:
                 gameIDs.append(e["gameId"])
             for gameID in gameIDs:
                 match = self.gameID_to_match(region, tier, gameID)
-                match.save()
+                if match != None:
+                    match.save()
 
     ##returns match object from gameid+region
     def gameID_to_match(self, region, tier, gameID):
+        ##return None if match already exists
+        if Match.exists_match(gameID):
+            return None
         data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCHES + str(gameID) + "?" + self.API_KEY)
         patch = data["gameVersion"]
         gameType = data["gameType"]
@@ -154,7 +160,7 @@ class LeagueClient:
         
 
 #Rate limiter, pauses the program if a rate goes above the league rate
-def Rate_Limiter(response):
+def rate_limiter(response):
     #Gets data from league API headers, contains limit and how much youve used
     curAppCount = response.info().getheader('X-App-Rate-Limit-Count')
     curAppLimit = response.info().getheader('X-App-Rate-Limit')
@@ -165,9 +171,9 @@ def Rate_Limiter(response):
     MaxRequestsPerSecond = x[1].split(':')
     MaxRequestsPerMinute = x[0].split(':')
 
-    if(int(RequestsPerMinute[0])>(int(MaxRequestsPerMinute[0])-2)):
-        print "Rate too high, pausing for 120 secs"
-        time.sleep(120)
+    if(int(RequestsPerMinute[0])>(int(MaxRequestsPerMinute[0])-5)):
+        print "Rate too high, pausing for 10 secs"
+        time.sleep(10)
 
     if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-2)):
         print "Rate too high, pausing for 5 secs"

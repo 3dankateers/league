@@ -16,6 +16,7 @@ class Summoner:
         c = DbClient.get_cursor()
         c.execute("INSERT OR IGNORE INTO Summoners VALUES (?,?,?,?,?);", (self.summonerID, self.accountID, self.tier, self.region, self.date_scraped_matches))
         DbClient.get_conn().commit()
+        print "Saved summoner"
 
     ##returns array of summoners objects matching the tier and region; constructed from db
     @staticmethod

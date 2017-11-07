@@ -20,7 +20,7 @@ class DbClient:
     @staticmethod
     def get_conn():
         if DbClient.conn == None:
-            DbClient.conn = sqlite3.connect('data/league.sqlite')
+            DbClient.conn = sqlite3.connect('../league/data/league.sqlite')
         return DbClient.conn
             
         

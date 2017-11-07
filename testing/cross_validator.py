@@ -21,7 +21,7 @@ class CrossValidator:
         
         ##set every (num_tests)th match to a test
         for i,m in enumerate(all_matches):
-            if  i%NUM_TESTS == 0:
+            if  i%NUM_TESTS == 9:
                 m.is_test = True
                 m.update()
 

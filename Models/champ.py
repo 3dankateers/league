@@ -18,11 +18,13 @@ class Champ:
         c = DbClient.get_cursor()
         c.execute("INSERT INTO Champs VALUES (?,?,?,?);", (self.champID, self.name, self.winrate, self.winrate_sample_size))
         DbClient.get_conn().commit()
+        print "Saved match"
 
     def update(self):
         c = DbClient.get_cursor()
         c.execute("UPDATE Champs SET winrate = (?), winrate_sample_size = (?) WHERE champID = (?);", (self.winrate, self.winrate_sample_size, self.champID, ) )
         DbClient.get_conn().commit()
+        print "Updated match"
 
     @staticmethod
     def get_champ_by_id(c_id):
