@@ -1,49 +1,31 @@
-## pair: id, champ1, champ2, type, winrate, winrate_sample_size, date_created
-## looks for winrates among pairs of champions from oppositeor same teams(type)
+## pair: id, champ1, champ2, type, winrate, winrate_sample_size
+## looks for winrates among pairs of champions from opposite or same teams(type)
 from db_client import DbClient
 
 class Pair:
-	def __init__(self, champ1, champ2, type, winrate = None, winrate_sample_size = None, id = None):
-
-		## pair ignores order of champ1/champ2 passed in
-		self.id = Pair.calc_id(champ1, champ2, type)
-
-		self.pair_tuple = Pair.calc_pair_tuple(champ1, champ2)
-		self.champ1 = self.pair_tuple[0]
-		self.champ2 = self.pair_tuple[1]
-		self.type = type
-		
-		self.winrate = winrate
-		self.winrate_sample_size = winrate_sample_size
+	def __init__(self, champ1, champ2, type, winrate = None, winrate_sample_size = None, pairID = None):
+            ## pair ignores order of champ1/champ2 passed in
+            self.pairID = Pair.calc_id(champ1, champ2, type)
+            self.pair_tuple = Pair.calc_pair_tuple(champ1,champ2)
+            self.champ1 = self.pair_tuple[0]
+            self.champ2 = self.pair_tuple[1]
+            self.type = type
+            self.winrate = winrate
+            self.winrate_sample_size = winrate_sample_size
 	
-	@classmethod
-	def from_dict(cls, d):
-		id = d["_id"]
-		champ1 = d["champ1"]
-		champ2 = d["champ2"]
-		type = d["type"]
-		winrate = d["winrate"]
-		winrate_sample_size = d["winrate_sample_size"]
-		return cls(champ1, champ2, type, winrate, winrate_sample_size, id)
+        @classmethod
+        def from_tuple(cls, tup):
+            p = Pair(tup[0], tup[1], tup[2], tup[3], tup[4], tup[5])
+            return p 
 
-	def to_dict(self):
-		d = {
-				"_id" : self.id,
-				"champ1" : self.champ1,
-				"champ2" : self.champ2,
-				"type" : self.type,
-				"winrate" : self.winrate,
-				"winrate_sample_size" : self.winrate_sample_size}
-		return d
-	
 	## calculates unique id given champ1, champ2, type
 	@staticmethod
 	def calc_id(champ1, champ2, type):
-		tup = Pair.calc_pair_tuple(champ1, champ2)
-		id = int(str(tup[0])+ "0000" + str(tup[1]))
-		if type == "enemy":
-			id *= -1
-		return id
+            tup = Pair.calc_pair_tuple(champ1, champ2)
+            id = int(str(tup[0])+ "0000" + str(tup[1]))
+            if type == "enemy":
+                    id *= -1
+            return id
 
 	@staticmethod
 	def calc_pair_tuple(c1,c2):
@@ -53,52 +35,38 @@ class Pair:
 		return pair_tuple
 	
 	def save(self):
-		##if already in db
-		if self.id != None:
-			self.update_pair()
-		else:
-			self.id = self.create_pair()
+            c = DbClient.get_cursor()
+            c.execute("INSERT INTO Pairs VALUES (?,?,?,?,?,?);", (self.champ1, self.champ2, self.type, self.winrate, self.winrate_sample_size, self.pairID))
+            DbClient.get_conn().commit()
+            print "Saved pair"
 	
-	def create_pair(self):
-		db_client = DbClient.get_client()
-		record = db_client.league.pairs.insert_one({
-				"champ1" : self.champ1,
-				"champ2" : self.champ2,
-				"type" : self.type,
-				"winrate" : self.winrate,
-				"winrate_sample_size" : self.winrate_sample_size
-			})
-		print "created pair"
-		return record.inserted_id
-	
-	## update existing pair with new values 
-	def update_pair(self):
-		db_client = DbClient.get_client()
-		db_client.league.pairs.update_one(
-				{"_id" : self.id},{
-					"$set": {
-						"winrate" : self.winrate,
-						"winrate_sample_size" : self.winrate_sample_size
-						}
-				})
-		##print "Updated pair." 
-
-	##insert multiple documents
-	@staticmethod
-	def insert_all(dicts):
-		db_client = DbClient.get_client()
-		db_client.league.pairs.insert(dicts)
 
 	## delete all documents
 	@staticmethod
 	def drop_all():
-		db_client = DbClient.get_client()
-		db_client.league.pairs.drop()
+            c = DbClient.get_cursor()
+            c.execute("DELETE FROM Pairs;")
+            DbClient.get_conn().commit()
 
 	## find pair and return it based on champ1, champ2, and type
-	@staticmethod
-	def find_pair(id):
-		db_client = DbClient.get_client()
-		cursor = db_client.league.pairs.find({
-			"_id" : id})
-		return cursor
+        @staticmethod
+        def get_pair_by_id(p_id):
+            c = DbClient.get_cursor()
+            c.execute("SELECT * FROM Pairs WHERE pairID = (?);", (p_id,))
+            data = c.fetchone()
+            if data != None:
+                return Pair.from_tuple(data)
+            else:
+                return None
+
+        ##takes in an array of tuples, a tuple is info for a pair. Inserts all at once into db
+        ## this is neccesary since db.commit() is expensive
+        @staticmethod
+        def insert_from_tuples(p_tuples):
+            c = DbClient.get_cursor()
+            for t in p_tuples:
+                pairID = Pair.calc_id(t[0], t[1], t[2])
+                c.execute("INSERT INTO Pairs VALUES (?,?,?,?,?,?);", (t[0], t[1], t[2], t[3], t[4], pairID))
+            DbClient.get_conn().commit()
+            print "Saved pairs from tuples"
+            

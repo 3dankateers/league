@@ -36,6 +36,7 @@ class DbClient:
         c.execute("CREATE TABLE IF NOT EXISTS Matches (gameID UNIQUE, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test);")
         c.execute("CREATE TABLE IF NOT EXISTS Summoners (summonerID, accountID UNIQUE, tier, region, date_scraped_matches);")
         c.execute("CREATE TABLE IF NOT EXISTS Champs (champID UNIQUE, name, winrate, winrate_sample_size);")
+        c.execute("CREATE TABLE IF NOT EXISTS Pairs (champ1, champ2, type, winrate, winrate_sample_size, pairID UNIQUE);")
         DbClient.get_conn().commit()
             
                 
