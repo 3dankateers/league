@@ -24,7 +24,7 @@ class Champ:
         c = DbClient.get_cursor()
         c.execute("UPDATE Champs SET winrate = (?), winrate_sample_size = (?) WHERE champID = (?);", (self.winrate, self.winrate_sample_size, self.champID, ) )
         DbClient.get_conn().commit()
-        print "Updated match"
+        #print "Updated match"
 
     @staticmethod
     def get_champ_by_id(c_id):

@@ -38,7 +38,7 @@ class Match:
         c = DbClient.get_cursor()
         c.execute("UPDATE Matches SET is_test = (?) WHERE gameID = (?);", (self.is_test, self.gameID,))
         DbClient.get_conn().commit()
-        print "Updated match"
+        #print "Updated match"
 
         
 	

@@ -11,8 +11,9 @@ NUM_TESTS = 10
 
 class CrossValidator:
 
-    def __init__(self, evaluator_class, num_runs = NUM_TESTS):
+    def __init__(self, evaluator_class, something = 9):
         self.evaluator = evaluator_class
+        self.num_runes = something
 
     def set_new_tests(self):
         ##before assigning new tests, remove all previous ones
@@ -21,7 +22,7 @@ class CrossValidator:
         
         ##set every (num_tests)th match to a test
         for i,m in enumerate(all_matches):
-            if  i%NUM_TESTS == 9:
+            if  i%NUM_TESTS == self.num_runes:
                 m.is_test = True
                 m.update()
 
@@ -32,6 +33,7 @@ class CrossValidator:
     def run(self):
         self.set_new_tests()
         self.evaluator.retrain()
+        print "Test"
         ts = TestSuite(self.evaluator)
         ts.run_simple_tests()
         ts.print_results()

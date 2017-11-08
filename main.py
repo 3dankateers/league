@@ -7,6 +7,7 @@ from champ_winrate_calculator import ChampWinrateCalculator
 from one_champ_evaluator import OneChampEvaluator
 from cross_validator import CrossValidator
 from datetime import datetime
+from team_winrate_calculator import TeamWinrateCalculator
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
@@ -48,17 +49,26 @@ from trainer import Trainer
 ##TODO: Start grabbing 5v5 data
 
 def main():
-    ##DbClient.create_tables()
-    ##lc = LeagueClient()
-    ##lc.get_challengers("kr")
-    ##lc.get_champs("na1")
-    ##lc.get_matches("kr","CHALLENGER")
-    ##Summoner.get_summoners_by_tier("CHALLENGER")
-    ##Champ.reset_winrates()
-    ##cwc = ChampWinrateCalculator()
-    ##cwc.run()
-    cv = CrossValidator(OneChampEvaluator)
-    cv.run()
+	#DbClient.create_tables()
+	#lc = LeagueClient()
+	##lc.get_challengers("kr")
+	#lc.get_champs("na1")
+
+	#lc.get_matches("euw1","CHALLENGER")
+
+	##Summoner.get_summoners_by_tier("CHALLENGER")
+	'''
+	Champ.reset_winrates()
+	cwc = ChampWinrateCalculator()
+	cwc.run()
+
+	cv = CrossValidator(OneChampEvaluator, i)
+	cv.run()
+	'''
+	
+	twc = TeamWinrateCalculator()
+	twc.run()
+
     ##startTime = datetime.now()
 
     ##lc = LeagueClient()
