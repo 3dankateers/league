@@ -6,24 +6,24 @@ from champ import Champ
 from champ_winrate_calculator import ChampWinrateCalculator
 from one_champ_evaluator import OneChampEvaluator
 from cross_validator import CrossValidator
+from pair_winrate_calculator import PairWinrateCalculator
 from datetime import datetime
+from enemy_pair_evaluator import EnemyPairEvaluator
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
 from team_finder import TeamFinder
+from pair_evaluator import PairEvaluator
 from champ_parser import ChampParser
-from pair_winrate_calculator import PairWinrateCalculator
 from comp_analyzer import CompAnalyzer
 from test_suite import TestSuite
 from ally_pair_evaluator import AllyPairEvaluator
-from enemy_pair_evaluator import EnemyPairEvaluator
 from trivial_evaluator import TrivialEvaluator
 from hyperpoint_calculator import HyperpointCalculator
 from svm_calculator import SVMCalculator
 from svm_evaluator import SVMEvaluator
 from edge_calculator import EdgeCalculator
 from svm_trainer import SVMTrainer
-from pair_evaluator import PairEvaluator
 from pro_match_creator import ProMatchCreator
 from pro_match import ProMatch
 from general_evaluator import GeneralEvaluator
@@ -48,18 +48,22 @@ from trainer import Trainer
 ##TODO: Start grabbing 5v5 data
 
 def main():
-    ##DbClient.create_tables()
+    DbClient.create_tables()
     ##lc = LeagueClient()
-    ##lc.get_challengers("kr")
-    ##lc.get_champs("na1")
-    ##lc.get_matches("kr","CHALLENGER")
+    ##lc.get_challengers("eun1")
+    ##lc.get_champs("n")
+    ##lc.get_matches("eun1","CHALLENGER")
     ##Summoner.get_summoners_by_tier("CHALLENGER")
     ##Champ.reset_winrates()
     ##cwc = ChampWinrateCalculator()
     ##cwc.run()
-    cv = CrossValidator(OneChampEvaluator)
+    cv = CrossValidator(EnemyPairEvaluator)
     cv.run()
     ##startTime = datetime.now()
+
+    ##pwc = PairWinrateCalculator()
+    ##pwc.run()
+
 
     ##lc = LeagueClient()
     ##lc.get_challengers("ru")

@@ -3,6 +3,8 @@
 from db_client import DbClient
 import json
 
+CUR_PATCH = "7.21.206.6866"
+
 class Match:
 
     WIN = "win"	
@@ -38,7 +40,7 @@ class Match:
         c = DbClient.get_cursor()
         c.execute("UPDATE Matches SET is_test = (?) WHERE gameID = (?);", (self.is_test, self.gameID,))
         DbClient.get_conn().commit()
-        print "Updated match"
+        ##print "Updated match"
 
         
 	
@@ -57,7 +59,7 @@ class Match:
         ##if cur_patch flag is set only return matches from cur_patch
         if cur_patch:
             p = Match.get_latest_patch()
-            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (False, p,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (False, CUR_PATCH,))
         else:
             c.execute("SELECT * FROM Matches WHERE is_test = (?);", (False,))
         rows = c.fetchall()
@@ -66,6 +68,7 @@ class Match:
             matches.append(m)
         return matches
     
+
     ## gets test set of matches(where is_test = true)
     @staticmethod
     def get_test_set(cur_patch = True):
@@ -74,7 +77,7 @@ class Match:
         ##if cur_patch flag is set only return matches from cur_patch
         if cur_patch:
             p = Match.get_latest_patch()
-            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (True, p,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (True, CUR_PATCH,))
         else:
             c.execute("SELECT * FROM Matches WHERE is_test = (?);", (True,))
         rows = c.fetchall()

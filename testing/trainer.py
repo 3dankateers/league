@@ -2,7 +2,6 @@
 ## Separates training set from test set
 
 from match import Match
-from pro_match import ProMatch
 from champ_winrate_calculator import ChampWinrateCalculator
 from pair_winrate_calculator import PairWinrateCalculator
 from hyperpoint_calculator import HyperpointCalculator
