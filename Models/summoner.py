@@ -31,7 +31,14 @@ class Summoner:
         return summoners
 
         
-	
+	#Need this to delete dead accounts now or a more cerebral way to cleanse the infestation
+    #   of trash players who got demoted from challengers later
+    @staticmethod
+    def delete_summoner(accID):
+        print accID
+        c = DbClient.get_cursor()
+        c.execute ("DELETE FROM Summoners WHERE accountID=?;", (accID,))
+
     ## returns a Summoner object from a tuple fetched from sqllite db
     @staticmethod
     def from_tuple(tup):

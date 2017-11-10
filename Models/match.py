@@ -3,7 +3,7 @@
 from db_client import DbClient
 import json
 
-CUR_PATCH = "7.21.206.6866"
+CUR_PATCH = "7.22.208.1062"
 
 class Match:
 

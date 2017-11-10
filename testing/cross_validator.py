@@ -9,10 +9,12 @@ import random
 ## fraction of tests from training data will be 1/NUM_TESTS, ie NUM_TESTS = 10 => 1/10 of data is test data
 NUM_TESTS = 10
 
+
 class CrossValidator:
 
-    def __init__(self, evaluator_class, num_runs = NUM_TESTS):
+    def __init__(self, evaluator_class, randomizer_class = 0):
         self.evaluator = evaluator_class
+        self.randomizer = randomizer_class
 
     def set_new_tests(self):
         ##before assigning new tests, remove all previous ones
@@ -21,7 +23,7 @@ class CrossValidator:
         
         ##set every (num_tests)th match to a test
         for i,m in enumerate(all_matches):
-            if  i%NUM_TESTS == 0:
+            if  i%NUM_TESTS == self.randomizer:
                 m.is_test = True
                 m.update()
 

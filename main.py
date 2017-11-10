@@ -9,6 +9,8 @@ from cross_validator import CrossValidator
 from pair_winrate_calculator import PairWinrateCalculator
 from datetime import datetime
 from enemy_pair_evaluator import EnemyPairEvaluator
+from team_winrate_calculator import TeamWinrateCalculator
+
 '''
 from summoner_parser import SummonerParser
 from match_parser import MatchParser
@@ -48,40 +50,61 @@ from trainer import Trainer
 ##TODO: Start grabbing 5v5 data
 
 def main():
-    DbClient.create_tables()
-    ##lc = LeagueClient()
-    ##lc.get_challengers("eun1")
-    ##lc.get_champs("n")
-    ##lc.get_matches("eun1","CHALLENGER")
-    ##Summoner.get_summoners_by_tier("CHALLENGER")
-    ##Champ.reset_winrates()
-    ##cwc = ChampWinrateCalculator()
-    ##cwc.run()
-    cv = CrossValidator(EnemyPairEvaluator)
-    cv.run()
-    ##startTime = datetime.now()
+	DbClient.create_tables()
+	lc = LeagueClient()
+	##lc.get_challengers("eun1")
+	##lc.get_champs("n")
+	#lc.get_matches("kr1","CHALLENGER")
+	##Summoner.get_summoners_by_tier("CHALLENGER")
+	#Champ.reset_winrates()
+	#cwc = ChampWinrateCalculator()
+	#cwc.run()
 
-    ##pwc = PairWinrateCalculator()
-    ##pwc.run()
+	
+	lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
+	
+	#for i in range(0,10):
+	#	cv = CrossValidator(EnemyPairEvaluator, i)
+	#	cv.run()
+	
+	
+	
+	#team1 = {35,29,17,45,420}
+	#team2 = {16,51,141,30,75}
+
+	#team1 = {236, 267, 122, 5, 21}
+	#team2 = {64, 105, 9, 51, 6}
+
+	#epe = EnemyPairEvaluator(team1,team2)
+	#epe.process()
+	#print epe.predict_winner()
+
+	
+	##startTime = datetime.now()
+
+	#pwc = PairWinrateCalculator()
+	#pwc.run()
+	#twc = TeamWinrateCalculator()
+	#twc.run()
 
 
-    ##lc = LeagueClient()
-    ##lc.get_challengers("ru")
-    ##lc.get_challengers("br1")
-    ##lc.get_challengers("oc1")
-    ##lc.get_challengers("jp1")
-    ##lc.get_challengers("eun1")
-    ##lc.get_challengers("euw1")
-    ##lc.get_challengers("tr1")
-    ##lc.get_challengers("la1")
-    ##lc.get_challengers("la2")
+	##lc = LeagueClient()
+	##lc.get_challengers("ru")
+	##lc.get_challengers("br1")
+	##lc.get_challengers("oc1")
+	##lc.get_challengers("jp1")
+	##lc.get_challengers("eun1")
+	##lc.get_challengers("euw1")
+	##lc.get_challengers("tr1")
+	##lc.get_challengers("la1")
+	##lc.get_challengers("la2")
 
-    ##endTime = datetime.now()
+	##endTime = datetime.now()
 
-    ##print "Time:" 
-    ##print endTime - startTime
+	##print "Time:" 
+	##print endTime - startTime
 
-    ##pull_summoners("eune", "CHALLENGER")
+	##pull_summoners("eune", "CHALLENGER")
 	##pull_matches("eune", "CHALLENGER")
 	##pull_champs()
 	## NEVER EVER FUCKING EVER BET ON TSM
@@ -241,5 +264,11 @@ def evaluate_comp(t1, t2):
 	ca = CompAnalyzer(t1,t2)
 	ca.evaluate_all()
 	##print str(ca.predict_winner())
+
+#LOL Timestamps are Unix/1000
+#Probably want this in another module but idk where to put this logically in the code for minimum redundancy
+def PatchToDate(patch):
+	if (str(patch)=="7.22.208.1062"):
+		return 1510099200000
 
 main()
