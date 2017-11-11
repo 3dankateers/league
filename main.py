@@ -52,7 +52,10 @@ from trainer import Trainer
 def main():
 	DbClient.create_tables()
 	lc = LeagueClient()
-	##lc.get_challengers("eun1")
+	lc.get_challengers("eun1")
+	lc.get_challengers("na1")
+	lc.get_challengers("euw1")
+	lc.get_challengers("kr")
 	##lc.get_champs("n")
 	#lc.get_matches("kr1","CHALLENGER")
 	##Summoner.get_summoners_by_tier("CHALLENGER")
@@ -61,7 +64,7 @@ def main():
 	#cwc.run()
 
 	
-	lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
+	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	
 	#for i in range(0,10):
 	#	cv = CrossValidator(EnemyPairEvaluator, i)

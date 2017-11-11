@@ -76,15 +76,16 @@ class LeagueClient:
 	def getJSONReply(self, url, rate_limit = True):
 			#self.stagger_response()
 			response = self.urlopen_with_retry(url)
-			if(response!= "Not Found"):
+			if(response== "Not Found"):
+				return -1
+			elif(response == "Forbidden"):
+				return -2
+			else:
 				if rate_limit:
 					rate_limiter(response)
 				html = response.read();
 				data = json.loads(html);
 				return data;
-			else:
-				print "Rekt"
-				return -1
 
 	
 	def get_champs(self, region):
@@ -99,14 +100,19 @@ class LeagueClient:
 	##inserts summoners from challenger league
 	def get_challengers(self, region):
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + "?" + self.API_KEY)
-		tier = data["tier"]
-		for e in data["entries"]:
-			summonerID = e["playerOrTeamId"]
-			accountID = self.summonerID_to_accountID(region, summonerID)
-			date_scraped_matches = datetime.datetime.now()
-			summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
-			print "save summoner", summonerID
-			summoner.save()
+		if(data==-2):
+			print "Probably forgot your API Key refresh"
+		elif(data==-1):
+			print "Cant find your challenger"
+		else:
+			tier = data["tier"]
+			for e in data["entries"]:
+				summonerID = e["playerOrTeamId"]
+				accountID = self.summonerID_to_accountID(region, summonerID)
+				date_scraped_matches = datetime.datetime.now()
+				summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
+				print "save summoner", summonerID
+				summoner.save()
 
 	def summonerID_to_accountID(self, region, summonerID):
 		print region
@@ -139,17 +145,16 @@ class LeagueClient:
 		gameIDs = []
 		for s in summoners:
 			data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + BEGINTIME_PART + str(startTime) + "&" + self.API_KEY)
-			if(data!=-1):
+			if(data==-1):
+				Summoner.delete_summoner(s.accountID)
+				print "Cant grab data for accountID: " + str(s.accountID) + " , deleted it"
+			else:
 				for e in data["matches"]:
 					gameIDs.append(e["gameId"])
 				for gameID in gameIDs:
 					match = self.gameID_to_match(region, tier, gameID)
 					if match != None:
 						match.save()
-			else:
-				Summoner.delete_summoner(s.accountID)
-				print "Cant grab data for accountID: " + str(s.accountID) + " , deleted it"
-	
 
 	##returns match object from gameid+region
 	def gameID_to_match(self, region, tier, gameID):
@@ -191,22 +196,27 @@ class LeagueClient:
 
 #Rate limiter, pauses the program if a rate goes above the league rate
 def rate_limiter(response):
-	#Gets data from league API headers, contains limit and how much youve used
-	curAppCount = response.info().getheader('X-App-Rate-Limit-Count')
-	curAppLimit = response.info().getheader('X-App-Rate-Limit')
-	x = curAppCount.split(',')
-	RequestsPerSecond = x[1].split(':')
-	RequestsPerMinute = x[0].split(':')
-	x = curAppLimit.split(',')
-	MaxRequestsPerSecond = x[1].split(':')
-	MaxRequestsPerMinute = x[0].split(':')
+	if response == "Forbidden":
+		print "You probably forgot to update your API key"
 
-	if(int(RequestsPerMinute[0])>(int(MaxRequestsPerMinute[0])-5)):
-		print "Rate too high, pausing for 20 secs"
-		time.sleep(20)
+	else:
+		#Gets data from league API headers, contains limit and how much youve used
+		curAppCount = response.info().getheader('X-App-Rate-Limit-Count')
+		curAppLimit = response.info().getheader('X-App-Rate-Limit')
 
-	if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-2)):
-		print "Rate too high, pausing for 5 secs"
-		time.sleep(5)
+		x = curAppCount.split(',')
+		RequestsPerSecond = x[1].split(':')
+		RequestsPerMinute = x[0].split(':')
+		x = curAppLimit.split(',')
+		MaxRequestsPerSecond = x[1].split(':')
+		MaxRequestsPerMinute = x[0].split(':')
+
+		if(int(RequestsPerMinute[0])>(int(MaxRequestsPerMinute[0])-5)):
+			print "Rate too high, pausing for 20 secs"
+			time.sleep(20)
+
+		if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-2)):
+			print "Rate too high, pausing for 5 secs"
+			time.sleep(5)
 
 
