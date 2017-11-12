@@ -35,7 +35,7 @@ class Summoner:
     #   of trash players who got demoted from challengers later
     @staticmethod
     def delete_summoner(accID):
-        print accID
+        print "deleted summoner",  accID
         c = DbClient.get_cursor()
         c.execute ("DELETE FROM Summoners WHERE accountID=?;", (accID,))
 

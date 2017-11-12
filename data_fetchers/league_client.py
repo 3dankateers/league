@@ -12,7 +12,7 @@ from retrying import retry
 from summoner import Summoner
 from match import Match
 from champ import Champ
-
+import urlparse
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
@@ -27,9 +27,11 @@ BEGINTIME_PART = "?beginTime="
 
 WAIT_TIME = 1500
 
-def retry_if_url_error(exception):
-	print URLError 
-	return isinstance(exception, URLError)
+## retries to hit endpoint if the response is a URL ERROR. Max retries = 4 with 3 sec delay in between 
+@retry(stop_max_attempt_number=4)
+def urlopen_with_retry(url):
+    print url
+    return urllib2.urlopen(url)
 
 
 class LeagueClient:
@@ -42,55 +44,45 @@ class LeagueClient:
 	   key = f.readline()
 	   self.API_KEY += key
 		
-
-	##may sleep to delay consecutive requests and make sure there is at most 1 request every 1.5 seconds
-	def stagger_response(self):
-		print "stagger"
-		if self.last_request == None:
-			self.last_request = time.time()
-		else:
-			print "here"
-			t_delta = time.time() - self.last_request
-			if t_delta < WAIT_TIME:
-				print "waiting"
-				time.sleep((WAIT_TIME - t_delta)/1000)
-				self.last_request = time.time()
-	
-	 #idk wtf this retry thing is really doing but im pretty sure its "bad form" to have an infinately retrying
-	 #	piece of code running, so I'm just going to switch how this works to throwing out the error codes
-	 # 	then we can fix any errors that come up when we see them
-	 #	btw with the old system, someone deleted their acc or something, so the acc # was there, but it was
-	 # 	invalid so it kept trying to get the match to infinity and beyond
-	def urlopen_with_retry(self, url):
-		try:
-			urllib2.urlopen(url)
-		except URLError, e:
-			print url
-			print e.reason
-			return e.reason
-
-		return urllib2.urlopen(url)
-	
-	#this function will now not always return something, so if something goes wrong, we gotta go into the get functions
-	#	and fix the errors on a case by case basis. Should be motivation to not make anything go wrong.
+	## tries to return json data from url, retries if somethign goes wrong
+        ## if retries also fail, handle error on case by case basis and return -1
 	def getJSONReply(self, url, rate_limit = True):
-			#self.stagger_response()
-			response = self.urlopen_with_retry(url)
-			if(response== "Not Found"):
-				return -1
-			elif(response == "Forbidden"):
-				return -2
-			else:
-				if rate_limit:
-					rate_limiter(response)
-				html = response.read();
-				data = json.loads(html);
-				return data;
+            try:
+		response = urlopen_with_retry(url)
+                if rate_limit:
+                    rate_limiter(response)
+                html = response.read();
+                data = json.loads(html);
+                return data;
+            except URLError, e:
+                handle_url_error(url, e)
+                return -1
+
+        ##handles all url errors on a case by case basis, add more cases here in the future
+        @staticmethod
+        def handle_url_error(url, e):
+            print url
+            print e.reason
+            parsed_url = urlparse.urlparse(url)##parses url allowing for extraction of variables from url
+
+            if e.reason == "Not Found":
+                if CHALLENGER_LEAGUE in url:
+                    print "Can't find challengers"
+                elif MATCH_LISTS in url:
+                    accountID = parsed_url["accountId"]
+                    Summoner.delete_summoner(accountID)
+		    print "Cant grab data for accountID: " + str(accountID) + " , deleted it"
+                elif CHAMPS in url:
+                    print "Url Error on get champs"
+            elif e.reason == "Forbidden":
+	        print "Probably forgot your API Key refresh"
 
 	
 	def get_champs(self, region):
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + CHAMPS + "&" + self.API_KEY, rate_limit = False)
-		for key in data["data"]:
+		if data == -1:
+                    return 
+                for key in data["data"]:
 			champID = data["data"][key]["id"]
 			name = key
 			c = Champ(champID, key)
@@ -100,27 +92,25 @@ class LeagueClient:
 	##inserts summoners from challenger league
 	def get_challengers(self, region):
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + "?" + self.API_KEY)
-		if(data==-2):
-			print "Probably forgot your API Key refresh"
-		elif(data==-1):
-			print "Cant find your challenger"
+		if data == -1:
+                   return 
 		else:
-			tier = data["tier"]
-			for e in data["entries"]:
-				summonerID = e["playerOrTeamId"]
-				accountID = self.summonerID_to_accountID(region, summonerID)
-				date_scraped_matches = datetime.datetime.now()
-				summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
-				print "save summoner", summonerID
-				summoner.save()
+                    tier = data["tier"]
+                    for e in data["entries"]:
+                        summonerID = e["playerOrTeamId"]
+                        accountID = self.summonerID_to_accountID(region, summonerID)
+                        if accountID == -1:
+                            break
+                        date_scraped_matches = datetime.datetime.now()
+                        summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
+                        print "save summoner", summonerID
+                        summoner.save()
 
 	def summonerID_to_accountID(self, region, summonerID):
 		print region
 		print summonerID
 		try:
-			url = HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + "?" + self.API_KEY
-			data = self.getJSONReply(url)
-			summonerdata = data
+			summonerdata = self.getJSONReply(HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + "?" + self.API_KEY)
 			accountID = summonerdata["accountId"]
 			##time.sleep(1)
 			return accountID
@@ -144,25 +134,26 @@ class LeagueClient:
 		summoners = Summoner.get_summoners(region, tier)
 		gameIDs = []
 		for s in summoners:
-			data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + BEGINTIME_PART + str(startTime) + "&" + self.API_KEY)
-			if(data==-1):
-				Summoner.delete_summoner(s.accountID)
-				print "Cant grab data for accountID: " + str(s.accountID) + " , deleted it"
-			else:
-				for e in data["matches"]:
-					gameIDs.append(e["gameId"])
-				for gameID in gameIDs:
-					match = self.gameID_to_match(region, tier, gameID)
-					if match != None:
-						match.save()
+                    data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + BEGINTIME_PART + str(startTime) + "&" + self.API_KEY)
+                    if(data==-1):
+                        break ## on url error, move on to next summoner
+                    else:
+                        for e in data["matches"]:
+                            gameIDs.append(e["gameId"])
+                        for gameID in gameIDs:
+                            match = self.gameID_to_match(region, tier, gameID)
+                            if match != None:
+                                match.save()
 
 	##returns match object from gameid+region
 	def gameID_to_match(self, region, tier, gameID):
 		##return None if match already exists
 		if Match.exists_match(gameID):
-			return None
+		    return None
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCHES + str(gameID) + "?" + self.API_KEY)
-		patch = data["gameVersion"]
+		if data == -1: ## if we got url error, return None which results in parent function move on to next match
+                    return None
+                patch = data["gameVersion"]
 		gameType = data["gameType"]
 		duration = data["gameDuration"]
 		date = data["gameCreation"]
