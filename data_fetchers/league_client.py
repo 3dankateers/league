@@ -12,7 +12,6 @@ from retrying import retry
 from summoner import Summoner
 from match import Match
 from champ import Champ
-import urlparse
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
@@ -55,21 +54,19 @@ class LeagueClient:
                 data = json.loads(html);
                 return data;
             except URLError, e:
-                handle_url_error(url, e)
+                self.handle_url_error(url, e)
                 return -1
 
         ##handles all url errors on a case by case basis, add more cases here in the future
-        @staticmethod
-        def handle_url_error(url, e):
+        def handle_url_error(self, url, e):
             print url
             print e.reason
-            parsed_url = urlparse.urlparse(url)##parses url allowing for extraction of variables from url
 
             if e.reason == "Not Found":
                 if CHALLENGER_LEAGUE in url:
                     print "Can't find challengers"
                 elif MATCH_LISTS in url:
-                    accountID = parsed_url["accountId"]
+                    accountID = int(url.split("?")[0].split("/")[-1])## gets the number between the / and the first question mark. URL format is .../{AccountID}?...
                     Summoner.delete_summoner(accountID)
 		    print "Cant grab data for accountID: " + str(accountID) + " , deleted it"
                 elif CHAMPS in url:
@@ -100,7 +97,7 @@ class LeagueClient:
                         summonerID = e["playerOrTeamId"]
                         accountID = self.summonerID_to_accountID(region, summonerID)
                         if accountID == -1:
-                            break
+                           continue 
                         date_scraped_matches = datetime.datetime.now()
                         summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
                         print "save summoner", summonerID
@@ -136,7 +133,7 @@ class LeagueClient:
 		for s in summoners:
                     data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + BEGINTIME_PART + str(startTime) + "&" + self.API_KEY)
                     if(data==-1):
-                        break ## on url error, move on to next summoner
+                        continue ## on url error, move on to next summoner
                     else:
                         for e in data["matches"]:
                             gameIDs.append(e["gameId"])
