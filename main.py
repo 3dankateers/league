@@ -50,7 +50,7 @@ from trainer import Trainer
 ##TODO: Start grabbing 5v5 data
 
 def main():
-	##DbClient.create_tables()
+	DbClient.create_tables()
 	##lc = LeagueClient()
 	##lc.get_challengers("eun1")
 	##lc.get_challengers("na1")
@@ -58,7 +58,7 @@ def main():
 	##lc.get_challengers("kr")
 	##lc.get_champs("n")
 	##lc.get_matches("kr","CHALLENGER")
-        ##lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
+        ##lc.get_matches("na1","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	##Summoner.get_summoners_by_tier("CHALLENGER")
 	#Champ.reset_winrates()
 	#cwc = ChampWinrateCalculator()
@@ -70,8 +70,8 @@ def main():
 	#for i in range(0,10):
 	#	cv = CrossValidator(EnemyPairEvaluator, i)
 	#	cv.run()
-	cv = CrossValidator(AllyPairEvaluator, 0)
-	cv.run()
+	##cv = CrossValidator(AllyPairEvaluator, 1)
+	##cv.run()
 	
 	
 	

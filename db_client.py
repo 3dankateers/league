@@ -10,6 +10,7 @@
 ## pair: id, champ1, champ2, type, winrate, winrate_sample_size, date_created
 #################################################################################################
 import sqlite3
+import psycopg2
 
 
 
@@ -20,7 +21,8 @@ class DbClient:
     @staticmethod
     def get_conn():
         if DbClient.conn == None:
-            DbClient.conn = sqlite3.connect('../league/data/league.sqlite')
+            ##DbClient.conn = sqlite3.connect('../league/data/league.sqlite')
+            DbClient.conn = psycopg2.connect("dbname='league' user='postgres' host='localhost' password='Postgres1423'")
         return DbClient.conn
             
         
@@ -33,10 +35,10 @@ class DbClient:
     @staticmethod
     def create_tables():
         c = DbClient.get_cursor()
-        c.execute("CREATE TABLE IF NOT EXISTS Matches (gameID UNIQUE, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test);")
-        c.execute("CREATE TABLE IF NOT EXISTS Summoners (summonerID, accountID UNIQUE, tier, region, date_scraped_matches);")
-        c.execute("CREATE TABLE IF NOT EXISTS Champs (champID UNIQUE, name, winrate, winrate_sample_size);")
-        c.execute("CREATE TABLE IF NOT EXISTS Pairs (champ1, champ2, type, winrate, winrate_sample_size, pairID UNIQUE);")
+        c.execute("CREATE TABLE IF NOT EXISTS Matches (gameID INTEGER PRIMARY KEY, team1 TEXT, team2 TEXT, champs1 TEXT, champs2 TEXT, first_blood INTEGER, duration INTEGER, win INTEGER, gametype TEXT, region TEXT, patch TEXT, tier TEXT, date DATE, is_test BOOLEAN);")
+        c.execute("CREATE TABLE IF NOT EXISTS Summoners (summonerID INTEGER, accountID INTEGER PRIMARY KEY, tier TEXT, region TEXT, date_scraped_matches DATE);")
+        c.execute("CREATE TABLE IF NOT EXISTS Champs (champID INTEGER PRIMARY KEY, name TEXT, winrate REAL, winrate_sample_size INTEGER);")
+        c.execute("CREATE TABLE IF NOT EXISTS Pairs (champ1 INTEGER, champ2 INTEGER, type TEXT, winrate REAL, winrate_sample_size INTEGER, pairID INTEGER PRIMARY KEY);")
         DbClient.get_conn().commit()
             
                 
