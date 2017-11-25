@@ -2,6 +2,7 @@
 
 from db_client import DbClient
 import json
+import datetime
 
 ##CUR_PATCH = "7.22.208.1062"
 CUR_PATCH = "7.21.206.6866"
@@ -32,7 +33,15 @@ class Match:
         ##json.dumps to encode arrays of champs1, champs2 into JSON
         json_champs1 = json.dumps(self.champs1)
         json_champs2 = json.dumps(self.champs2)
-        c.execute("INSERT OR IGNORE INTO Matches VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, self.date, self.is_test))
+
+        UNIXDate = self.date/1000
+
+        realDate = datetime.datetime.fromtimestamp(int(UNIXDate)).strftime('%Y-%m-%d')
+
+        print realDate
+        print self.gameID
+
+        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, realDate, self.is_test))
         DbClient.get_conn().commit()
         print "Saved match"
 
@@ -106,7 +115,7 @@ class Match:
     @staticmethod
     def exists_match(gameID):
         c = DbClient.get_cursor()
-        c.execute("SELECT * FROM Matches WHERE gameID = (?);", (gameID,))
+        c.execute("SELECT * FROM Matches WHERE gameID = (%s);", (gameID,))
         if len(c.fetchall()) == 0:
             return False
         else:

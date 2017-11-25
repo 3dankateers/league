@@ -108,9 +108,12 @@ class LeagueClient:
 		print summonerID
 		try:
 			summonerdata = self.getJSONReply(HTTPS_PART + region + API_PART + SUMMONER + str(summonerID) + "?" + self.API_KEY)
-			accountID = summonerdata["accountId"]
-			##time.sleep(1)
-			return accountID
+			if(summonerdata != -1):
+				accountID = summonerdata["accountId"]
+				##time.sleep(1)
+				return accountID
+			else:
+				print "Error hereeeeeeeeeeeeeeeeeeeeeeeeeeee"
 		except KeyError, e:
 			dump_to_file(summonerdata)
 			print summonerdata
@@ -128,6 +131,8 @@ class LeagueClient:
 	def get_matches(self, region, tier, startTime = time.time()-660000000, endTime = time.time()):
 		if ((int(endTime) - int(startTime)) > 660000000):
 			startTime -= 660000000
+			
+		startTime = int(startTime)
 		summoners = Summoner.get_summoners(region, tier)
 		gameIDs = []
 		for s in summoners:
@@ -203,8 +208,8 @@ def rate_limiter(response):
 			print "Rate too high, pausing for 20 secs"
 			time.sleep(20)
 
-		if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-2)):
-			print "Rate too high, pausing for 5 secs"
-			time.sleep(5)
+		if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-5)):
+			print "Rate too high, pausing for 15 secs"
+			time.sleep(15)
 
 

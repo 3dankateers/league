@@ -51,14 +51,14 @@ from trainer import Trainer
 
 def main():
 	DbClient.create_tables()
-	##lc = LeagueClient()
-	##lc.get_challengers("eun1")
-	##lc.get_challengers("na1")
-	##lc.get_challengers("euw1")
-	##lc.get_challengers("kr")
+	lc = LeagueClient()
+	#lc.get_challengers("eun1")
+	#lc.get_challengers("na1")
+	#lc.get_challengers("euw1")
+	lc.get_challengers("kr")
 	##lc.get_champs("n")
-	##lc.get_matches("kr","CHALLENGER")
-        ##lc.get_matches("na1","CHALLENGER",str(PatchToDate("7.22.208.1062")))
+	lc.get_matches("kr","CHALLENGER")
+    #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	##Summoner.get_summoners_by_tier("CHALLENGER")
 	#Champ.reset_winrates()
 	#cwc = ChampWinrateCalculator()
@@ -276,5 +276,7 @@ def evaluate_comp(t1, t2):
 def PatchToDate(patch):
 	if (str(patch)=="7.22.208.1062"):
 		return 1510099200000
+	elif(str(patch)=="7.23.209.7302"):
+		return 
 
 main()

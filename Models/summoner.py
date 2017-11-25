@@ -14,7 +14,7 @@ class Summoner:
     ##saves Summoner to db
     def save(self):
         c = DbClient.get_cursor()
-        c.execute("INSERT OR IGNORE INTO Summoners VALUES (?,?,?,?,?);", (self.summonerID, self.accountID, self.tier, self.region, self.date_scraped_matches))
+        c.execute("INSERT INTO Summoners (summonerID,accountID,tier,region,date_scraped_matches) VALUES (%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.summonerID, self.accountID, self.tier, self.region, self.date_scraped_matches))
         DbClient.get_conn().commit()
         print "Saved summoner"
 
@@ -23,7 +23,7 @@ class Summoner:
     def get_summoners(region, tier):
         summoners = []
         c = DbClient.get_cursor()
-        c.execute("SELECT * FROM Summoners WHERE tier=? AND region=?", (tier,region,))
+        c.execute("SELECT * FROM Summoners WHERE tier=(%s) AND region=(%s)", (tier,region,))
         rows = c.fetchall()
         for r in rows:
             s = Summoner.from_tuple(r)
@@ -37,7 +37,7 @@ class Summoner:
     def delete_summoner(accID):
         print "deleted summoner",  accID
         c = DbClient.get_cursor()
-        c.execute ("DELETE FROM Summoners WHERE accountID=?;", (accID,))
+        c.execute ("DELETE FROM Summoners WHERE accountID=(%s);", (accID,))
 
     ## returns a Summoner object from a tuple fetched from sqllite db
     @staticmethod
