@@ -57,7 +57,7 @@ def main():
 	#lc.get_challengers("euw1")
 	lc.get_challengers("kr")
 	##lc.get_champs("n")
-	lc.get_matches("kr","CHALLENGER")
+	#lc.get_matches("kr","CHALLENGER")
     #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	##Summoner.get_summoners_by_tier("CHALLENGER")
 	#Champ.reset_winrates()
