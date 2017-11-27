@@ -114,6 +114,7 @@ class LeagueClient:
 				return accountID
 			else:
 				print "Error hereeeeeeeeeeeeeeeeeeeeeeeeeeee"
+				return -1
 		except KeyError, e:
 			dump_to_file(summonerdata)
 			print summonerdata
@@ -210,6 +211,6 @@ def rate_limiter(response):
 
 		if(int(RequestsPerSecond[0])>(int(MaxRequestsPerSecond[0])-5)):
 			print "Rate too high, pausing for 15 secs"
-			time.sleep(15)
+			time.sleep(20)
 
 
