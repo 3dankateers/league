@@ -11,6 +11,7 @@ from datetime import datetime
 from enemy_pair_evaluator import EnemyPairEvaluator
 from team_winrate_calculator import TeamWinrateCalculator
 from ally_pair_evaluator import AllyPairEvaluator
+from dank_pair_evaluator import DankPairEvaluator
 
 '''
 from summoner_parser import SummonerParser
@@ -51,25 +52,25 @@ from trainer import Trainer
 
 def main():
 	DbClient.create_tables()
-	lc = LeagueClient()
+	#lc = LeagueClient()
 	#lc.get_challengers("eun1")
 	#lc.get_challengers("na1")
 	#lc.get_challengers("euw1")
 	#lc.get_challengers("kr")
-	lc.get_champs("na1")
+	#lc.get_champs("na1")
 	#lc.get_matches("kr","CHALLENGER")
     #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
-	##Summoner.get_summoners_by_tier("CHALLENGER")
-	#Champ.reset_winrates()
-	#cwc = ChampWinrateCalculator()
-	#cwc.run()
+	#Summoner.get_summoners_by_tier("CHALLENGER")
+	Champ.reset_winrates()
+	cwc = ChampWinrateCalculator()
+	cwc.run()
 
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	
-	#for i in range(0,10):
-	#	cv = CrossValidator(EnemyPairEvaluator, i)
-	#	cv.run()
+	for i in range(0,10):
+		cv = CrossValidator(EnemyPairEvaluator, i)
+		cv.run()
 	##cv = CrossValidator(AllyPairEvaluator, 1)
 	##cv.run()
 	

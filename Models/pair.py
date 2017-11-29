@@ -36,7 +36,7 @@ class Pair:
 	
 	def save(self):
             c = DbClient.get_cursor()
-            c.execute("INSERT INTO Pairs VALUES (?,?,?,?,?,?);", (self.champ1, self.champ2, self.type, self.winrate, self.winrate_sample_size, self.pairID))
+            c.execute("INSERT INTO Pairs VALUES (%s,%s,%s,%s,%s,%s);", (self.champ1, self.champ2, self.type, self.winrate, self.winrate_sample_size, self.pairID))
             DbClient.get_conn().commit()
             print "Saved pair"
 	
@@ -52,7 +52,7 @@ class Pair:
         @staticmethod
         def get_pair_by_id(p_id):
             c = DbClient.get_cursor()
-            c.execute("SELECT * FROM Pairs WHERE pairID = (?);", (p_id,))
+            c.execute("SELECT * FROM Pairs WHERE pairID = (%s);", (p_id,))
             data = c.fetchone()
             if data != None:
                 return Pair.from_tuple(data)
@@ -66,7 +66,7 @@ class Pair:
             c = DbClient.get_cursor()
             for t in p_tuples:
                 pairID = Pair.calc_id(t[0], t[1], t[2])
-                c.execute("INSERT INTO Pairs VALUES (?,?,?,?,?,?);", (t[0], t[1], t[2], t[3], t[4], pairID))
+                c.execute("INSERT INTO Pairs VALUES (%s,%s,%s,%s,%s,%s);", (t[0], t[1], t[2], t[3], t[4], pairID))
             DbClient.get_conn().commit()
             print "Saved pairs from tuples"
             

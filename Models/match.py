@@ -48,7 +48,7 @@ class Match:
     ##update existing match
     def update(self):
         c = DbClient.get_cursor()
-        c.execute("UPDATE Matches SET is_test = (?) WHERE gameID = (?);", (self.is_test, self.gameID,))
+        c.execute("UPDATE Matches SET is_test = (%s) WHERE gameID = (%s);", (self.is_test, self.gameID,))
         DbClient.get_conn().commit()
         ##print "Updated match"
 
@@ -69,9 +69,9 @@ class Match:
         ##if cur_patch flag is set only return matches from cur_patch
         if cur_patch:
             p = Match.get_latest_patch()
-            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (False, CUR_PATCH,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (%s) AND patch = (%s);", (False, CUR_PATCH,))
         else:
-            c.execute("SELECT * FROM Matches WHERE is_test = (?);", (False,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (%s);", (False,))
         rows = c.fetchall()
         for r in rows:
             m = Match.from_tuple(r)
@@ -87,9 +87,9 @@ class Match:
         ##if cur_patch flag is set only return matches from cur_patch
         if cur_patch:
             p = Match.get_latest_patch()
-            c.execute("SELECT * FROM Matches WHERE is_test = (?) AND patch = (?);", (True, CUR_PATCH,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (%s) AND patch = (%s);", (True, CUR_PATCH,))
         else:
-            c.execute("SELECT * FROM Matches WHERE is_test = (?);", (True,))
+            c.execute("SELECT * FROM Matches WHERE is_test = (%s);", (True,))
         rows = c.fetchall()
         for r in rows:
             m = Match.from_tuple(r)
@@ -100,7 +100,7 @@ class Match:
     @staticmethod
     def remove_all_tests():
         c = DbClient.get_cursor()
-        c.execute("UPDATE Matches SET is_test = (?);", (False,)) 
+        c.execute("UPDATE Matches SET is_test = (%s);", (False,)) 
         DbClient.get_conn().commit()
    
     ## returns most recent patch from matches in db
