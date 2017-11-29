@@ -4,7 +4,6 @@
 
 from test_suite import TestSuite
 from match import Match
-import random
 
 ## fraction of tests from training data will be 1/NUM_TESTS, ie NUM_TESTS = 10 => 1/10 of data is test data
 NUM_TESTS = 10
@@ -12,9 +11,9 @@ NUM_TESTS = 10
 
 class CrossValidator:
 
-    def __init__(self, evaluator_class, randomizer_class = 0):
+    def __init__(self, evaluator_class, randomizer = 0):
         self.evaluator = evaluator_class
-        self.randomizer = randomizer_class
+        self.randomizer = randomizer
         self.performance = 0
 
     def set_new_tests(self):
@@ -24,7 +23,7 @@ class CrossValidator:
         
         ##set every (num_tests)th match to a test
         for i,m in enumerate(all_matches):
-            if  i%NUM_TESTS == self.randomizer:
+            if  m.gameID%NUM_TESTS == self.randomizer:
                 m.is_test = True
                 m.update()
 

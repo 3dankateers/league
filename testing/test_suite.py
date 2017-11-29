@@ -20,6 +20,7 @@ class TestSuite:
     def run_simple_tests(self):
         self.evaluator_class.print_class()
         test_matches = Match.get_test_set()
+        self.total_tests = len(test_matches)
         for tm in test_matches:
             evaluator = self.evaluator_class(tm.champs1, tm.champs2)
             evaluator.process()
@@ -32,7 +33,6 @@ class TestSuite:
             elif(winner_predicted != actual_winner):
                 self.tests_failed += 1
         self.performance = self.tests_passed/float(self.tests_passed + self.tests_failed)
-        self.total_tests = self.tests_passed + self.tests_failed
         return self.performance
     
 
@@ -43,7 +43,7 @@ class TestSuite:
         print "Tests Passed: ", self.tests_passed
         print "Tests Failed: ", self.tests_failed
         print "Performance: ", self.performance 
-        print "Prediction %: ", float(self.tests_passed+self.tests_failed)/self.total_tests 
+        print "Prediction %: ", float(self.tests_passed+self.tests_failed)/float(self.total_tests)
     
     def get_performance(self):
         return self.performance

@@ -61,22 +61,18 @@ def main():
 	#lc.get_matches("kr","CHALLENGER")
     #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	#Summoner.get_summoners_by_tier("CHALLENGER")
-	Champ.reset_winrates()
-	cwc = ChampWinrateCalculator()
-	cwc.run()
+	##Champ.reset_winrates()
+	##cwc = ChampWinrateCalculator()
+	##cwc.run()
 
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	temp = []
 
-	for i in range(0,1):
-		cv = CrossValidator(DankPairEvaluator, i)
-		cv.run()
-		temp.append(cv.getPerformance())
+        cv = CrossValidator(DankPairEvaluator, 0)
+        cv.run()
 
-	average = sum(temp) / float(len(temp))
 
-	print average
 
 	##cv = CrossValidator(AllyPairEvaluator, 1)
 	##cv.run()
