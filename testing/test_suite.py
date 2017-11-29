@@ -25,9 +25,11 @@ class TestSuite:
             evaluator.process()
             winner_predicted = evaluator.predict_winner()
             actual_winner = tm.win
-            if(winner_predicted == actual_winner):
+            if(winner_predicted == 0):##0 means no opinion (low confidence)
+                pass
+            elif(winner_predicted == actual_winner):
                 self.tests_passed += 1
-            else:
+            elif(winner_predicted != actual_winner):
                 self.tests_failed += 1
         self.performance = self.tests_passed/float(self.tests_passed + self.tests_failed)
         self.total_tests = self.tests_passed + self.tests_failed
@@ -41,6 +43,7 @@ class TestSuite:
         print "Tests Passed: ", self.tests_passed
         print "Tests Failed: ", self.tests_failed
         print "Performance: ", self.performance 
+        print "Prediction %: ", float(self.tests_passed+self.tests_failed)/self.total_tests 
     
     def get_performance(self):
         return self.performance
