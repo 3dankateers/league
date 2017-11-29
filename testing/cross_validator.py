@@ -15,6 +15,7 @@ class CrossValidator:
     def __init__(self, evaluator_class, randomizer_class = 0):
         self.evaluator = evaluator_class
         self.randomizer = randomizer_class
+        self.performance = 0
 
     def set_new_tests(self):
         ##before assigning new tests, remove all previous ones
@@ -37,3 +38,7 @@ class CrossValidator:
         ts = TestSuite(self.evaluator)
         ts.run_simple_tests()
         ts.print_results()
+        self.performance = ts.get_performance()
+
+    def getPerformance(self):
+        return self.performance

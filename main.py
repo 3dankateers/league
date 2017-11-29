@@ -67,10 +67,17 @@ def main():
 
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
-	
-	for i in range(0,10):
-		cv = CrossValidator(EnemyPairEvaluator, i)
+	temp = []
+
+	for i in range(0,1):
+		cv = CrossValidator(DankPairEvaluator, i)
 		cv.run()
+		temp.append(cv.getPerformance())
+
+	average = sum(temp) / float(len(temp))
+
+	print average
+
 	##cv = CrossValidator(AllyPairEvaluator, 1)
 	##cv.run()
 	
