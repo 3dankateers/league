@@ -33,6 +33,7 @@ class TestSuite:
             elif(winner_predicted != actual_winner):
                 self.tests_failed += 1
         self.performance = self.tests_passed/float(self.tests_passed + self.tests_failed)
+        self.prediction_percent = float(self.tests_passed+self.tests_failed)/float(self.total_tests)
         return self.performance
     
 
@@ -43,8 +44,6 @@ class TestSuite:
         print "Tests Passed: ", self.tests_passed
         print "Tests Failed: ", self.tests_failed
         print "Performance: ", self.performance 
-        print "Prediction %: ", float(self.tests_passed+self.tests_failed)/float(self.total_tests)
+        print "Prediction %: ", self.prediction_percent 
     
-    def get_performance(self):
-        return self.performance
 

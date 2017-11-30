@@ -12,6 +12,7 @@ from enemy_pair_evaluator import EnemyPairEvaluator
 from team_winrate_calculator import TeamWinrateCalculator
 from ally_pair_evaluator import AllyPairEvaluator
 from dank_pair_evaluator import DankPairEvaluator
+from hybrid_pair_evaluator import HybridPairEvaluator
 
 '''
 from summoner_parser import SummonerParser
@@ -69,8 +70,18 @@ def main():
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	temp = []
 
-        cv = CrossValidator(DankPairEvaluator, 0)
-        cv.run()
+        sum_prediction_percent = 0
+        sum_performance = 0
+        num_runs = 5 
+        for i in range(num_runs):
+            cv = CrossValidator(HybridPairEvaluator, i)
+            cv.run()
+            sum_performance += cv.performance
+            sum_prediction_percent += cv.prediction_percent
+        
+        print " Avg performance: ", sum_performance/num_runs 
+        print " Avg prediction%: ", sum_prediction_percent/num_runs 
+
 
 
 

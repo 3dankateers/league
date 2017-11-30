@@ -37,7 +37,8 @@ class CrossValidator:
         ts = TestSuite(self.evaluator)
         ts.run_simple_tests()
         ts.print_results()
-        self.performance = ts.get_performance()
+        self.performance = ts.performance
+        self.prediction_percent = ts.prediction_percent
 
     def getPerformance(self):
         return self.performance
