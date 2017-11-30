@@ -186,7 +186,7 @@ class LeagueClient:
 	##	50 hours, so every 3 dayz should do the trick
 	## 420 = solo 5x5 440 = flex 5x5
 
-	def get_matches(self, region, tier, queue = 420, startTime = time.time()-500000, endTime = time.time()):
+	def get_matches(self, region, tier, queue = 420, startTime = time.time()-1000000, endTime = time.time()-500000):
 
 		if ((int(endTime) - int(startTime)) > 500000):
 			startTime = endTime - 500000
