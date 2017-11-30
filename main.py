@@ -53,7 +53,10 @@ from trainer import Trainer
 
 def main():
 	DbClient.create_tables()
-	#lc = LeagueClient()
+	lc = LeagueClient()
+	lc.get_challengers("kr")
+	lc.get_matches("kr","CHALLENGER",420)
+
 	#lc.get_challengers("eun1")
 	#lc.get_challengers("na1")
 	#lc.get_challengers("euw1")
@@ -68,6 +71,7 @@ def main():
 
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
+	'''
 	temp = []
 
         sum_prediction_percent = 0
@@ -81,7 +85,7 @@ def main():
         
         print " Avg performance: ", sum_performance/num_runs 
         print " Avg prediction%: ", sum_prediction_percent/num_runs 
-
+	'''
 
 
 

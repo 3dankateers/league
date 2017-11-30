@@ -15,22 +15,26 @@ from champ import Champ
 HTTPS_PART = "https://"
 API_PART = ".api.riotgames.com/lol/"
 CHALLENGER_LEAGUE = "league/v3/challengerleagues/"
+MASTER_LEAGUE = "league/v3/masterleagues/"
 MATCH_LISTS = "match/v3/matchlists/by-account/"
 
 MATCHES = "match/v3/matches/"
 CHAMPS = "static-data/v3/champions?locale=en_US&dataById=false"
 SUMMONER = "summoner/v3/summoners/"
 RANKED_SOLO = "by-queue/RANKED_SOLO_5x5"
+RANKED_FLEX_SR = "by-queue/RANKED_FLEX_SR"
 
-BEGINTIME_PART = "?beginTime="
+BEGINTIME_PART = "&beginTime="
+ENDTIME_PART = "&endTime="
+QUEUE_PART = "?queue="
 
 WAIT_TIME = 1500
 
 ## retries to hit endpoint if the response is a URL ERROR. Max retries = 4 with 3 sec delay in between 
 @retry(stop_max_attempt_number=4)
 def urlopen_with_retry(url):
-    print url
-    return urllib2.urlopen(url)
+		print url
+		return urllib2.urlopen(url)
 
 
 class LeagueClient:
@@ -39,69 +43,120 @@ class LeagueClient:
 	API_KEY = "api_key=" 
 
 	def __init__(self):
-	   f  = open("./data_fetchers/apikey.txt", "r")
-	   key = f.readline()
-	   self.API_KEY += key
+		f  = open("./data_fetchers/apikey.txt", "r")
+		key = f.readline()
+		self.API_KEY += key
 		
 	## tries to return json data from url, retries if somethign goes wrong
-        ## if retries also fail, handle error on case by case basis and return -1
+				## if retries also fail, handle error on case by case basis and return -1
 	def getJSONReply(self, url, rate_limit = True):
-            try:
-		response = urlopen_with_retry(url)
-                if rate_limit:
-                    rate_limiter(response)
-                html = response.read();
-                data = json.loads(html);
-                return data;
-            except URLError, e:
-                self.handle_url_error(url, e)
-                return -1
+		try:
+			response = urlopen_with_retry(url)
+			if rate_limit:
+				rate_limiter(response)
+				html = response.read();
+				data = json.loads(html);
+				return data;
+		except URLError, e:
+			self.handle_url_error(url, e)
+			return -1
 
-        ##handles all url errors on a case by case basis, add more cases here in the future
-        def handle_url_error(self, url, e):
-            print url
-            print e.reason
+				##handles all url errors on a case by case basis, add more cases here in the future
+	def handle_url_error(self, url, e):
+		print url
+		print e.reason
 
-            if e.reason == "Not Found":
-                if CHALLENGER_LEAGUE in url:
-                    print "Can't find challengers"
-                elif MATCH_LISTS in url:
-                    accountID = int(url.split("?")[0].split("/")[-1])## gets the number between the / and the first question mark. URL format is .../{AccountID}?...
-                    Summoner.delete_summoner(accountID)
-		    print "Cant grab data for accountID: " + str(accountID) + " , deleted it"
-                elif CHAMPS in url:
-                    print "Url Error on get champs"
-            elif e.reason == "Forbidden":
-	        print "Probably forgot your API Key refresh"
+		if e.reason == "Not Found":
+			if CHALLENGER_LEAGUE in url:
+				print "Can't find challengers"
+			elif MATCH_LISTS in url:
+				accountID = int(url.split("?")[0].split("/")[-1])## gets the number between the / and the first question mark. URL format is .../{AccountID}?...
+				#Summoner.delete_summoner(accountID)
+				#print "Cant grab data for accountID: " + str(accountID) + " , deleted it"
+				print "Cant grab data for accountID: " + str(accountID)
+			elif CHAMPS in url:
+				print "Url Error on get champs"
+			elif e.reason == "Forbidden":
+				print "Probably forgot your API Key refresh"
+			elif e.reason == "Too Many Requests":
+				print "Too Many requests, pausing for 30 secs"
+				time.sleep(30)
 
 	
 	def get_champs(self, region):
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + CHAMPS + "&" + self.API_KEY, rate_limit = False)
 		if data == -1:
-                    return 
-                for key in data["data"]:
-			champID = data["data"][key]["id"]
-			name = key
-			c = Champ(champID, key)
-			c.save()
+			return 
+			for key in data["data"]:
+				champID = data["data"][key]["id"]
+				name = key
+				c = Champ(champID, key)
+				c.save()
 		
-
 	##inserts summoners from challenger league
 	def get_challengers(self, region):
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_SOLO + "?" + self.API_KEY)
 		if data == -1:
-                   return 
+			return 
 		else:
-                    tier = data["tier"]
-                    for e in data["entries"]:
-                        summonerID = e["playerOrTeamId"]
-                        accountID = self.summonerID_to_accountID(region, summonerID)
-                        if accountID == -1:
-                           continue 
-                        date_scraped_matches = datetime.datetime.now()
-                        summoner = Summoner(summonerID, accountID, tier, region, date_scraped_matches)
-                        print "save summoner", summonerID
-                        summoner.save()
+			tier = data["tier"]
+			for e in data["entries"]:
+				summonerID = e["playerOrTeamId"]
+				accountID = self.summonerID_to_accountID(region, summonerID)
+				if accountID == -1:
+					continue 
+				date_scraped_matches = datetime.datetime.now()
+				summoner = Summoner(summonerID, accountID, tier, region, 420, date_scraped_matches)
+				print "save summoner", summonerID
+				summoner.save()
+
+	def get_challengers_flexSR(self, region):
+		data = self.getJSONReply(HTTPS_PART + region + API_PART + CHALLENGER_LEAGUE + RANKED_FLEX_SR + "?" + self.API_KEY)
+		if data == -1:
+									 return 
+		else:
+										tier = data["tier"]
+										for e in data["entries"]:
+												summonerID = e["playerOrTeamId"]
+												accountID = self.summonerID_to_accountID(region, summonerID)
+												if accountID == -1:
+													 continue 
+												date_scraped_matches = datetime.datetime.now()
+												summoner = Summoner(summonerID, accountID, tier, region, 440, date_scraped_matches)
+												print "save summoner", summonerID
+												summoner.save()
+
+	def get_masters_solo5x5(self, region):
+		data = self.getJSONReply(HTTPS_PART + region + API_PART + MASTER_LEAGUE + RANKED_SOLO + "?" + self.API_KEY)
+		if data == -1:
+			return 
+		else:
+			tier = data["tier"]
+			for e in data["entries"]:
+				summonerID = e["playerOrTeamId"]
+				accountID = self.summonerID_to_accountID(region, summonerID)
+				if accountID == -1:
+					continue 
+				date_scraped_matches = datetime.datetime.now()
+				summoner = Summoner(summonerID, accountID, tier, region, 420, date_scraped_matches)
+				print "save summoner", summonerID
+				summoner.save()
+
+	def get_masters_flexSR(self, region):
+		data = self.getJSONReply(HTTPS_PART + region + API_PART + MASTER_LEAGUE + RANKED_FLEX_SR + "?" + self.API_KEY)
+		if data == -1:
+			return 
+		else:
+			tier = data["tier"]
+			for e in data["entries"]:
+				summonerID = e["playerOrTeamId"]
+				accountID = self.summonerID_to_accountID(region, summonerID)
+				if accountID == -1:
+					continue 
+				date_scraped_matches = datetime.datetime.now()
+				summoner = Summoner(summonerID, accountID, tier, region, 440, date_scraped_matches)
+				print "save summoner", summonerID
+				summoner.save()
 
 	def summonerID_to_accountID(self, region, summonerID):
 		print region
@@ -129,35 +184,47 @@ class LeagueClient:
 	## This should make it easier if we want to update games of players on a certain cycle probably
 	## 	around the time it takes for a korean to grind 100 games (max query) which is probably about
 	##	50 hours, so every 3 dayz should do the trick
-	def get_matches(self, region, tier, startTime = time.time()-660000000, endTime = time.time()):
-		if ((int(endTime) - int(startTime)) > 660000000):
-			startTime -= 660000000
-			
+	## 420 = solo 5x5 440 = flex 5x5
+
+	def get_matches(self, region, tier, queue = 420, startTime = time.time()-500000, endTime = time.time()):
+
+		if ((int(endTime) - int(startTime)) > 500000):
+			startTime = endTime - 500000
+
+		#league format of timestamp
+		startTime *= 1000
+		endTime *= 1000
+
+		#set to int or else you get cancer and url dont like
 		startTime = int(startTime)
-		summoners = Summoner.get_summoners(region, tier)
+		endTime = int(endTime)
+
+		summoners = Summoner.get_summoners(region, tier, queue)
 		gameIDs = []
 		for s in summoners:
-                    data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + BEGINTIME_PART + str(startTime) + "&" + self.API_KEY)
-                    if(data==-1):
-                        continue ## on url error, move on to next summoner
-                    else:
-                        for e in data["matches"]:
-                            gameIDs.append(e["gameId"])
-                        for gameID in gameIDs:
-                            match = self.gameID_to_match(region, tier, gameID)
-                            if match != None:
-                                match.save()
+			data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCH_LISTS + str(s.accountID) + QUEUE_PART + str(queue) + ENDTIME_PART + str(endTime) + BEGINTIME_PART + str(startTime) + "&" + self.API_KEY)
+			if(data==-1):
+				continue ## on url error, move on to next summoner
+			else:
+				for e in data["matches"]:
+					gameIDs.append(e["gameId"])
+				for gameID in gameIDs:
+					match = self.gameID_to_match(region, tier, gameID)
+					if match != None:
+						match.save()
 
 	##returns match object from gameid+region
 	def gameID_to_match(self, region, tier, gameID):
 		##return None if match already exists
 		if Match.exists_match(gameID):
-		    return None
+				return None
 		data = self.getJSONReply(HTTPS_PART + region + API_PART + MATCHES + str(gameID) + "?" + self.API_KEY)
 		if data == -1: ## if we got url error, return None which results in parent function move on to next match
-                    return None
-                patch = data["gameVersion"]
+			return None
+			
+		patch = data["gameVersion"]
 		gameType = data["gameType"]
+		queueId = data["queueId"]
 		duration = data["gameDuration"]
 		date = data["gameCreation"]
 		##TODO: fix this later
@@ -183,7 +250,7 @@ class LeagueClient:
 				champs1.append(p["championId"])
 			else:
 				champs2.append(p["championId"])
-		m = Match(gameID, team1, team2, champs1, champs2, first_blood, duration, win, gameType, region, patch, tier, date)
+		m = Match(gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date)
 		return m 
 
 		

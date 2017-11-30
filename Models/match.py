@@ -42,7 +42,7 @@ class Match:
         print realDate
         print self.gameID
 
-        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, gametype, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, realDate, self.is_test))
+        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, realDate, self.is_test))
         DbClient.get_conn().commit()
         print "Saved match"
 
