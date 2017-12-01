@@ -7,7 +7,7 @@ from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
 from trainer import Trainer
 
-PAIR_SAMPLE_LIMIT = 20
+PAIR_SAMPLE_MIN = 20 
 CONF_THRESHOLD = 0.03
 RELEVANT_PAIRS_REQUIRED = 4
 
@@ -61,9 +61,8 @@ class AllyPairEvaluator(Evaluator):
 	def normalize_winrates(self):
             winrate1 = self.team1_ally_info.aggregate_winrate
             winrate2 = self.team2_ally_info.aggregate_winrate
-            if (winrate1  + winrate2) > 0:
-                self.team1_ally_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
-                self.team2_ally_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
+            self.team1_ally_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
+            self.team2_ally_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
 
 	## prints winrate calculation results
 	def print_results(self):
@@ -86,7 +85,7 @@ class AllyPairEvaluator(Evaluator):
                         ## create all possible combinations of pairs from team comp
                         pair_id = Pair.calc_id(c1,c2,"ally")
                         pair = Pair.get_pair_by_id(pair_id)
-                        if pair != None:
+                        if pair != None and pair.winrate_sample_size >PAIR_SAMPLE_MIN:
                             twi.total_winrate += pair.winrate
                             twi.num_relevant_pairs += 1
             

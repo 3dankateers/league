@@ -7,7 +7,7 @@ from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
 from trainer import Trainer
 
-PAIR_SAMPLE_LIMIT = 20
+PAIR_SAMPLE_MIN = 20 
 CONF_THRESHOLD = 0.03
 RELEVANT_PAIRS_REQUIRED = 4
 
@@ -65,9 +65,8 @@ class EnemyPairEvaluator(Evaluator):
 	def normalize_winrates(self):
             winrate1 = self.team1_enemy_info.aggregate_winrate
             winrate2 = self.team2_enemy_info.aggregate_winrate
-            if (winrate1 > 0 and winrate2 > 0):
-                self.team1_enemy_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
-                self.team2_enemy_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
+            self.team1_enemy_info.aggregate_winrate = winrate1/(winrate1 + winrate2)
+            self.team2_enemy_info.aggregate_winrate = winrate2/(winrate1 + winrate2)
 
 	## prints winrate calculation results
 	def print_results(self):
@@ -94,7 +93,7 @@ class EnemyPairEvaluator(Evaluator):
                     ##only look at winrates if we can find pair in db 
                     if pair != None:
                         ##make sure pair same size is statistically significant
-                        if pair.winrate_sample_size > PAIR_SAMPLE_LIMIT:
+                        if pair.winrate_sample_size > PAIR_SAMPLE_MIN:
                             ## winrate doesn't need to be inversed since c1 remains c1 in pair_tuple
                             if pair.pair_tuple[0] == c1:
                                 twi1.total_winrate += pair.winrate

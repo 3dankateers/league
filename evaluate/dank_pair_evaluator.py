@@ -8,7 +8,7 @@ from pair_winrate_calculator import PairWinrateCalculator
 from trainer import Trainer
 
 PAIR_SAMPLE_LIMIT = 20
-CONF_THRESHOLD = 0.03
+CONF_THRESHOLD = 0.07
 RELEVANT_PAIRS_REQUIRED = 4
 
 ##helper class to store results for each team comp
@@ -45,9 +45,9 @@ class DankPairEvaluator(Evaluator):
 				#self.process_winrate_lane_pairs(self.team1_enemy_info, self.team2_enemy_info)
 				self.normalize_winrates()
 
-				if self.team1_enemy_info.aggregate_winrate > (self.team2_enemy_info.aggregate_winrate + 0.03):
+				if self.team1_enemy_info.aggregate_winrate > (self.team2_enemy_info.aggregate_winrate + CONF_THRESHOLD):
 						self.winner = 100
-				elif self.team1_enemy_info.aggregate_winrate < (self.team2_enemy_info.aggregate_winrate - 0.03):
+				elif self.team1_enemy_info.aggregate_winrate < (self.team2_enemy_info.aggregate_winrate - CONF_THRESHOLD):
 						self.winner = 200
 				else:
 						self.winner = 0

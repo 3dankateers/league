@@ -62,10 +62,10 @@ def main():
 	##lc.get_challengers("euw1")
 	##lc.get_challengers("kr")
 	##lc.get_champs("na1")
-	lc.get_matches("kr","CHALLENGER")
-	lc.get_matches("na1","CHALLENGER")
-	lc.get_matches("euw1","CHALLENGER")
-	lc.get_matches("eun1","CHALLENGER")
+	##lc.get_matches("kr","CHALLENGER")
+	##lc.get_matches("na1","CHALLENGER")
+	##lc.get_matches("euw1","CHALLENGER")
+	##lc.get_matches("eun1","CHALLENGER")
     #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	#Summoner.get_summoners_by_tier("CHALLENGER")
 	##Champ.reset_winrates()
@@ -74,12 +74,12 @@ def main():
 
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
-	'''
+	
 	temp = []
 
         sum_prediction_percent = 0
         sum_performance = 0
-        num_runs = 5 
+        num_runs = 10 
         for i in range(num_runs):
             cv = CrossValidator(HybridPairEvaluator, i)
             cv.run()
@@ -88,7 +88,7 @@ def main():
         
         print " Avg performance: ", sum_performance/num_runs 
         print " Avg prediction%: ", sum_prediction_percent/num_runs 
-	'''
+	
 
 
 
