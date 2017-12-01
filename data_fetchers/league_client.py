@@ -29,6 +29,7 @@ ENDTIME_PART = "&endTime="
 QUEUE_PART = "?queue="
 
 WAIT_TIME = 1500
+ONE_WEEK = 500000
 
 ## retries to hit endpoint if the response is a URL ERROR. Max retries = 4 with 3 sec delay in between 
 @retry(stop_max_attempt_number=4)
@@ -186,10 +187,8 @@ class LeagueClient:
 	##	50 hours, so every 3 dayz should do the trick
 	## 420 = solo 5x5 440 = flex 5x5
 
-	def get_matches(self, region, tier, queue = 420, startTime = time.time()-1000000, endTime = time.time()-500000):
+	def get_matches(self, region, tier, queue, startTime, endTime):
 
-		if ((int(endTime) - int(startTime)) > 500000):
-			startTime = endTime - 500000
 
 		#league format of timestamp
 		startTime *= 1000
@@ -199,6 +198,9 @@ class LeagueClient:
 		startTime = int(startTime)
 		endTime = int(endTime)
 
+                print startTime
+                print endTime
+
 		summoners = Summoner.get_summoners(region, tier, queue)
 		gameIDs = []
 		for s in summoners:
@@ -206,7 +208,8 @@ class LeagueClient:
 			if(data==-1):
 				continue ## on url error, move on to next summoner
 			else:
-				for e in data["matches"]:
+                                print "here"    
+	        		for e in data["matches"]:
 					gameIDs.append(e["gameId"])
 				for gameID in gameIDs:
 					match = self.gameID_to_match(region, tier, gameID)
