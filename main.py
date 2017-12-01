@@ -65,41 +65,23 @@ def main():
 	##lc.get_challengers("euw1")
 	##lc.get_challengers("kr")
 	##lc.get_champs("na1")
-        
-        ##done about two past weeks but spooky shit going down -------------- 2017/11/30
-	##lc.get_matches("kr","CHALLENGER", endTime = time.time() - 1500000)
-	##lc.get_matches("na1","CHALLENGER", startTime = time.time() - 1500000)
-	##lc.get_matches("euw1","CHALLENGER", startTime = time.time() - 1500000)
-	##lc.get_matches("eun1","CHALLENGER", startTime = time.time() - 1500000)
-  
-        ##lc.get_masters_solo5x5("euw1")
-	##lc.get_matches("euw1","MASTER", endTime = time.time())
-        
-        ##lc.get_masters_solo5x5("na1")
-	lc.get_matches("na1","MASTER", 420, (time.time()-2*ONE_WEEK), (time.time()-ONE_WEEK))
-	lc.get_matches("kr","MASTER", 420, startTime = time.time()-2*ONE_WEEK, endTime = time.time()-ONE_WEEK)
-	lc.get_matches("euw1","MASTER",420 , startTime = time.time()-2*ONE_WEEK, endTime = time.time()-ONE_WEEK)
-	lc.get_matches("eun1","MASTER", 420, startTime = time.time()-2*ONE_WEEK, endTime = time.time()-ONE_WEEK)
-        ##lc.get_masters_solo5x5("kr")
-	##lc.get_matches("kr","MASTER", endTime = time.time()-ONE_WEEK)
-        ##lc.get_masters_solo5x5("euw1")
-	##lc.get_matches("euw1","MASTER", endTime = time.time()-ONE_WEEK)
-        ##lc.get_masters_solo5x5("eun1")
-	##lc.get_matches("eun1","MASTER", endTime = time.time()-ONE_WEEK)
-  #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
-	#Summoner.get_summoners_by_tier("CHALLENGER")
+	##lc.get_matches("kr","CHALLENGER")
+	##lc.get_matches("na1","CHALLENGER")
+	##lc.get_matches("euw1","CHALLENGER")
+	##lc.get_matches("eun1","CHALLENGER")
+    #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	##Champ.reset_winrates()
 	##cwc = ChampWinrateCalculator()
 	##cwc.run()
 
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
-	'''
+	
 	temp = []
 
         sum_prediction_percent = 0
         sum_performance = 0
-        num_runs = 5 
+        num_runs = 10 
         for i in range(num_runs):
             cv = CrossValidator(HybridPairEvaluator, i)
             cv.run()
@@ -108,7 +90,7 @@ def main():
         
         print " Avg performance: ", sum_performance/num_runs 
         print " Avg prediction%: ", sum_prediction_percent/num_runs 
-	'''
+	
 
 
 
