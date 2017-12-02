@@ -13,6 +13,7 @@ from team_winrate_calculator import TeamWinrateCalculator
 from ally_pair_evaluator import AllyPairEvaluator
 from dank_pair_evaluator import DankPairEvaluator
 from hybrid_pair_evaluator import HybridPairEvaluator
+import time
 
 '''
 from summoner_parser import SummonerParser
@@ -51,6 +52,8 @@ from trainer import Trainer
 ##TODO: Get higher resolution betting info + other betting info about fb/ties etc
 ##TODO: Start grabbing 5v5 data
 
+ONE_WEEK = 500000
+
 def main():
 	DbClient.create_tables()
 	lc = LeagueClient()
@@ -67,7 +70,6 @@ def main():
 	##lc.get_matches("euw1","CHALLENGER")
 	##lc.get_matches("eun1","CHALLENGER")
     #lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
-	#Summoner.get_summoners_by_tier("CHALLENGER")
 	##Champ.reset_winrates()
 	##cwc = ChampWinrateCalculator()
 	##cwc.run()
