@@ -75,19 +75,19 @@ def main():
 	
 	#lc.get_matches("kr","CHALLENGER",str(PatchToDate("7.22.208.1062")))
 	
-	temp = []
+	##temp = []
 
-        sum_prediction_percent = 0
-        sum_performance = 0
-        num_runs = 10 
-        for i in range(num_runs):
-            cv = CrossValidator(HybridPairEvaluator, i)
-            cv.run()
-            sum_performance += cv.performance
-            sum_prediction_percent += cv.prediction_percent
+        ##sum_prediction_percent = 0
+        ##sum_performance = 0
+        ##num_runs = 10 
+        ##for i in range(num_runs):
+            ##cv = CrossValidator(HybridPairEvaluator, i)
+            ##cv.run()
+            ##sum_performance += cv.performance
+            ##sum_prediction_percent += cv.prediction_percent
         
-        print " Avg performance: ", sum_performance/num_runs 
-        print " Avg prediction%: ", sum_prediction_percent/num_runs 
+        ##print " Avg performance: ", sum_performance/num_runs 
+        ##print " Avg prediction%: ", sum_prediction_percent/num_runs 
 	
 
 
@@ -100,12 +100,14 @@ def main():
 	#team1 = {35,29,17,45,420}
 	#team2 = {16,51,141,30,75}
 
-	#team1 = {236, 267, 122, 5, 21}
-	#team2 = {64, 105, 9, 51, 6}
+        
+	team1 = ["Ashe", "Jax", "Zoe", "Taric", "Poppy"]
+	team2 = ["Nunu", "Syndra", "Rengar", "Sona", "Lux"]
 
-	#epe = EnemyPairEvaluator(team1,team2)
-	#epe.process()
-	#print epe.predict_winner()
+	epe = EnemyPairEvaluator(Champ.names_to_ids(team1),Champ.names_to_ids(team2))
+	epe.process()
+	print epe.predict_winner()
+        epe.print_results()
 
 	
 	##startTime = datetime.now()

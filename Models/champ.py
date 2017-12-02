@@ -54,3 +54,19 @@ class Champ:
         
 
     
+    @staticmethod
+    def get_champ_by_name(c_name):
+        c = DbClient.get_cursor()
+        c.execute("SELECT * FROM Champs WHERE name = (%s);", (c_name,))
+        row = c.fetchone()
+        return Champ.from_tuple(row)
+
+    ##takes in an array of champ names, returns array of corresponding ids
+    @staticmethod
+    def names_to_ids(names):
+        ids = []
+        for n in names:
+            ids.append(Champ.get_champ_by_name(n).champID)
+        return ids
+
+
