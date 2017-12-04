@@ -7,7 +7,7 @@ from evaluator import Evaluator
 from pair_winrate_calculator import PairWinrateCalculator
 from trainer import Trainer
 
-PAIR_SAMPLE_MIN = 20 
+PAIR_SAMPLE_MIN = 5 
 CONF_THRESHOLD = 0.03
 RELEVANT_PAIRS_REQUIRED = 4
 

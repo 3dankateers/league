@@ -11,7 +11,7 @@ CUR_PATCH = "7.23.209.7302"
 class Match:
 
     WIN = "win"	
-    def __init__(self, gameID, team1, team2, champs1, champs2, first_blood, duration, win, gameType, region, patch, tier, date, is_test = False):
+    def __init__(self, gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date, is_test = False):
         self.gameID = gameID
         self.team1 = team1
         self.team2 = team2
@@ -20,7 +20,7 @@ class Match:
         self.first_blood = first_blood
         self.duration = duration
         self.win = win
-        self.gameType = gameType
+        self.queueId = queueId
         self.region = region
         self.patch = patch
         self.tier = tier
@@ -42,7 +42,7 @@ class Match:
         print realDate
         print self.gameID
 
-        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.gameType, self.region, self.patch, self.tier, realDate, self.is_test))
+        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.queueId self.region, self.patch, self.tier, realDate, self.is_test))
         DbClient.get_conn().commit()
         print "Saved match"
 
@@ -110,7 +110,12 @@ class Match:
         c = DbClient.get_cursor()
         c.execute("SELECT MAX(patch) FROM Matches")
         return c.fetchone()[0]
-        DbClient.get_conn().commit()
+
+    @staticmethod
+    def get_last_date_scraped(queueId, region):
+        c.DBclient.get_cursor()
+        c.execute("SELECT MAX(date) FROM Matches WHERE queueId = (%s) AND region = (%s);", (queueId, region))
+        return c.fetchone()[0]
 
     ##looks for matchid inside db, returns true if match exists, else false
     @staticmethod

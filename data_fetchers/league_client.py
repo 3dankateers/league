@@ -29,7 +29,7 @@ ENDTIME_PART = "&endTime="
 QUEUE_PART = "?queue="
 
 WAIT_TIME = 1500
-ONE_WEEK = 500000
+ONE_WEEK = 600000
 
 ## retries to hit endpoint if the response is a URL ERROR. Max retries = 4 with 3 sec delay in between 
 @retry(stop_max_attempt_number=4)
@@ -187,7 +187,12 @@ class LeagueClient:
 	##	50 hours, so every 3 dayz should do the trick
 	## 420 = solo 5x5 440 = flex 5x5
 
-	def get_matches(self, region, tier, queue, startTime, endTime):
+	def get_matches(self, region, tier, queue, startTime = time.time() - ONE_WEEK, endTime = time.time(), since_last = False):
+
+                ##if since_last flag is set, start_time =  date_of last match pulled, end_time = start_time + ONE_WEEK
+                if since_last:
+                    start_time = Match.get_last_date_scraped(region, queue)
+                    end_time = start_time += ONE_WEEK
 
 
 		#league format of timestamp
