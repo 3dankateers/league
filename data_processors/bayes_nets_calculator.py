@@ -38,6 +38,6 @@ class BayesNetsCalculator:
 		y = np.array(y)
 		new_bayes_nets_model = GaussianNB() 
 		new_bayes_nets_model.fit(X,y)
-		print "New Bayes Nets model created: "
+		print("New Bayes Nets model created: ")
 		BayesNetsCalculator.bayes_nets_model = new_bayes_nets_model
 		return new_bayes_nets_model

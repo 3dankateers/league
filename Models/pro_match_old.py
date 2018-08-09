@@ -76,7 +76,7 @@ class ProMatch:
 			"date_created" : self.date_created,
 			"is_test" : self.is_test
 			})
-		print "Created pro match"
+		print("Created pro match")
 		return record.inserted_id
 	
 	def update_pro_match(self):

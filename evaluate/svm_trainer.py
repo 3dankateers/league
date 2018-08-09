@@ -15,6 +15,6 @@ class SVMTrainer:
 				SVMEvaluator.retrain(C_val, gamma_val)
 				cv = CrossValidator(SVMEvaluator, 1)
 				cv.run()
-				print "C = ", C_val, " gamma = ", gamma_val 
+				print("C = ", C_val, " gamma = ", gamma_val)
 				cv.print_results()
 

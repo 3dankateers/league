@@ -48,4 +48,4 @@ class UnderdogEvaluator(Evaluator):
 	
 	@staticmethod
 	def print_class():
-		print "Underdog Evaluator"
+		print("Underdog Evaluator")

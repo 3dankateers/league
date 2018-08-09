@@ -26,7 +26,7 @@ class Match:
         self.tier = tier
         self.date = date
         self.is_test = is_test ## when set to true, used for testing, when false used for training 
-    
+
 
     ## push match into database
     def save(self):
@@ -39,12 +39,12 @@ class Match:
 
         realDate = datetime.datetime.fromtimestamp(int(UNIXDate)).strftime('%Y-%m-%d')
 
-        print realDate
-        print self.gameID
+        print(realDate)
+        print(self.gameID)
 
-        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.queueId self.region, self.patch, self.tier, realDate, self.is_test))
+        c.execute("INSERT INTO Matches (gameID, team1, team2, champs1, champs2, first_blood, duration, win, queueId, region, patch, tier, date, is_test) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.gameID, self.team1, self.team2, json_champs1, json_champs2, self.first_blood, self.duration, self.win, self.queueId, self.region, self.patch, self.tier, realDate, self.is_test))
         DbClient.get_conn().commit()
-        print "Saved match"
+        print("Saved match")
 
     ##update existing match
     def update(self):
@@ -53,15 +53,15 @@ class Match:
         DbClient.get_conn().commit()
         ##print "Updated match"
 
-        
-	
+
+
     ## returns a match object from a tuple fetched from sqllite db
     @staticmethod
     def from_tuple(tup):
         ##json loads to decode json back into arrays for champs1, champs2
         m = Match(tup[0], tup[1], tup[2], json.loads(tup[3]), json.loads(tup[4]), tup[5], tup[6], tup[7], tup[8], tup[9], tup[10], tup[11], tup[12], tup[13])
-	return m
-   
+        return m
+
     ## gets training set of matches(where is_test = false)
     @staticmethod
     def get_training_set(cur_patch = True):
@@ -78,7 +78,7 @@ class Match:
             m = Match.from_tuple(r)
             matches.append(m)
         return matches
-    
+
 
     ## gets test set of matches(where is_test = true)
     @staticmethod
@@ -103,7 +103,7 @@ class Match:
         c = DbClient.get_cursor()
         c.execute("UPDATE Matches SET is_test = (%s);", (False,)) 
         DbClient.get_conn().commit()
-   
+
     ## returns most recent patch from matches in db
     @staticmethod
     def get_latest_patch():
@@ -126,4 +126,4 @@ class Match:
             return False
         else:
             return True
-	
+

@@ -39,6 +39,6 @@ class TreeCalculator:
 		y = np.array(y)
 		new_tree_model = tree.DecisionTreeClassifier(max_features = 3, criterion = "gini", max_depth = 20, min_samples_leaf = 3)
 		new_tree_model.fit(X,y)
-		print "New Decision Tree model created: "
+		print("New Decision Tree model created: ")
 		TreeCalculator.tree_model = new_tree_model
 		return new_tree_model

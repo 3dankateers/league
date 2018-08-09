@@ -25,7 +25,7 @@ class ChampWinrateCalculator:
     ##populate losses and wins with the information from each match in db
     def count_all_matches(self): 
         matches = Match.get_training_set()
-        print "Training champ winrates with training cases: ", len(matches)
+        print("Training champ winrates with training cases: ", len(matches))
         
         for m in matches:
             for c1 in m.champs1:

@@ -41,9 +41,9 @@ class TestSuite:
 
     ##print results of running tests
     def print_results(self):
-        print "Tests Passed: ", self.tests_passed
-        print "Tests Failed: ", self.tests_failed
-        print "Performance: ", self.performance 
-        print "Prediction %: ", self.prediction_percent 
+        print("Tests Passed: ", self.tests_passed)
+        print("Tests Failed: ", self.tests_failed)
+        print("Performance: ", self.performance)
+        print("Prediction %: ", self.prediction_percent)
     
 

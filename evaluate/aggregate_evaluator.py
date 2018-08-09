@@ -59,17 +59,17 @@ class AggregateEvaluator(Evaluator):
 			return False
 
 	def print_results(self):
-		print "#################################################################################"
-		print "Aggregate Evaluator Results: "
-		print "OneChamp Evaluator Winner: ", self.enemy_pair_evaluator.predict_winner()
-		print "Trivial Evaluator Winner: ", self.trivial_evaluator.predict_winner()
-		print "Underdog Evaluator Winner: ", self.underdog_evaluator.predict_winner()
-		print "WINNER: ", self.winner
-		print "#################################################################################"
+		print("#################################################################################")
+		print("Aggregate Evaluator Results: ")
+		print("OneChamp Evaluator Winner: ", self.enemy_pair_evaluator.predict_winner())
+		print("Trivial Evaluator Winner: ", self.trivial_evaluator.predict_winner())
+		print("Underdog Evaluator Winner: ", self.underdog_evaluator.predict_winner())
+		print("WINNER: ", self.winner)
+		print("#################################################################################")
 
 	@staticmethod
 	def print_class():
-		print "Aggregator Evaluator"
+		print("Aggregator Evaluator")
 
 
 

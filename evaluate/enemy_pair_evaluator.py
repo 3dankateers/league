@@ -31,7 +31,7 @@ class EnemyPairEvaluator(Evaluator):
 	
 	@staticmethod
 	def print_class():
-	    print "Enemy Pair Evaluator"
+	    print("Enemy Pair Evaluator")
 
 	@staticmethod
 	def retrain():
@@ -70,14 +70,14 @@ class EnemyPairEvaluator(Evaluator):
 
 	## prints winrate calculation results
 	def print_results(self):
-            print "#################################################################################"
-            print "Enemy Pair Evaluator Results: "
-            print "Team1", str(self.team1_enemy_info.aggregate_winrate)
-            print "#########################################################"
-            print "Team2", str(self.team2_enemy_info.aggregate_winrate)
-            print "Difference: ", self.team2_enemy_info.aggregate_winrate - self.team1_enemy_info.aggregate_winrate
-            print "WINNER: ", self.winner
-            print "#################################################################################"
+            print("#################################################################################")
+            print("Enemy Pair Evaluator Results: ")
+            print("Team1", str(self.team1_enemy_info.aggregate_winrate))
+            print ("#########################################################")
+            print("Team2", str(self.team2_enemy_info.aggregate_winrate))
+            print("Difference: ", self.team2_enemy_info.aggregate_winrate - self.team1_enemy_info.aggregate_winrate)
+            print("WINNER: ", self.winner)
+            print("#################################################################################")
 
 	
 	## takes 2 team_winrate_info and processes enemy winrates

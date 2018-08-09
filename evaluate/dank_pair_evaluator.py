@@ -31,7 +31,7 @@ class DankPairEvaluator(Evaluator):
 	
 	@staticmethod
 	def print_class():
-			print "Dank Pair Evaluator"
+		    print "Dank Pair Evaluator"
 
 	@staticmethod
 	def retrain():

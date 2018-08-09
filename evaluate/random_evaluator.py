@@ -26,4 +26,4 @@ class RandomEvaluator(Evaluator):
 
 	@staticmethod
 	def print_class():
-		print "Random Evaluator"
+		print("Random Evaluator")

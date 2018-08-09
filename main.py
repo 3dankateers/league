@@ -11,7 +11,7 @@ from datetime import datetime
 from enemy_pair_evaluator import EnemyPairEvaluator
 from team_winrate_calculator import TeamWinrateCalculator
 from ally_pair_evaluator import AllyPairEvaluator
-from dank_pair_evaluator import DankPairEvaluator
+##from dank_pair_evaluator import DankPairEvaluator
 from hybrid_pair_evaluator import HybridPairEvaluator
 import time
 
@@ -55,10 +55,10 @@ from trainer import Trainer
 ONE_WEEK = 500000
 
 def main():
-	DbClient.create_tables()
+	##DbClient.create_tables()
 	lc = LeagueClient()
-	##lc.get_challengers("kr")
-	##lc.get_matches("kr","CHALLENGER",420)
+	lc.get_challengers("kr")
+	lc.get_matches("kr","CHALLENGER",420)
 
 	##lc.get_challengers("eun1")
 	##lc.get_challengers("na1")
@@ -103,13 +103,13 @@ def main():
 	#team2 = {16,51,141,30,75}
 
         
-	team1 = ["Ashe", "Jax", "Zoe", "Taric", "Poppy"]
-	team2 = ["Nunu", "Syndra", "Rengar", "Sona", "Lux"]
+	##team1 = ["Ashe", "Jax", "Zoe", "Taric", "Poppy"]
+	##team2 = ["Nunu", "Syndra", "Rengar", "Sona", "Lux"]
 
-	epe = EnemyPairEvaluator(Champ.names_to_ids(team1),Champ.names_to_ids(team2))
-	epe.process()
-	print epe.predict_winner()
-        epe.print_results()
+	##epe = EnemyPairEvaluator(Champ.names_to_ids(team1),Champ.names_to_ids(team2))
+	##epe.process()
+	##print epe.predict_winner()
+        ##epe.print_results()
 
 	
 	##startTime = datetime.now()
@@ -235,7 +235,6 @@ def run_tests(evaluator_class, match_class, prediction_target, need_confidence, 
 	ts = TestSuite(evaluator_class, match_class, prediction_target, need_confidence)
 	ts.run_simple_tests()
 	ts.print_results()
-	print ""
 
 def retrain_all(train_set_type):
 		Trainer.train(train_set_type, Trainer.ALL)

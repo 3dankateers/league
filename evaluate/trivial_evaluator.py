@@ -22,9 +22,9 @@ class TrivialEvaluator(Evaluator):
 		pass
 
 	def print_results(self):
-		print "Trivial Evaluator"
-		print "Predicting team 200 wins (purple side)"
+		print("Trivial Evaluator")
+		print("Predicting team 200 wins (purple side)")
 
 	@staticmethod
 	def print_class():
-		print "Trivial Evaluator"
+		print("Trivial Evaluator")

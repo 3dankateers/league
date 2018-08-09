@@ -30,8 +30,8 @@ class TreeEvaluator(Evaluator):
 		return True	
 	
 	def print_results(self):
-		print "Winner predicted by decison tree is : ", str(self.winner) 
+		print("Winner predicted by decison tree is : ", str(self.winner))
 
 	@staticmethod
 	def print_class():
-		print "Tree Evaluator"
+		print("Tree Evaluator")

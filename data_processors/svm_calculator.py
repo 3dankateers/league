@@ -42,7 +42,7 @@ class SVMCalculator:
 		##new_svm_model = svm.LinearSVC(kernel = "linear", C = 0.5, degree = 1, probability = True, gamma = 0.01, decision_function_shape = "ovr",  verbose = False)
 		##svm_model = svm.SVC(kernel = "poly", C = 1, degree = 3, gamma = 0.05, decision_function_shape = "ovr",  verbose = True)
 		new_svm_model.fit(X,y)
-		print "New SVM model created: "
+		print("New SVM model created: ")
 		##print str(new_svm_model)
 		##print str(new_svm_model.n_support_)
 		##print str(new_svm_model.decision_function)

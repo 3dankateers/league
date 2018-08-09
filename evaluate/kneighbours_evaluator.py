@@ -30,8 +30,8 @@ class KNeighboursEvaluator(Evaluator):
 		return True	
 	
 	def print_results(self):
-		print "Winner predicted by k-neighbours is : ", str(self.winner) 
+		print("Winner predicted by k-neighbours is : ", str(self.winner) )
 
 	@staticmethod
 	def print_class():
-		print "KNeighbours Evaluator"
+		print("KNeighbours Evaluator")

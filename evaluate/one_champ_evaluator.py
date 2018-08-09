@@ -26,7 +26,7 @@ class TeamInfo:
                 self.aggregate_winrate = self.total_winrate/self.num_champs_considered
 
     def print_result(self):
-        print "Normalized win rate = ", str(self.aggregate_winrate)
+        print("Normalized win rate = ", str(self.aggregate_winrate))
 
 
 class OneChampEvaluator(Evaluator):
@@ -83,17 +83,17 @@ class OneChampEvaluator(Evaluator):
             ti.update_aggregate_winrate()
 
     def print_results(self):
-        print "#################################################################################"
-        print "One Champ Evaluator Results: "
-        print "Team1"
+        print("#################################################################################")
+        print("One Champ Evaluator Results: ")
+        print("Team1")
         self.ti1.print_result()
-        print "#########################################################"
-        print "Team2"
+        print("#########################################################")
+        print("Team2")
         self.ti2.print_result()
-        print "Difference: ", self.ti2.aggregate_winrate - self.ti1.aggregate_winrate
-        print "WINNER: ", self.winner
-        print "#################################################################################"
+        print("Difference: ", self.ti2.aggregate_winrate - self.ti1.aggregate_winrate)
+        print("WINNER: ", self.winner)
+        print("#################################################################################")
 
     @staticmethod
     def print_class():
-        print "One Champ Evaluator"
+        print("One Champ Evaluator")

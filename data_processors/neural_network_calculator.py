@@ -38,6 +38,6 @@ class NeuralNetworkCalculator:
 		y = np.array(y)
 		new_neural_model = MLPClassifier()
 		new_neural_model.fit(X,y)
-		print "New neural netowrk model created: "
+		print("New neural netowrk model created: ")
 		NeuralNetworkCalculator.neural_model = new_neural_model
 		return new_neural_model

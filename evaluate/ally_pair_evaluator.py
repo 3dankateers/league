@@ -67,14 +67,14 @@ class AllyPairEvaluator(Evaluator):
 	## prints winrate calculation results
 	def print_results(self):
             self.process()
-            print "#################################################################################"
-            print " Ally Pair Evaluator Results: "
-            print "Team1: " , str(self.team1_ally_info.aggregate_winrate)
-            print "#########################################################"
-            print "Team2:", str(self.team2_ally_info.aggregate_winrate)
-            print "Difference: ", self.team2_ally_info.aggregate_winrate - self.team1_ally_info.aggregate_winrate
-            print "WINNER: ", self.winner
-            print "#################################################################################"
+            print("#################################################################################")
+            print(" Ally Pair Evaluator Results: ")
+            print("Team1: " , str(self.team1_ally_info.aggregate_winrate))
+            print("#########################################################")
+            print("Team2:", str(self.team2_ally_info.aggregate_winrate))
+            print("Difference: ", self.team2_ally_info.aggregate_winrate - self.team1_ally_info.aggregate_winrate)
+            print("WINNER: ", self.winner)
+            print("#################################################################################")
 
 	## takes team_ally_info and processes it by calculating all ally winrates
 	def process_winrate_allies(self, twi):
@@ -94,4 +94,4 @@ class AllyPairEvaluator(Evaluator):
 	
 	@staticmethod
 	def print_class():
-	    print "Ally Pair Evaluator"
+	    print("Ally Pair Evaluator")

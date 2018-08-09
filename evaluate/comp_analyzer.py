@@ -34,7 +34,7 @@ class CompAnalyzer:
 		##self.evaluate_one_champ()
 		##self.evaluate_ally_pairs()
 		##self.evaluate_enemy_pairs()
-		print "Predicting Win"
+		print("Predicting Win")
 		self.evaluate_enemy_pairs()
 		##self.evaluate_kneighbours()
 		self.evaluate_bayes_nets()
@@ -47,7 +47,7 @@ class CompAnalyzer:
 			champ = Champ.from_dict(cursor[0])
 			team_ids.append(champ.id)
 			if cursor.count() == 0:
-				print "Mistyped champ name: ", champ_name
+				print("Mistyped champ name: ", champ_name)
 
 	def evaluate_one_champ(self):
 		one_champ_evaluator = OneChampEvaluator(self.team1_ids, self.team2_ids)

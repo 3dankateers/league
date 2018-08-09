@@ -36,15 +36,15 @@ class SVMEvaluator(Evaluator):
 		
 
 	def predict_winner(self):
-		print self.winner
+		print(self.winner)
 		return self.winner
 
 	def is_confident(self):
 			return True
 	
 	def print_results(self):
-		print "Winner predicted by svm is : ", str(self.winner) 
+		print("Winner predicted by svm is : ", str(self.winner))
 
 	@staticmethod
 	def print_class():
-		print "SVM Evaluator"
+		print("SVM Evaluator")

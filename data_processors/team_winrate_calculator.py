@@ -21,7 +21,7 @@ class TeamWinrateCalculator:
     ##populate losses and wins with the information from each match in db
     def count_all_matches(self): 
         matches = Match.get_training_set()
-        print "Training team winrates with training cases: ", len(matches)
+        print("Training team winrates with training cases: ", len(matches))
         
         for m in matches:
             if m.win == 100:
@@ -29,9 +29,9 @@ class TeamWinrateCalculator:
             else:
                 self.redWins += 1
 
-        print "# of Blue Team Wins: " + str(self.blueWins)
-        print "# of Red Team Wins: " + str(self.redWins)
-        print "Team blue wins / total games : " + str(float(self.blueWins)/(float(self.redWins)+float(self.blueWins)))
+        print ("# of Blue Team Wins: " + str(self.blueWins))
+        print ("# of Red Team Wins: " + str(self.redWins))
+        print ("Team blue wins / total games : " + str(float(self.blueWins)/(float(self.redWins)+float(self.blueWins))))
 
     #need to decide if the results of this would be in a DB or just calculate it when you need it    
 

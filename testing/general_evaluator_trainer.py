@@ -14,10 +14,10 @@ class TestResults:
 		self.performance = performance
 
 	def tprint(self):
-		print "Performance: ", self.performance
-		print "One Champ W : ", self.one_champ_w
-		print "Ally Pair W : ", self.ally_pair_w
-		print "Enemy Pair W : ", self.enemy_pair_w
+		print("Performance: ", self.performance)
+		print("One Champ W : ", self.one_champ_w)
+		print("Ally Pair W : ", self.ally_pair_w)
+		print("Enemy Pair W : ", self.enemy_pair_w)
 
 class GeneralEvaluatorTrainer:
 	## 0.2, 0.1, 0.7 ~ 57% on cross validation *10
@@ -40,7 +40,7 @@ class GeneralEvaluatorTrainer:
 		rand_n = random.randint(1, 3)
 		for i in range(3):
 			for j in range(5):
-				print rand_n
+				print(rand_n)
 
 				##used to restore weights if there is no improvement
 				temp_w1 = GeneralEvaluatorTrainer.one_champ_w_global
@@ -62,7 +62,7 @@ class GeneralEvaluatorTrainer:
 					self.past_performance = performance
 				##else restore to previous weights and try again
 				else:
-					print "Restoring weights"
+					print("Restoring weights")
 					self.restore_weights(temp_w1, temp_w2, temp_w3)
 				
 				
@@ -70,7 +70,7 @@ class GeneralEvaluatorTrainer:
 				self.w_decrement -= 0.005
 				rand_n += 1
 
-			print "getting new tests"
+			print("getting new tests")
 			##every 5 iterations reset tests
 			##cv.set_new_tests()
 			##cv.retrain()

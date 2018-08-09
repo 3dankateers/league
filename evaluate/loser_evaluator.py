@@ -55,4 +55,4 @@ class LoserEvaluator(Evaluator):
 	
 	@staticmethod
 	def print_class():
-		print "Loser Evaluator"
+		print("Loser Evaluator")

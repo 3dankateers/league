@@ -96,7 +96,7 @@ class Trainer():
 			match_class = ProMatch
 			
 		if data_type_needed == Trainer.ALL:
-			print "Training all"
+			print("Training all")
 			champ_calculator = ChampWinrateCalculator(match_class, "win")
 			champ_calculator.run()
 			pair_calculator = PairWinrateCalculator(match_class, "win")
@@ -104,17 +104,17 @@ class Trainer():
 			hyperpoint_calculator = HyperpointCalculator(match_class, "win")
 			hyperpoint_calculator.run()
 		elif data_type_needed == Trainer.ONE_CHAMP:
-			print "Training One Champ"
+			print("Training One Champ")
 			champ_calculator = ChampWinrateCalculator(match_class, "win")
 			champ_calculator.run()
 		elif data_type_needed == Trainer.PAIR:
-			print "Training Pair"
+			print("Training Pair")
 			pair_calculator = PairWinrateCalculator(match_class, "win")
 			pair_calculator.run()
 		elif data_type_needed == Trainer.HYPERPOINTS:
-			print "Training Hyperpoints"
+			print("Training Hyperpoints")
 			hyperpoint_calculator = HyperpointCalculator(match_class, "win")
 			hyperpoint_calculator.run()
 		elif data_type_needed == Trainer.NONE:
-			print "No Training Needed"
+			print("No Training Needed")
 

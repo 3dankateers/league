@@ -26,15 +26,15 @@ class NeuralNetworkEvaluator(Evaluator):
 		self.winner = neural_model.predict(coordinates)
 
 	def predict_winner(self):
-		print self.winner
+		print(self.winner)
 		return self.winner
 
 	def is_confident(self):
 		return True	
 	
 	def print_results(self):
-		print "Winner predicted by neural network is : ", str(self.winner) 
+		print("Winner predicted by neural network is : ", str(self.winner))
 
 	@staticmethod
 	def print_class():
-		print "Neural Network Evaluator"
+		print("Neural Network Evaluator")

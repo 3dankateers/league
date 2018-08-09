@@ -55,7 +55,7 @@ class Team:
 				"sides" : self.sides,
 				"date_created" : self.date_created
 			})
-		print "Created new team with ", str(len(self.match_ids)), " match_ids."
+		print("Created new team with ", str(len(self.match_ids)), " match_ids.")
 		return record.inserted_id
 
 	
@@ -69,7 +69,7 @@ class Team:
 						"sides" : self.sides
 						}
 				})
-		print "Updated team" 
+		print("Updated team")
 
 	## find team and return it based on list of player_ids
 	@staticmethod

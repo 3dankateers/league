@@ -96,14 +96,14 @@ class BetSimulator:
 		return bet_amount
 
 	def print_results(self):
-		print "Total Bets Considered", self.total_bets
-		print "Total Bets Made", self.total_confident_bets
-		print "Money Risked", self.money_risked 
+		print("Total Bets Considered", self.total_bets)
+		print("Total Bets Made", self.total_confident_bets)
+		print("Money Risked", self.money_risked)
 		win_percentage = 100*self.bets_won/float(self.bets_lost + self.bets_won)
-		print "Win Percentage", str(win_percentage)
-		print "Profit", self.money_total 
-		print ""
-		print ""
+		print("Win Percentage", str(win_percentage))
+		print("Profit", self.money_total )
+		print("")
+		print("")
 		return (win_percentage, self.money_total)
 
 

@@ -31,8 +31,8 @@ class BayesNetsEvaluator(Evaluator):
 		return True	
 	
 	def print_results(self):
-		print "Winner predicted by Bayes Nets is : ", str(self.winner) 
+		print("Winner predicted by Bayes Nets is : ", str(self.winner))
 	
 	@staticmethod
 	def print_class():
-		print "Bayes Nets Evaluator"
+		print("Bayes Nets Evaluator")

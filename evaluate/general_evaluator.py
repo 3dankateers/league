@@ -57,18 +57,18 @@ class GeneralEvaluator:
 			self.team2_winrate = winrate2/(winrate1 + winrate2)
 
 	def print_results(self):
-		print "#################################################################################"
-		print "General Evaluator Results: "
-		print "Team1: ", str(self.team1_winrate)
-		print "#########################################################"
-		print "Team2: " , str(self.team2_winrate)
-		print "Difference: ", self.team2_winrate - self.team1_winrate
-		print "WINNER: ", self.winner
+		print("#################################################################################")
+		print("General Evaluator Results: ")
+		print("Team1: ", str(self.team1_winrate))
+		print("#########################################################")
+		print("Team2: " , str(self.team2_winrate))
+		print("Difference: ", self.team2_winrate - self.team1_winrate)
+		print("WINNER: ", self.winner)
 		if self.team1_winrate <= self.team2_winrate:
-			print "Bet on TEAM2"
+			print("Bet on TEAM2")
 		else:
-			print "Bet on TEAM1"
-		print "#################################################################################"
+			print("Bet on TEAM1")
+		print("#################################################################################")
 	
 		
 	def process(self):
@@ -85,4 +85,4 @@ class GeneralEvaluator:
 			self.winner = 200
 	@staticmethod	
 	def print_class():
-		print "General Evaluator"
+		print("General Evaluator")

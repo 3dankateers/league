@@ -57,10 +57,10 @@ class PairEvaluator:
 			return False
 
 	def print_results(self):
-		print "Ally + Enemy aggregate results:"
-		print "Team1 winrate: ", self.team1_winrate
-		print "Team2 winrate: ", self.team2_winrate
+		print("Ally + Enemy aggregate results:")
+		print("Team1 winrate: ", self.team1_winrate)
+		print("Team2 winrate: ", self.team2_winrate)
 	
 	@staticmethod
 	def print_class():
-		print "Pair Evaluator"
+		print("Pair Evaluator")

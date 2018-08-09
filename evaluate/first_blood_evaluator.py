@@ -52,13 +52,13 @@ class FirstBloodEvaluator(Evaluator):
 			return False
 
 	def print_results(self):
-		print "#################################################################################"
-		print "Aggregate Evaluator Results: "
-		print "OneChamp Evaluator Winner: ", self.one_champ_evaluator.predict_winner()
-		print "EnemyPair Evaluator Winner: ", self.enemy_pair_evaluator.predict_winner()
-		print "WINNER: ", self.winner
-		print "#################################################################################"
+		print("#################################################################################")
+		print("Aggregate Evaluator Results: ")
+		print("OneChamp Evaluator Winner: ", self.one_champ_evaluator.predict_winner())
+		print("EnemyPair Evaluator Winner: ", self.enemy_pair_evaluator.predict_winner())
+		print("WINNER: ", self.winner)
+		print("#################################################################################")
 	
 	@staticmethod
 	def print_class():
-		print "First Blood Evaluator"
+		print("First Blood Evaluator")

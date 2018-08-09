@@ -30,9 +30,9 @@ class Evaluator:
 	## take in a list of champ names and return a list of champ ids
 	@staticmethod
 	def get_champ_ids(team):
-		ids = []
-		for c in team:
-			cursor = Champ.find_champ_by_name(c)
-			champ = Champ.from_dict(cursor[0])
-			ids.append(champ.id)
-		return ids
+            ids = []
+            for c in team:
+                cursor = Champ.find_champ_by_name(c)
+                champ = Champ.from_dict(cursor[0])
+                ids.append(champ.id)
+            return ids

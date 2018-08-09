@@ -17,7 +17,7 @@ class Summoner:
         c = DbClient.get_cursor()
         c.execute("INSERT INTO Summoners VALUES (%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;", (self.summonerID, self.accountID, self.tier, self.region, self.queueId, self.date_scraped_matches))
         DbClient.get_conn().commit()
-        print "Saved summoner"
+        print("Saved summoner")
 
     ##returns array of summoners objects matching the tier and region; constructed from db
     @staticmethod
@@ -36,7 +36,7 @@ class Summoner:
     #   of trash players who got demoted from challengers later
     @staticmethod
     def delete_summoner(accID):
-        print "deleted summoner",  accID
+        print("deleted summoner",  accID)
         c = DbClient.get_cursor()
         c.execute ("DELETE FROM Summoners WHERE accountID=(%s);", (accID,))
 
